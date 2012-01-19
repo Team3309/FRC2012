@@ -31,6 +31,6 @@ public class TeleopControl extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the
         // arm.
-        //addchild(new JoystickDrive(1));
+        //add(new JoystickDrive(1));
     }
 }
