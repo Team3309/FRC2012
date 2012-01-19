@@ -40,28 +40,12 @@ public class JoystickDrive extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		if(!balancing) 
-			drive.mecanumDrive(stick.getX(), stick.getY(), stick.getTwist());
+		drive.mecanumDrive(stick.getX(), stick.getY(), stick.getTwist());
 		
 		//if button 12 is hit, it will balance
 		if(stick.getRawButton(12)){
-			balancing = true;
-			initialAngle = gyro.getAngle();
-		}
-		
-		//while it is balancing, it will run this code
-		if(balancing){
-			if(Math.abs(initialAngle - gyro.getAngle()) < 2){
-				drive.mecanumDrive(0, -.25, 0, 0);
-			}else{
-				drive.mecanumDrive(0, .06, 0, 0);
-			}
-		}
-		
-		//Exit Balancing
-		if(stick.getRawButton(11)){
-			balancing 		= false;
-			initialAngle 	= 0;
+			BalanceCommand balance = new BalanceCommand();
+			balance.start();
 		}
 	}
 

@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  *
- * @author Vinnie
+ * @author Vincente
  */
 
 //This is not used, it might be needed later if we add a second joystick.
