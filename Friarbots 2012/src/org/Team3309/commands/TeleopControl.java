@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  *
  * @author Vinnie
  */
+
+//This is not used, it might be needed later if we add a second joystick.
 public class TeleopControl extends CommandGroup {
     
     public TeleopControl() {
