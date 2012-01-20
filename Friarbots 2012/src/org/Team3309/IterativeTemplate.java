@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
-import org.Team3309.*;
 import org.Team3309.commands.JoystickDrive;
 import org.Team3309.commands.TeleopControl;
 import org.Team3309.subsystems.DriveSubsystem;
