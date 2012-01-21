@@ -33,6 +33,10 @@ public class JoystickDrive extends Command {
 		stick = OI.getInstance().getJoystick(joystickID);
 		gyro = Gyro.getInstance();
 	}
+	
+	public Joystick getJoystick(){
+		return stick;
+	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
@@ -41,12 +45,6 @@ public class JoystickDrive extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		drive.mecanumDrive(stick.getX(), stick.getY(), stick.getTwist());
-		
-		//if button 12 is hit, it will balance
-		if(stick.getRawButton(12)){
-			BalanceCommand balance = new BalanceCommand();
-			balance.start();
-		}
 	}
 
 
