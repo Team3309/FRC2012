@@ -27,6 +27,7 @@ public class IterativeTemplate extends IterativeRobot {
 
     DriveSubsystem drive = null;
     Command autonomousCommand;
+    JoystickDrive driveRobot;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -57,8 +58,8 @@ public class IterativeTemplate extends IterativeRobot {
     public void teleopInit() {
         //TeleopControl teleopCommand = new TeleopControl();
         //teleopCommand.start();
-    	JoystickDrive drive = new JoystickDrive(1);
-    	drive.start();
+    	driveRobot = new JoystickDrive(1);
+    	driveRobot.start();
     }
 
     /**

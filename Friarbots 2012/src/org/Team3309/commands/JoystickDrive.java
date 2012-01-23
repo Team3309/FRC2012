@@ -6,6 +6,7 @@ package org.Team3309.commands;
 
 import edu.wpi.first.wpilibj.Accelerometer;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 
 import org.Team3309.*;
@@ -22,6 +23,8 @@ public class JoystickDrive extends Command {
 	private boolean finished		= false;
 	Accelerometer ac 				= null;
 	Gyro gyro 						= null;
+	BalanceCommand balance			= null;
+	Button balanceButton			= null;
 	boolean balancing 				= false;
 	double initialAngle 			= 0;
 
@@ -31,7 +34,9 @@ public class JoystickDrive extends Command {
 		drive = DriveSubsystem.getInstance();
 		requires(drive);
 		stick = OI.getInstance().getJoystick(joystickID);
+		balanceButton = stick.getRawButton(12);
 		gyro = Gyro.getInstance();
+		balance = new BalanceCommand();
 	}
 
 	// Called just before this Command runs the first time
@@ -43,10 +48,7 @@ public class JoystickDrive extends Command {
 		drive.mecanumDrive(stick.getX(), stick.getY(), stick.getTwist());
 		
 		//if button 12 is hit, it will balance
-		if(stick.getRawButton(12)){
-			BalanceCommand balance = new BalanceCommand();
-			balance.start();
-		}
+		balanceButton.whenPressed(balance);
 	}
 
 

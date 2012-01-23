@@ -21,7 +21,6 @@ public class DriveSubsystem extends Subsystem {
     private static DriveSubsystem instance	= null;
     private static JoystickDrive command 	= new JoystickDrive(1);
     private RobotDrive drive 				= null;
-    private Gyro gyro 						= null;
     
     //<editor-fold desc="CANJaguars">
     private CANJaguar lFront, lBack, rFront, rBack;
@@ -55,7 +54,6 @@ public class DriveSubsystem extends Subsystem {
     private DriveSubsystem() {
         initCAN();
         drive = new RobotDrive(lFront, lBack, rFront, rBack);
-        gyro = Gyro.getInstance();
     }
     
     /**
@@ -79,13 +77,13 @@ public class DriveSubsystem extends Subsystem {
     }
     
     public void mecanumDrive(double x, double y, double twist, double g){
-        gyro.updateDesiredHeading(twist);
-        System.out.println(twist+" "+gyro.getTwistRate());
-        drive.mecanumDrive_Cartesian(-x, -y, gyro.getTwistRate(), 0);
+    	drive.mecanumDrive_Cartesian(x, y, twist, g);
+    	System.out.println("x: " + x + " y: " + y + " twist: " + twist);
     }
     
     public void mecanumDrive(double x, double y, double twist){
         mecanumDrive(x, y, twist, 0);
+    	System.out.println("x: " + x + " y: " + y + " twist: " + twist);
     }
 
 	protected void initDefaultCommand() {

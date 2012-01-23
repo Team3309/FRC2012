@@ -5,36 +5,39 @@ import org.Team3309.subsystems.DriveSubsystem;
 import org.Team3309.subsystems.Gyro;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class BalanceCommand extends Command {
 
-	Joystick stick = null; 
-	Gyro gyro = null;
-	DriveSubsystem drive = null;
-	boolean finished = false;
+	Joystick stick 					= null; 
+	edu.wpi.first.wpilibj.Gyro gyro = null;
+	DriveSubsystem drive 			= null;
+	Button breakButton 				= null;
+	JoystickDrive teleop			= null;
 
-	double initialAngle = 0;
-
+	boolean finished 				= false;
+	double initialAngle 			= 0;
+	
 	protected void initialize() {
 		// TODO Auto-generated method stub
 		stick = OI.getInstance().getJoystick(1);
+		breakButton = stick.getButton(11);
 		gyro = Gyro.getInstance();
 		drive = DriveSubsystem.getInstance();
-		requires(drive);
+		teleop = new JoystickDrive(1);
 	}
 
 	protected void execute() {
-		if(Math.abs(initialAngle - gyro.getAngle()) < 2){
-			drive.mecanumDrive(0, -.25, 0, 0);
-		}
-		
-		else{
-			drive.mecanumDrive(0, .06, 0, 0);
-		}
-		
-		if(stick.getRawButton(11)){
-			finished = true;			
+		while(initialAngle != gyro.getAngle()){
+			if(Math.abs(initialAngle - gyro.getAngle()) < 2){
+				drive.mecanumDrive(0, -.25, 0, 0);
+			}
+
+			else{
+				drive.mecanumDrive(0, .06, 0, 0);
+			}
+			breakButton.whenPressed(teleop);
 		}
 	}
 
@@ -52,5 +55,4 @@ public class BalanceCommand extends Command {
 		// TODO Auto-generated method stub
 
 	}
-
 }
