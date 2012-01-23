@@ -35,6 +35,10 @@ public class JoystickDrive extends Command {
 		balanceButton = stick.getRawButton(12);
 		balance = new BalanceCommand();
 	}
+	
+	public Joystick getJoystick(){
+		return stick;
+	}
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
@@ -46,6 +50,7 @@ public class JoystickDrive extends Command {
 		
 		//if button 12 is hit, it will balance
 		balanceButton.whenPressed(balance);
+
 	}
 
 

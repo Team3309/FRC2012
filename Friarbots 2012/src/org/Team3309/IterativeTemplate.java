@@ -9,6 +9,7 @@ package org.Team3309;
 
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
@@ -56,8 +57,10 @@ public class IterativeTemplate extends IterativeRobot {
     }
 
     public void teleopInit() {
-    	driveRobot = new JoystickDrive(1);
-    	driveRobot.start();
+    	JoystickDrive drive = new JoystickDrive(1);
+    	drive.start();
+    	JoystickButton balanceButton = new JoystickButton(drive.getJoystick(), 12);
+    	balanceButton.whenPressed(new BalanceCommand());
     }
 
     /**
