@@ -56,8 +56,6 @@ public class IterativeTemplate extends IterativeRobot {
     }
 
     public void teleopInit() {
-        //TeleopControl teleopCommand = new TeleopControl();
-        //teleopCommand.start();
     	driveRobot = new JoystickDrive(1);
     	driveRobot.start();
     }

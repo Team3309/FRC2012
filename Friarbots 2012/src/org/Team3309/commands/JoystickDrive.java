@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.command.Command;
 
 import org.Team3309.*;
 import org.Team3309.subsystems.DriveSubsystem;
-import org.Team3309.subsystems.Gyro;
 /**
  *
  * @author Vincente
@@ -22,7 +21,6 @@ public class JoystickDrive extends Command {
 	private Joystick stick 			= null;
 	private boolean finished		= false;
 	Accelerometer ac 				= null;
-	Gyro gyro 						= null;
 	BalanceCommand balance			= null;
 	Button balanceButton			= null;
 	boolean balancing 				= false;
@@ -32,10 +30,9 @@ public class JoystickDrive extends Command {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		drive = DriveSubsystem.getInstance();
-		requires(drive);
+		//requires(drive);
 		stick = OI.getInstance().getJoystick(joystickID);
 		balanceButton = stick.getRawButton(12);
-		gyro = Gyro.getInstance();
 		balance = new BalanceCommand();
 	}
 

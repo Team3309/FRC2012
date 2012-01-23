@@ -2,7 +2,6 @@ package org.Team3309.commands;
 
 import org.Team3309.OI;
 import org.Team3309.subsystems.DriveSubsystem;
-import org.Team3309.subsystems.Gyro;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -23,7 +22,7 @@ public class BalanceCommand extends Command {
 		// TODO Auto-generated method stub
 		stick = OI.getInstance().getJoystick(1);
 		breakButton = stick.getButton(11);
-		gyro = Gyro.getInstance();
+		gyro = new Gyro(1,1);
 		drive = DriveSubsystem.getInstance();
 		teleop = new JoystickDrive(1);
 	}
