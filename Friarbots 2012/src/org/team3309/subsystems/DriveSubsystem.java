@@ -20,7 +20,7 @@ public class DriveSubsystem extends Subsystem {
 
     private static DriveSubsystem instance	= null;
     private static JoystickDrive command 	= new JoystickDrive(1);
-    private RobotDrive drive 				= null;
+    public RobotDrive mDrive 				= null;
     
     //<editor-fold desc="CANJaguars">
     private CANJaguar lFront, lBack, rFront, rBack;
@@ -53,7 +53,8 @@ public class DriveSubsystem extends Subsystem {
      */
     private DriveSubsystem() {
         initCAN();
-        drive = new RobotDrive(lFront, lBack, rFront, rBack);
+        mDrive = new RobotDrive(lFront, lBack, rFront, rBack);
+        mDrive.setSafetyEnabled(false);
     }
     
     /**
@@ -77,7 +78,7 @@ public class DriveSubsystem extends Subsystem {
     }
     
     public void mecanumDrive(double x, double y, double twist, double g){
-    	drive.mecanumDrive_Cartesian(-x, -y, -twist, g);
+    	mDrive.mecanumDrive_Cartesian(-x, -y, -twist, g);
     }
     
     public void mecanumDrive(double x, double y, double twist){

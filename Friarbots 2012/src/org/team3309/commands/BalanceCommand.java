@@ -18,21 +18,26 @@ public class BalanceCommand extends Command {
 	boolean finished 				= false;
 	double initialAngle 			= 0;
 	
-	protected void initialize() {
+	public BalanceCommand(){
+		super();
 		stick = OI.getInstance().getJoystick(1);
 		gyro = new Gyro(1,1);
 		drive = DriveSubsystem.getInstance();
-		
+		requires(drive);
+	}
+	
+	protected void initialize() {
 		initialAngle = gyro.getAngle();
+		finished = false;
 	}
 
 	protected void execute() {
 		if(Math.abs(initialAngle - gyro.getAngle()) < 2){
-			drive.mecanumDrive(0, .4, 0, 0);
+			drive.mecanumDrive(0, -.5, 0, 0);
 		}
 
 		else{
-			drive.mecanumDrive(0, -.12, 0, 0);
+			drive.mecanumDrive(0, .3, 0, 0);
 			Timer.delay(1);
 			finished = true;
 		}
@@ -52,5 +57,9 @@ public class BalanceCommand extends Command {
 	protected void interrupted() {
 		// TODO Auto-generated method stub
 
+	}
+	
+	public Gyro getGyro(){
+		return gyro;
 	}
 }

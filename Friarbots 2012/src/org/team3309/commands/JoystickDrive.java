@@ -23,12 +23,13 @@ public class JoystickDrive extends Command {
 	private Joystick stick 			= null;
 	private boolean finished		= false;
 	
-	private Gyro gyro;
+	public Gyro gyro;
 
 	public JoystickDrive(int joystickID) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		drive = DriveSubsystem.getInstance();
+		requires(drive);
 		//requires(drive);
 		stick = OI.getInstance().getJoystick(joystickID);
 		gyro = Gyro.getInstance(1, 2);

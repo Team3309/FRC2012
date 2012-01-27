@@ -12,7 +12,10 @@ import org.team3309.commands.BalanceCommand;
 import org.team3309.commands.JoystickDrive;
 import org.team3309.subsystems.DriveSubsystem;
 
+import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -25,58 +28,71 @@ import edu.wpi.first.wpilibj.command.Scheduler;
  * directory.
  */
 public class IterativeTemplate extends IterativeRobot {
-	
-    Command autonomousCommand;    
-    Command balanceCommand;
-    Command driveCommand;
-    
-    JoystickButton balanceButton;
-    JoystickButton balanceCancelButton;
 
-    /**
-     * This function is run when the robot is first started up and should be
-     * used for any initialization code.
-     */
-    public void robotInit() {
-        // instantiate the command used for the autonomous period
+	Command autonomousCommand;    
+	BalanceCommand balanceCommand;
+	JoystickDrive driveCommand;
 
-        // create the instance of the operator interface class
-        // this will associate all the buttons with the appropriate commands
-        OI.getInstance();
+	JoystickButton balanceButton;
+	JoystickButton balanceCancelButton;
 
-        // initialize all subsystems here.
-        DriveSubsystem.getInstance();
-        
-        balanceButton = new JoystickButton(OI.getInstance().getJoystick(1), 12);
-        balanceCancelButton = new JoystickButton(OI.getInstance().getJoystick(1), 11);
-        
-        driveCommand = new JoystickDrive(1);
-        balanceCommand = new BalanceCommand();
-    }
-    
-    public void disabledInit(){
-    	balanceCommand.cancel();
-    	Scheduler.getInstance().run();
-    }
+	/*private Joystick joystick;
+	private boolean balancing = false;
+	private RobotDrive drive;
+	private double initialAngle;
+	private Gyro gyro;
+	private org.team3309.subsystems.Gyro driveGyro;*/
 
-    public void autonomousInit() {
-    	
-    }
+	/**
+	 * This function is run when the robot is first started up and should be
+	 * used for any initialization code.
+	 */
+	public void robotInit() {
+		// instantiate the command used for the autonomous period
 
-    /**
-     * This function is called periodically during autonomous
-     */
-    public void autonomousPeriodic() {
-        Scheduler.getInstance().run();
-    }
+		// create the instance of the operator interface class
+		// this will associate all the buttons with the appropriate commands
+		OI.getInstance();
 
-    public void teleopInit() {
-    	driveCommand.start();
-    	balanceButton.whenPressed(balanceCommand);
+		// initialize all subsystems here.
+		DriveSubsystem.getInstance();
+
+		balanceButton = new JoystickButton(OI.getInstance().getJoystick(1), 12);
+		balanceCancelButton = new JoystickButton(OI.getInstance().getJoystick(1), 11);
+
+		driveCommand = new JoystickDrive(1);
+		balanceCommand = new BalanceCommand();
+
+		/*joystick = OI.getInstance().getJoystick(1);
+		drive = DriveSubsystem.getInstance().mDrive;
+		gyro = balanceCommand.getGyro();
+		driveGyro = driveCommand.gyro;*/
+	}
+
+	public void disabledInit(){
+		//balancing = false;
+		balanceCommand.cancel();
+		Scheduler.getInstance().run();
+	}
+
+	public void autonomousInit() {
+
+	}
+
+	/**
+	 * This function is called periodically during autonomous
+	 */
+	public void autonomousPeriodic() {
+		Scheduler.getInstance().run();
+	}
+
+	public void teleopInit() {
+		driveCommand.start();
+		balanceButton.whenPressed(balanceCommand);
     	balanceCancelButton.whenPressed(new Command(){
 
 			protected void initialize() {
-				
+
 			}
 
 			protected void execute() {
@@ -88,21 +104,38 @@ public class IterativeTemplate extends IterativeRobot {
 			}
 
 			protected void end() {
-				
+
 			}
 
 			protected void interrupted() {
-				
-			}
-    		
-    	});
-    }
 
-    /**
-     * This function is called periodically during operator control
-     */
-    public void teleopPeriodic() {
-        Scheduler.getInstance().run();
-        
-    }
+			}
+
+    	});
+	}
+
+	/**
+	 * This function is called periodically during operator control
+	 */
+	public void teleopPeriodic() {
+		Scheduler.getInstance().run();
+		
+		/*if(!balancing){
+			driveGyro.updateDesiredHeading(joystick.getTwist());
+			drive.mecanumDrive_Cartesian(-joystick.getX(), -joystick.getY(), -driveGyro.getTwistRate(), gyro.getAngle());
+		}*/
+
+
+		/*if(joystick.getRawButton(12)){
+			balancing = true;
+			initialAngle = gyro.getAngle();
+		}
+		if(balancing){
+			if(Math.abs(initialAngle - gyro.getAngle()) < -2){
+				drive.mecanumDrive_Cartesian(0, -.5, 0, 0);
+			}else{
+				drive.mecanumDrive_Cartesian(0, .3, 0, 0);
+			}
+		}*/
+	}
 }
