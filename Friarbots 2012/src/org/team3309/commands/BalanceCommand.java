@@ -1,7 +1,7 @@
-package org.Team3309.commands;
+package org.team3309.commands;
 
-import org.Team3309.OI;
-import org.Team3309.subsystems.DriveSubsystem;
+import org.team3309.OI;
+import org.team3309.subsystems.DriveSubsystem;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;

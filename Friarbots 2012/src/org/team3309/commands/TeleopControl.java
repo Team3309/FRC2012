@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.Team3309.commands;
+package org.team3309.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

@@ -1,10 +1,10 @@
-package org.Team3309.commands;
+package org.team3309.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import org.Team3309.OI;
-import org.Team3309.subsystems.ExampleSubsystem;
+import org.team3309.OI;
+import org.team3309.subsystems.ExampleSubsystem;
 
 /**
  * The base for all commands. All atomic commands should subclass CommandBase.

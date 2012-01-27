@@ -2,15 +2,15 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.Team3309.commands;
+package org.team3309.commands;
 
 import edu.wpi.first.wpilibj.Accelerometer;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 
-import org.Team3309.*;
-import org.Team3309.subsystems.DriveSubsystem;
+import org.team3309.*;
+import org.team3309.subsystems.DriveSubsystem;
 /**
  *
  * @author Vincente

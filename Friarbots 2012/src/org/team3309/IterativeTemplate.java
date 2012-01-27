@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.Team3309;
+package org.team3309;
 
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -13,9 +13,9 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
-import org.Team3309.commands.JoystickDrive;
-import org.Team3309.commands.TeleopControl;
-import org.Team3309.subsystems.DriveSubsystem;
+import org.team3309.commands.JoystickDrive;
+import org.team3309.commands.TeleopControl;
+import org.team3309.subsystems.DriveSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the

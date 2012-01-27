@@ -1,4 +1,4 @@
-package org.Team3309;
+package org.team3309;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into

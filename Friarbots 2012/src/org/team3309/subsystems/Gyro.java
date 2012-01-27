@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.Team3309.subsystems;
+package org.team3309.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 

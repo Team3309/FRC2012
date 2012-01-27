@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.Team3309.subsystems;
+package org.team3309.subsystems;
 
 import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import org.Team3309.*;
-import org.Team3309.commands.JoystickDrive;
+import org.team3309.*;
+import org.team3309.commands.JoystickDrive;
 /**
  *
  * @author vmagro

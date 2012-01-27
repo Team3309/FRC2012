@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package org.Team3309;
+package org.team3309;
 
 import edu.wpi.first.wpilibj.Joystick;
 import java.util.Vector;

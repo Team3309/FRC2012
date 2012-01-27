@@ -1,9 +1,12 @@
 MIDlet-Name: CommandBasedRobot
 MIDlet-Version: 1.0.0
 MIDlet-Vendor: FIRST
-MIDlet-1: CommandBasedRobot, , org.Team3309.CommandBasedRobot
+MIDlet-1: CommandBasedRobot, , org.team3309.CommandBasedRobot
 MicroEdition-Profile: IMP-1.0
 MicroEdition-Configuration: CLDC-1.1
+
+
+
 
 
 
