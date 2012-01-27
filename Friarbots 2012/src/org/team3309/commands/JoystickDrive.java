@@ -20,11 +20,6 @@ public class JoystickDrive extends Command {
 	private DriveSubsystem drive 	= null;
 	private Joystick stick 			= null;
 	private boolean finished		= false;
-	Accelerometer ac 				= null;
-	BalanceCommand balance			= null;
-	Button balanceButton			= null;
-	boolean balancing 				= false;
-	double initialAngle 			= 0;
 
 	public JoystickDrive(int joystickID) {
 		// Use requires() here to declare subsystem dependencies
@@ -32,8 +27,6 @@ public class JoystickDrive extends Command {
 		drive = DriveSubsystem.getInstance();
 		//requires(drive);
 		stick = OI.getInstance().getJoystick(joystickID);
-		balanceButton = stick.getRawButton(12);
-		balance = new BalanceCommand();
 	}
 	
 	public Joystick getJoystick(){
@@ -47,9 +40,6 @@ public class JoystickDrive extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		drive.mecanumDrive(stick.getX(), stick.getY(), stick.getTwist());
-		
-		//if button 12 is hit, it will balance
-		balanceButton.whenPressed(balance);
 
 	}
 

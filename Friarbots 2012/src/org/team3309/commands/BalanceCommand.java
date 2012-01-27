@@ -3,6 +3,7 @@ package org.team3309.commands;
 import org.team3309.OI;
 import org.team3309.subsystems.DriveSubsystem;
 
+import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
@@ -12,8 +13,6 @@ public class BalanceCommand extends Command {
 	Joystick stick 					= null; 
 	edu.wpi.first.wpilibj.Gyro gyro = null;
 	DriveSubsystem drive 			= null;
-	Button breakButton 				= null;
-	JoystickDrive teleop			= null;
 
 	boolean finished 				= false;
 	double initialAngle 			= 0;
@@ -21,10 +20,8 @@ public class BalanceCommand extends Command {
 	protected void initialize() {
 		// TODO Auto-generated method stub
 		stick = OI.getInstance().getJoystick(1);
-		breakButton = stick.getButton(11);
 		gyro = new Gyro(1,1);
 		drive = DriveSubsystem.getInstance();
-		teleop = new JoystickDrive(1);
 	}
 
 	protected void execute() {
@@ -36,7 +33,6 @@ public class BalanceCommand extends Command {
 			else{
 				drive.mecanumDrive(0, .06, 0, 0);
 			}
-			breakButton.whenPressed(teleop);
 		}
 	}
 

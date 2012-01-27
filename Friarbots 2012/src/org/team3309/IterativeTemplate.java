@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
+import org.team3309.commands.BalanceCommand;
 import org.team3309.commands.JoystickDrive;
 import org.team3309.commands.TeleopControl;
 import org.team3309.subsystems.DriveSubsystem;
@@ -25,10 +26,12 @@ import org.team3309.subsystems.DriveSubsystem;
  * directory.
  */
 public class IterativeTemplate extends IterativeRobot {
-
-    DriveSubsystem drive = null;
-    Command autonomousCommand;
-    JoystickDrive driveRobot;
+	
+    Command autonomousCommand;    
+    Command balanceCommand;
+    Command driveCommand;
+    
+    JoystickButton balanceButton;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -42,7 +45,12 @@ public class IterativeTemplate extends IterativeRobot {
         OI.getInstance();
 
         // initialize all subsystems here.
-        drive = DriveSubsystem.getInstance();
+        DriveSubsystem.getInstance();
+        
+        balanceButton = new JoystickButton(OI.getInstance().getJoystick(1), 1);
+        
+        driveCommand = new JoystickDrive(1);
+        balanceCommand = new BalanceCommand();
     }
 
     public void autonomousInit() {
@@ -57,10 +65,7 @@ public class IterativeTemplate extends IterativeRobot {
     }
 
     public void teleopInit() {
-    	JoystickDrive drive = new JoystickDrive(1);
-    	drive.start();
-    	JoystickButton balanceButton = new JoystickButton(drive.getJoystick(), 12);
-    	balanceButton.whenPressed(new BalanceCommand());
+    	balanceButton.whenPressed(balanceCommand);
     }
 
     /**
