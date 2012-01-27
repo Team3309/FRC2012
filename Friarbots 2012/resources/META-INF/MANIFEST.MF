@@ -1,7 +1,7 @@
-MIDlet-Name: CommandBasedRobot
+MIDlet-Name: IterativeTemplate
 MIDlet-Version: 1.0.0
 MIDlet-Vendor: FIRST
-MIDlet-1: CommandBasedRobot, , org.team3309.CommandBasedRobot
+MIDlet-1: IterativeTemplate, , org.team3309.IterativeTemplate
 MicroEdition-Profile: IMP-1.0
 MicroEdition-Configuration: CLDC-1.1
 
