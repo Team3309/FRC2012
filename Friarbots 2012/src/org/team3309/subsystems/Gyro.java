@@ -19,11 +19,10 @@ public class Gyro extends Subsystem {
     private final double MIN_SPEED 				= 0.25;
 
     private double desiredHeading 				= 0;
-    private double joyStickTwist;
     
-    public static Gyro getInstance() {
+    public static Gyro getInstance(int slot, int channel) {
         if (instance == null) {
-            instance = new Gyro(1,1);
+            instance = new Gyro(slot, channel);
         }
         return instance;
     }

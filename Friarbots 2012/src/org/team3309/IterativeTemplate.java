@@ -8,15 +8,14 @@
 package org.team3309;
 
 
+import org.team3309.commands.BalanceCommand;
+import org.team3309.commands.JoystickDrive;
+import org.team3309.subsystems.DriveSubsystem;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-
-import org.team3309.commands.BalanceCommand;
-import org.team3309.commands.JoystickDrive;
-import org.team3309.commands.TeleopControl;
-import org.team3309.subsystems.DriveSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -32,6 +31,7 @@ public class IterativeTemplate extends IterativeRobot {
     Command driveCommand;
     
     JoystickButton balanceButton;
+    JoystickButton balanceCancelButton;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -47,14 +47,20 @@ public class IterativeTemplate extends IterativeRobot {
         // initialize all subsystems here.
         DriveSubsystem.getInstance();
         
-        balanceButton = new JoystickButton(OI.getInstance().getJoystick(1), 1);
+        balanceButton = new JoystickButton(OI.getInstance().getJoystick(1), 12);
+        balanceCancelButton = new JoystickButton(OI.getInstance().getJoystick(1), 11);
         
         driveCommand = new JoystickDrive(1);
         balanceCommand = new BalanceCommand();
     }
+    
+    public void disabledInit(){
+    	balanceCommand.cancel();
+    	Scheduler.getInstance().run();
+    }
 
     public void autonomousInit() {
-        // schedule the autonomous command (example)
+    	
     }
 
     /**
@@ -65,7 +71,31 @@ public class IterativeTemplate extends IterativeRobot {
     }
 
     public void teleopInit() {
+    	driveCommand.start();
     	balanceButton.whenPressed(balanceCommand);
+    	balanceCancelButton.whenPressed(new Command(){
+
+			protected void initialize() {
+				
+			}
+
+			protected void execute() {
+				balanceCommand.cancel();
+			}
+
+			protected boolean isFinished() {
+				return true;
+			}
+
+			protected void end() {
+				
+			}
+
+			protected void interrupted() {
+				
+			}
+    		
+    	});
     }
 
     /**

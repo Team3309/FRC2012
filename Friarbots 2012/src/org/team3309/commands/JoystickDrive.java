@@ -4,13 +4,12 @@
  */
 package org.team3309.commands;
 
-import edu.wpi.first.wpilibj.Accelerometer;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.command.Command;
-
-import org.team3309.*;
+import org.team3309.OI;
 import org.team3309.subsystems.DriveSubsystem;
+import org.team3309.subsystems.Gyro;
+
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  * @author Vincente
@@ -20,6 +19,8 @@ public class JoystickDrive extends Command {
 	private DriveSubsystem drive 	= null;
 	private Joystick stick 			= null;
 	private boolean finished		= false;
+	
+	private Gyro gyro;
 
 	public JoystickDrive(int joystickID) {
 		// Use requires() here to declare subsystem dependencies
@@ -27,6 +28,7 @@ public class JoystickDrive extends Command {
 		drive = DriveSubsystem.getInstance();
 		//requires(drive);
 		stick = OI.getInstance().getJoystick(joystickID);
+		gyro = Gyro.getInstance(1, 2);
 	}
 	
 	public Joystick getJoystick(){
@@ -39,7 +41,8 @@ public class JoystickDrive extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		drive.mecanumDrive(stick.getX(), stick.getY(), stick.getTwist());
+		gyro.updateDesiredHeading(stick.getTwist());
+		drive.mecanumDrive(stick.getX(), stick.getY(), gyro.getTwistRate(), gyro.getAngle());
 
 	}
 
