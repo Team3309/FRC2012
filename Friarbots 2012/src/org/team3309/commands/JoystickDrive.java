@@ -9,6 +9,7 @@ import org.team3309.subsystems.DriveSubsystem;
 import org.team3309.subsystems.Gyro;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 /**
  *
@@ -16,6 +17,8 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class JoystickDrive extends Command {
 
+	private JoystickButton gyroResetButton;
+	
 	private DriveSubsystem drive 	= null;
 	private Joystick stick 			= null;
 	private boolean finished		= false;
@@ -29,6 +32,8 @@ public class JoystickDrive extends Command {
 		//requires(drive);
 		stick = OI.getInstance().getJoystick(joystickID);
 		gyro = Gyro.getInstance(1, 2);
+		
+		gyroResetButton = new JoystickButton(stick, 3);
 	}
 	
 	public Joystick getJoystick(){
@@ -37,6 +42,29 @@ public class JoystickDrive extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
+		gyroResetButton.whenPressed(new Command(){
+
+			protected void initialize() {
+				
+			}
+
+			protected void execute() {
+				gyro.reset();
+			}
+
+			protected boolean isFinished() {
+				return true;
+			}
+
+			protected void end() {
+				
+			}
+
+			protected void interrupted() {
+				
+			}
+			
+		});
 	}
 
 	// Called repeatedly when this Command is scheduled to run
