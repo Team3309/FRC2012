@@ -17,13 +17,16 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class JoystickDrive extends Command {
 
-	private JoystickButton gyroResetButton;
+	private JoystickButton driveGyroResetButton;
+	private JoystickButton balanceGyroResetButton;
+	
 	
 	private DriveSubsystem drive 	= null;
 	private Joystick stick 			= null;
 	private boolean finished		= false;
 	
 	public Gyro gyro;
+	public Gyro bgyro;
 
 	public JoystickDrive(int joystickID) {
 		// Use requires() here to declare subsystem dependencies
@@ -33,8 +36,9 @@ public class JoystickDrive extends Command {
 		//requires(drive);
 		stick = OI.getInstance().getJoystick(joystickID);
 		gyro = Gyro.getInstance(1, 2);
-		
-		gyroResetButton = new JoystickButton(stick, 3);
+		bgyro = Gyro.getInstance(1, 1);
+		driveGyroResetButton = new JoystickButton(stick, 3);
+		balanceGyroResetButton = new JoystickButton(stick, 5);
 	}
 	
 	public Joystick getJoystick(){
@@ -43,7 +47,7 @@ public class JoystickDrive extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		gyroResetButton.whenPressed(new Command(){
+		driveGyroResetButton.whenPressed(new Command(){
 
 			protected void initialize() {
 				
@@ -66,12 +70,31 @@ public class JoystickDrive extends Command {
 			}
 			
 		});
+		balanceGyroResetButton.whenPressed(new Command(){
+			protected void initialized() {
+			}
+			protected void execute() {
+				bgyro.reset();
+			}
+			protected void end(){
+			}
+			protected void interrupted(){
+			}
+			protected void isFinsihed(){
+			}
+			protected void initialize() {
+			}
+			protected boolean isFinished() {
+				return false;
+			}
+			
+		});
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
-		gyro.updateDesiredHeading(stick.getTwist());
-		drive.mecanumDrive(stick.getX(), stick.getY(), gyro.getTwistRate(), gyro.getAngle());
+		//gyro.updateDesiredHeading(stick.getTwist());
+		drive.mecanumDrive(stick.getX(), stick.getY(), stick.getTwist(), gyro.getAngle());
 
 	}
 

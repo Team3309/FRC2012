@@ -24,6 +24,7 @@ public class DriveSubsystem extends Subsystem {
     
     //<editor-fold desc="CANJaguars">
     private CANJaguar lFront, lBack, rFront, rBack;
+    //put right side negative to correct polarity
 
     //</editor-fold>
     
@@ -69,6 +70,12 @@ public class DriveSubsystem extends Subsystem {
                 lBack   = new CANJaguar(RobotMap.JAG_BACK_LEFT);
                 rFront  = new CANJaguar(RobotMap.JAG_FRONT_RIGHT);
                 rBack   = new CANJaguar(RobotMap.JAG_BACK_RIGHT);
+                
+                lFront.configNeutralMode(CANJaguar.NeutralMode.kBrake);
+        		lBack.configNeutralMode(CANJaguar.NeutralMode.kBrake);
+        		rFront.configNeutralMode(CANJaguar.NeutralMode.kBrake);
+        		rBack.configNeutralMode(CANJaguar.NeutralMode.kBrake);
+        		
                 canInitAttempts++;
             } catch (CANTimeoutException ctex) {
                 ctex.printStackTrace();
@@ -84,8 +91,12 @@ public class DriveSubsystem extends Subsystem {
     public void mecanumDrive(double x, double y, double twist){
         mecanumDrive(x, y, twist, 0);
     }
-
+    
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub
+	}
+	
+	public void brake(){
+		mDrive.stopMotor();
 	}
 }

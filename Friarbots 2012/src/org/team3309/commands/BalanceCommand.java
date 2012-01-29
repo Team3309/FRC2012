@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class BalanceCommand extends Command {
 
 	Joystick stick 					= null; 
-	edu.wpi.first.wpilibj.Gyro gyro = null;
+	//edu.wpi.first.wpilibj.Gyro gyro = null;
 	DriveSubsystem drive 			= null;
 
 	boolean finished 				= false;
@@ -21,18 +21,18 @@ public class BalanceCommand extends Command {
 	public BalanceCommand(){
 		super();
 		stick = OI.getInstance().getJoystick(1);
-		gyro = new Gyro(1,1);
+		//gyro = new Gyro(1,1);
 		drive = DriveSubsystem.getInstance();
 		requires(drive);
 	}
 	
 	protected void initialize() {
-		initialAngle = gyro.getAngle();
+		//initialAngle = gyro.getAngle();
 		finished = false;
 	}
 
 	protected void execute() {
-		if(Math.abs(initialAngle - gyro.getAngle()) < 2){
+		/*if(Math.abs(initialAngle - gyro.getAngle()) < 2){
 			drive.mecanumDrive(0, -.5, 0, 0);
 		}
 
@@ -41,8 +41,9 @@ public class BalanceCommand extends Command {
 			Timer.delay(1);
 			finished = true;
 		}
+		*/
 		
-		System.out.println(gyro.getAngle());
+		//System.out.println(gyro.getAngle());
 	}
 
 	protected boolean isFinished() {
@@ -59,7 +60,7 @@ public class BalanceCommand extends Command {
 
 	}
 	
-	public Gyro getGyro(){
+	/*public Gyro getGyro(){
 		return gyro;
-	}
+	}*/
 }

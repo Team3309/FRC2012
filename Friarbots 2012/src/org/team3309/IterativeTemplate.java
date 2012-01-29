@@ -12,11 +12,14 @@ import org.team3309.commands.BalanceCommand;
 import org.team3309.commands.JoystickDrive;
 import org.team3309.subsystems.DriveSubsystem;
 
+import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
@@ -32,16 +35,57 @@ public class IterativeTemplate extends IterativeRobot {
 	Command autonomousCommand;    
 	BalanceCommand balanceCommand;
 	JoystickDrive driveCommand;
+	DriveSubsystem drive;
 
 	JoystickButton balanceButton;
 	JoystickButton balanceCancelButton;
 
-	/*private Joystick joystick;
+	private Joystick joystick;
 	private boolean balancing = false;
-	private RobotDrive drive;
 	private double initialAngle;
 	private Gyro gyro;
-	private org.team3309.subsystems.Gyro driveGyro;*/
+	private org.team3309.subsystems.Gyro driveGyro;
+	
+    private CANJaguar lFront, lBack, rFront, rBack;
+
+
+	//Test
+	public void testJaguars(){
+		try {
+            lFront  = new CANJaguar(RobotMap.JAG_FRONT_LEFT);
+            lBack   = new CANJaguar(RobotMap.JAG_BACK_LEFT);
+            rFront  = new CANJaguar(RobotMap.JAG_FRONT_RIGHT);
+            rBack   = new CANJaguar(RobotMap.JAG_BACK_RIGHT);
+
+            lFront.configNeutralMode(CANJaguar.NeutralMode.kBrake);
+    		lBack.configNeutralMode(CANJaguar.NeutralMode.kBrake);
+    		rFront.configNeutralMode(CANJaguar.NeutralMode.kBrake);
+    		rBack.configNeutralMode(CANJaguar.NeutralMode.kBrake);
+    		
+    		lFront.configEncoderCodesPerRev(360);
+    		lBack.configEncoderCodesPerRev(360);
+    		rFront.configEncoderCodesPerRev(360);
+    		rBack.configEncoderCodesPerRev(360);
+    		
+    		lFront.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
+    		lBack.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
+    		rFront.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
+    		rBack.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
+    		
+    		
+        } catch (CANTimeoutException ctex) {
+            ctex.printStackTrace();
+            testJaguars();
+        }
+	}
+	
+		public void getJaguarRPM(){
+			try {
+				System.out.println(rFront.getSpeed() + "\t" + lFront.getSpeed() + "\t" + rBack.getSpeed() + "\t"+ lBack.getSpeed());
+			} catch (CANTimeoutException e) {
+				e.printStackTrace();
+			}
+		}
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -57,20 +101,17 @@ public class IterativeTemplate extends IterativeRobot {
 		// initialize all subsystems here.
 		DriveSubsystem.getInstance();
 
+		joystick = OI.getInstance().getJoystick(1);
 		balanceButton = new JoystickButton(OI.getInstance().getJoystick(1), 12);
 		balanceCancelButton = new JoystickButton(OI.getInstance().getJoystick(1), 11);
 
 		driveCommand = new JoystickDrive(1);
+		//drive = DriveSubsystem.getInstance();
 		balanceCommand = new BalanceCommand();
-
-		/*joystick = OI.getInstance().getJoystick(1);
-		drive = DriveSubsystem.getInstance().mDrive;
-		gyro = balanceCommand.getGyro();
-		driveGyro = driveCommand.gyro;*/
+		gyro = new Gyro(1,1);
 	}
 
 	public void disabledInit(){
-		//balancing = false;
 		balanceCommand.cancel();
 		Scheduler.getInstance().run();
 	}
@@ -87,9 +128,11 @@ public class IterativeTemplate extends IterativeRobot {
 	}
 
 	public void teleopInit() {
-		driveCommand.start();
+		//driveCommand.start();
 		balanceButton.whenPressed(balanceCommand);
-    	balanceCancelButton.whenPressed(new Command(){
+		testJaguars();
+
+		balanceCancelButton.whenPressed(new Command(){
 
 			protected void initialize() {
 
@@ -111,31 +154,45 @@ public class IterativeTemplate extends IterativeRobot {
 
 			}
 
-    	});
+		});
 	}
 
 	/**
 	 * This function is called periodically during operator control
 	 */
 	public void teleopPeriodic() {
-		Scheduler.getInstance().run();
-		
-		/*if(!balancing){
-			driveGyro.updateDesiredHeading(joystick.getTwist());
-			drive.mecanumDrive_Cartesian(-joystick.getX(), -joystick.getY(), -driveGyro.getTwistRate(), gyro.getAngle());
-		}*/
+		//getJaguarRPM();
+		//Scheduler.getInstance().run();
+		try{
+			lBack.setX(1);
+			System.out.println(lBack.getSpeed());
+		}catch(CANTimeoutException ex){
+			ex.printStackTrace();
+		}
 
-
-		/*if(joystick.getRawButton(12)){
+		/*
+		if(!balancing){
+			driveCommand.start();
+		}
+		//System.out.println(gyro.getAngle());
+		if(joystick.getRawButton(12)){
 			balancing = true;
 			initialAngle = gyro.getAngle();
 		}
-		if(balancing){
-			if(Math.abs(initialAngle - gyro.getAngle()) < -2){
-				drive.mecanumDrive_Cartesian(0, -.5, 0, 0);
-			}else{
-				drive.mecanumDrive_Cartesian(0, .3, 0, 0);
+		while(balancing){
+			//System.out.println(gyro.getAngle());
+			if(Math.abs(initialAngle - gyro.getAngle()) < (initialAngle - 1)){
+				drive.mecanumDrive(0, -.34, 0, 0);
 			}
+			else{
+				Timer.delay(.3);
+				drive.mecanumDrive(0, .34, 0,0);
+				if(Math.abs(initialAngle - gyro.getAngle()) < 2)
+					balancing = false;
+			}
+			if(joystick.getRawButton(11))
+				balancing = false;	
 		}*/
 	}
 }
+
