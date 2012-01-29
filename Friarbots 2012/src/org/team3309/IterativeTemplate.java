@@ -48,7 +48,6 @@ public class IterativeTemplate extends IterativeRobot {
 	
     private CANJaguar lFront, lBack, rFront, rBack;
 
-
 	//Test
 	public void testJaguars(){
 		try {
@@ -106,7 +105,7 @@ public class IterativeTemplate extends IterativeRobot {
 		balanceCancelButton = new JoystickButton(OI.getInstance().getJoystick(1), 11);
 
 		driveCommand = new JoystickDrive(1);
-		//drive = DriveSubsystem.getInstance();
+		drive = DriveSubsystem.getInstance();
 		balanceCommand = new BalanceCommand();
 		gyro = new Gyro(1,1);
 	}
@@ -128,7 +127,7 @@ public class IterativeTemplate extends IterativeRobot {
 	}
 
 	public void teleopInit() {
-		//driveCommand.start();
+		driveCommand.start();
 		balanceButton.whenPressed(balanceCommand);
 		testJaguars();
 
@@ -161,14 +160,7 @@ public class IterativeTemplate extends IterativeRobot {
 	 * This function is called periodically during operator control
 	 */
 	public void teleopPeriodic() {
-		//getJaguarRPM();
-		//Scheduler.getInstance().run();
-		try{
-			lBack.setX(1);
-			System.out.println(lBack.getSpeed());
-		}catch(CANTimeoutException ex){
-			ex.printStackTrace();
-		}
+		Scheduler.getInstance().run();
 
 		/*
 		if(!balancing){
