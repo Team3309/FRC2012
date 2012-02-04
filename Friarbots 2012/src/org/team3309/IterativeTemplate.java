@@ -127,9 +127,7 @@ public class IterativeTemplate extends IterativeRobot {
 	 * This function is called periodically during operator control
 	 */
 	public void teleopPeriodic() {
-		//Scheduler.getInstance().run();
-
-		fl.set(2.5);
+		Scheduler.getInstance().run();
 		
 		/*
 		if(!balancing){
