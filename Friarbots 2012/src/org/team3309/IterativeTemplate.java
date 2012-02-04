@@ -48,8 +48,7 @@ public class IterativeTemplate extends IterativeRobot {
 	private Gyro gyro;
 	private org.team3309.subsystems.Gyro driveGyro;
 	
-	
-	private Encoder[] encoders = new Encoder[4];
+	private SpeedJaguar fl;
 	
 
 	/**
@@ -57,14 +56,6 @@ public class IterativeTemplate extends IterativeRobot {
 	 * used for any initialization code.
 	 */
 	public void robotInit() {
-		int a = 1;
-		int b = 2;
-		for(int i=0; i<encoders.length; i++){
-			encoders[i] = new Encoder(a, b);
-			a+=2;
-			b+=2;
-			encoders[i].setDistancePerPulse(1/360);
-		}
 		
 		SmartDashboard.init();
 		// instantiate the command used for the autonomous period
@@ -79,12 +70,12 @@ public class IterativeTemplate extends IterativeRobot {
 		balanceButton = new JoystickButton(OI.getInstance().getJoystick(1), 12);
 		balanceCancelButton = new JoystickButton(OI.getInstance().getJoystick(1), 11);
 
-		driveCommand = new JoystickDrive(1);
-		drive = DriveSubsystem.getInstance();
+		//driveCommand = new JoystickDrive(1);
+		//drive = DriveSubsystem.getInstance();
 		//balanceCommand = new BalanceCommand();
 		gyro = new Gyro(1,1);
 		
-		
+		fl = new SpeedJaguar(RobotMap.JAG_FRONT_LEFT, 1, 2);
 	}
 
 	public void disabledInit(){
@@ -138,9 +129,7 @@ public class IterativeTemplate extends IterativeRobot {
 	public void teleopPeriodic() {
 		//Scheduler.getInstance().run();
 
-		for(int i=0; i<encoders.length; i++){
-			SmartDashboard.putDouble("Encoder"+i, encoders[i].getRate());
-		}
+		fl.set(2.5);
 		
 		/*
 		if(!balancing){
