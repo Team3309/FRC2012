@@ -30,11 +30,11 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput{
 		mController = new SendablePIDController(.5, 0, 0, this, this);
 		mController.setInputRange(-m_maxSpeed, m_maxSpeed);
 		mController.setOutputRange(-m_maxSpeed, m_maxSpeed);
-		SmartDashboard.putData("Jag"+canId+" PID", mController);
-		mController.enable();
 		mEncoder = new Encoder(aChannel, bChannel);
 		mEncoder.setDistancePerPulse(2/360); //360 counts to go 2'
 		mEncoder.start();
+		SmartDashboard.putData("Jag"+canId+" PID", mController);
+		mController.enable();
 	}
 
 	public void pidWrite(double output) {
@@ -47,24 +47,17 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput{
 	}
 
 	public double pidGet() {
-		try {
-			SmartDashboard.putInt("Jag"+canId+"fps", (int) MathUtils.round(mEncoder.getRate()));
-			return mJaguar.getSpeed();
-		} catch (CANTimeoutException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 0;
+		System.out.println(mEncoder.getRate());
+		return mEncoder.getRate();
 	}
 
 	public void disable() {
 		try {
 			mJaguar.disableControl();
 		} catch (CANTimeoutException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		mController.disable();
+		//mController.disable();
 		mEncoder.stop();
 	}
 
