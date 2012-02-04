@@ -13,6 +13,7 @@ import org.team3309.commands.JoystickDrive;
 import org.team3309.subsystems.DriveSubsystem;
 
 import edu.wpi.first.wpilibj.CANJaguar;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -22,6 +23,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -46,51 +48,25 @@ public class IterativeTemplate extends IterativeRobot {
 	private Gyro gyro;
 	private org.team3309.subsystems.Gyro driveGyro;
 	
-    private CANJaguar lFront, lBack, rFront, rBack;
-
-	//Test
-	public void testJaguars(){
-		try {
-            lFront  = new CANJaguar(RobotMap.JAG_FRONT_LEFT);
-            lBack   = new CANJaguar(RobotMap.JAG_BACK_LEFT);
-            rFront  = new CANJaguar(RobotMap.JAG_FRONT_RIGHT);
-            rBack   = new CANJaguar(RobotMap.JAG_BACK_RIGHT);
-
-            lFront.configNeutralMode(CANJaguar.NeutralMode.kBrake);
-    		lBack.configNeutralMode(CANJaguar.NeutralMode.kBrake);
-    		rFront.configNeutralMode(CANJaguar.NeutralMode.kBrake);
-    		rBack.configNeutralMode(CANJaguar.NeutralMode.kBrake);
-    		
-    		lFront.configEncoderCodesPerRev(360);
-    		lBack.configEncoderCodesPerRev(360);
-    		rFront.configEncoderCodesPerRev(360);
-    		rBack.configEncoderCodesPerRev(360);
-    		
-    		lFront.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
-    		lBack.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
-    		rFront.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
-    		rBack.setSpeedReference(CANJaguar.SpeedReference.kQuadEncoder);
-    		
-    		
-        } catch (CANTimeoutException ctex) {
-            ctex.printStackTrace();
-            testJaguars();
-        }
-	}
 	
-		public void getJaguarRPM(){
-			try {
-				System.out.println(rFront.getSpeed() + "\t" + lFront.getSpeed() + "\t" + rBack.getSpeed() + "\t"+ lBack.getSpeed());
-			} catch (CANTimeoutException e) {
-				e.printStackTrace();
-			}
-		}
+	private Encoder[] encoders = new Encoder[4];
+	
 
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
 	public void robotInit() {
+		int a = 1;
+		int b = 2;
+		for(int i=0; i<encoders.length; i++){
+			encoders[i] = new Encoder(a, b);
+			a+=2;
+			b+=2;
+			encoders[i].setDistancePerPulse(1/360);
+		}
+		
+		SmartDashboard.init();
 		// instantiate the command used for the autonomous period
 
 		// create the instance of the operator interface class
@@ -98,7 +74,6 @@ public class IterativeTemplate extends IterativeRobot {
 		OI.getInstance();
 
 		// initialize all subsystems here.
-		DriveSubsystem.getInstance();
 
 		joystick = OI.getInstance().getJoystick(1);
 		balanceButton = new JoystickButton(OI.getInstance().getJoystick(1), 12);
@@ -106,12 +81,14 @@ public class IterativeTemplate extends IterativeRobot {
 
 		driveCommand = new JoystickDrive(1);
 		drive = DriveSubsystem.getInstance();
-		balanceCommand = new BalanceCommand();
+		//balanceCommand = new BalanceCommand();
 		gyro = new Gyro(1,1);
+		
+		
 	}
 
 	public void disabledInit(){
-		balanceCommand.cancel();
+		//balanceCommand.cancel();
 		Scheduler.getInstance().run();
 	}
 
@@ -127,9 +104,8 @@ public class IterativeTemplate extends IterativeRobot {
 	}
 
 	public void teleopInit() {
-		driveCommand.start();
-		balanceButton.whenPressed(balanceCommand);
-		testJaguars();
+		//driveCommand.start();
+		//balanceButton.whenPressed(balanceCommand);
 
 		balanceCancelButton.whenPressed(new Command(){
 
@@ -160,8 +136,12 @@ public class IterativeTemplate extends IterativeRobot {
 	 * This function is called periodically during operator control
 	 */
 	public void teleopPeriodic() {
-		Scheduler.getInstance().run();
+		//Scheduler.getInstance().run();
 
+		for(int i=0; i<encoders.length; i++){
+			SmartDashboard.putDouble("Encoder"+i, encoders[i].getRate());
+		}
+		
 		/*
 		if(!balancing){
 			driveCommand.start();
@@ -183,7 +163,7 @@ public class IterativeTemplate extends IterativeRobot {
 					balancing = false;
 			}
 			if(joystick.getRawButton(11))
-				balancing = false;	
+				balancing = false;	 
 		}*/
 	}
 }

@@ -9,7 +9,7 @@ public class SpeedDrive extends RobotDrive{
 			SpeedController rearLeftMotor, SpeedController frontRightMotor,
 			SpeedController rearRightMotor) {
 		super(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
-		setMaxOutput(370);
+		setMaxOutput(500);
 	}
 
 }
