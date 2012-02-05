@@ -48,8 +48,6 @@ public class IterativeTemplate extends IterativeRobot {
 	private Gyro gyro;
 	private org.team3309.subsystems.Gyro driveGyro;
 	
-	private SpeedJaguar fl;
-	
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -70,12 +68,10 @@ public class IterativeTemplate extends IterativeRobot {
 		balanceButton = new JoystickButton(OI.getInstance().getJoystick(1), 12);
 		balanceCancelButton = new JoystickButton(OI.getInstance().getJoystick(1), 11);
 
-		//driveCommand = new JoystickDrive(1);
-		//drive = DriveSubsystem.getInstance();
+		driveCommand = new JoystickDrive(1);
+		drive = DriveSubsystem.getInstance();
 		//balanceCommand = new BalanceCommand();
 		gyro = new Gyro(1,1);
-		
-		fl = new SpeedJaguar(RobotMap.JAG_FRONT_LEFT, 1, 2);
 	}
 
 	public void disabledInit(){
@@ -95,7 +91,7 @@ public class IterativeTemplate extends IterativeRobot {
 	}
 
 	public void teleopInit() {
-		//driveCommand.start();
+		driveCommand.start();
 		//balanceButton.whenPressed(balanceCommand);
 
 		balanceCancelButton.whenPressed(new Command(){

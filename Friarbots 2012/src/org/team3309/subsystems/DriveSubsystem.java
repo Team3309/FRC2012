@@ -93,7 +93,7 @@ public class DriveSubsystem extends Subsystem {
     }
     
 	protected void initDefaultCommand() {
-		// TODO Auto-generated method stub
+		
 	}
 	
 	public void brake(){

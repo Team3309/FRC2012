@@ -17,7 +17,7 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput{
 	private SendablePIDController mController = null;
 	private Encoder mEncoder = null;
 	
-	private double m_maxSpeed = 3;
+	private double m_maxSpeed = 10;
 	private int canId = 0;
 	
 	public SpeedJaguar(int canId, int aChannel, int bChannel){
@@ -27,7 +27,7 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput{
 		} catch (CANTimeoutException e) {
 			e.printStackTrace();
 		}
-		mController = new SendablePIDController(0.1, 0.0001, 0, this, this);
+		mController = new SendablePIDController(0.3, 0.0001, 0, this, this);
 		mController.setInputRange(-m_maxSpeed, m_maxSpeed);
 		mController.setOutputRange(-m_maxSpeed, m_maxSpeed);
 		mEncoder = new Encoder(aChannel, bChannel);
