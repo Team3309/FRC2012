@@ -8,20 +8,23 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class BalanceCommand extends Command {
 
+	private static final boolean balanced = false;
 	Joystick stick 					= null; 
-	//edu.wpi.first.wpilibj.Gyro gyro = null;
+	edu.wpi.first.wpilibj.Gyro gyro = null;
 	DriveSubsystem drive 			= null;
 
 	boolean finished 				= false;
 	double initialAngle 			= 0;
+	boolean balancing				= false;
 	
 	public BalanceCommand(){
 		super();
 		stick = OI.getInstance().getJoystick(1);
-		//gyro = new Gyro(1,1);
+		gyro = new Gyro(1,1);
 		drive = DriveSubsystem.getInstance();
 		requires(drive);
 	}
@@ -32,22 +35,28 @@ public class BalanceCommand extends Command {
 	}
 
 	protected void execute() {
-		/*if(Math.abs(initialAngle - gyro.getAngle()) < 2){
-			drive.mecanumDrive(0, -.5, 0, 0);
+		balancing = true;
+		initialAngle = gyro.getAngle();
+		while(balancing){
+			SmartDashboard.putDouble("BalanceGyro", gyro.getAngle());
+			if(Math.abs(initialAngle - gyro.getAngle()) < (initialAngle - 1)){
+				drive.mecanumDrive(0, -.34, 0, 0);
+			}
+			else{
+				Timer.delay(.3);
+				drive.mecanumDrive(0, .34, 0,0);
+				if(Math.abs(initialAngle - gyro.getAngle()) < 2)
+					balancing = false;
+			}
+			if(stick.getRawButton(11)){
+				balancing = false;
+				cancel();
+			}
 		}
-
-		else{
-			drive.mecanumDrive(0, .3, 0, 0);
-			Timer.delay(1);
-			finished = true;
-		}
-		*/
-		
-		//System.out.println(gyro.getAngle());
 	}
 
 	protected boolean isFinished() {
-		return finished;
+		return balanced;
 	}
 
 	protected void end() {
@@ -59,8 +68,4 @@ public class BalanceCommand extends Command {
 		// TODO Auto-generated method stub
 
 	}
-	
-	/*public Gyro getGyro(){
-		return gyro;
-	}*/
 }

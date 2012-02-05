@@ -12,15 +12,8 @@ import org.team3309.commands.BalanceCommand;
 import org.team3309.commands.JoystickDrive;
 import org.team3309.subsystems.DriveSubsystem;
 
-import edu.wpi.first.wpilibj.CANJaguar;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -41,12 +34,6 @@ public class IterativeTemplate extends IterativeRobot {
 
 	JoystickButton balanceButton;
 	JoystickButton balanceCancelButton;
-
-	private Joystick joystick;
-	private boolean balancing = false;
-	private double initialAngle;
-	private Gyro gyro;
-	private org.team3309.subsystems.Gyro driveGyro;
 	
 
 	/**
@@ -55,7 +42,6 @@ public class IterativeTemplate extends IterativeRobot {
 	 */
 	public void robotInit() {
 		
-		SmartDashboard.init();
 		// instantiate the command used for the autonomous period
 
 		// create the instance of the operator interface class
@@ -64,18 +50,16 @@ public class IterativeTemplate extends IterativeRobot {
 
 		// initialize all subsystems here.
 
-		joystick = OI.getInstance().getJoystick(1);
 		balanceButton = new JoystickButton(OI.getInstance().getJoystick(1), 12);
 		balanceCancelButton = new JoystickButton(OI.getInstance().getJoystick(1), 11);
 
 		driveCommand = new JoystickDrive(1);
 		drive = DriveSubsystem.getInstance();
-		//balanceCommand = new BalanceCommand();
-		gyro = new Gyro(1,1);
+		balanceCommand = new BalanceCommand();
 	}
 
 	public void disabledInit(){
-		//balanceCommand.cancel();
+		balanceCommand.cancel();
 		Scheduler.getInstance().run();
 	}
 
@@ -92,7 +76,7 @@ public class IterativeTemplate extends IterativeRobot {
 
 	public void teleopInit() {
 		driveCommand.start();
-		//balanceButton.whenPressed(balanceCommand);
+		balanceButton.whenPressed(balanceCommand);
 
 		balanceCancelButton.whenPressed(new Command(){
 
