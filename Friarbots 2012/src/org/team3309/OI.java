@@ -6,6 +6,8 @@
 package org.team3309;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Joystick.AxisType;
+
 import java.util.Vector;
 
 public class OI {

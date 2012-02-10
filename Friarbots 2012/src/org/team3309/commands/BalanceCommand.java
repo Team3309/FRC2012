@@ -20,7 +20,9 @@ public class BalanceCommand extends Command {
 	boolean finished 				= false;
 	double initialAngle 			= 0;
 	boolean balancing				= false;
-	
+	int x							= 0;
+	double driveUpSpeed				= .23;
+
 	public BalanceCommand(){
 		super();
 		stick = OI.getInstance().getJoystick(1);
@@ -28,30 +30,57 @@ public class BalanceCommand extends Command {
 		drive = DriveSubsystem.getInstance();
 		requires(drive);
 	}
-	
+
 	protected void initialize() {
 		//initialAngle = gyro.getAngle();
 		finished = false;
+		balancing = true;
+		x=1;
 	}
 
 	protected void execute() {
-		balancing = true;
 		initialAngle = gyro.getAngle();
 		while(balancing){
-			SmartDashboard.putDouble("BalanceGyro", gyro.getAngle());
-			if(Math.abs(initialAngle - gyro.getAngle()) < (initialAngle - 1)){
-				drive.mecanumDrive(0, -.34, 0, 0);
-			}
-			else{
-				Timer.delay(.3);
-				drive.mecanumDrive(0, .34, 0,0);
-				if(Math.abs(initialAngle - gyro.getAngle()) < 2)
+			System.out.println(Math.abs(initialAngle - gyro.getAngle()));
+			if(Math.abs(gyro.getAngle()) < SmartDashboard.getDouble("Stop Angle", 14)){
+				drive.mecanumDrive(0, .04, 0,0);
+					System.out.println("It's Balanced!!!!");
+				if(Math.abs(gyro.getAngle()) < 5){
+					drive.mecanumDrive(0, .08, 0,0);
+					Timer.delay(.06);
+					drive.brake();
 					balancing = false;
+				}
+			}
+			else if(Math.abs(initialAngle - gyro.getAngle()) < SmartDashboard.getDouble("AngleThreshhold", 20)){
+				if(x==1 && Math.abs(initialAngle - gyro.getAngle()) < 20){
+				drive.mecanumDrive(0, SmartDashboard.getDouble("Forward Speed",-.25), 0, 0);
+				Timer.delay(.7);
+				x=2;
+				}
+				if(Math.abs(initialAngle - gyro.getAngle()) < 18 && x==2){
+					drive.mecanumDrive(0,-.16,0,0);
+					Timer.delay(.7);
+					x=1;
+				}
+				System.out.println("Driving Up");
+			}
+
+			else{
+				//if(Math.abs(initialAngle - gyro.getAngle()) > SmartDashboard.getDouble("AngleThreshhold", 20))
+				drive.mecanumDrive(0, SmartDashboard.getDouble("BackwardSpeed",.24), 0,0);
+				drive.mecanumDrive(0, .26, 0,0);
+				
+				System.out.println("Fixing");
+
 			}
 			if(stick.getRawButton(11)){
 				balancing = false;
 				cancel();
 			}
+			Timer.delay(.5);
+
+
 		}
 	}
 
