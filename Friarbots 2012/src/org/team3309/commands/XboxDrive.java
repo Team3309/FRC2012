@@ -8,12 +8,14 @@ import org.team3309.OI;
 import org.team3309.subsystems.DriveSubsystem;
 import org.team3309.subsystems.Gyro;
 
+import com.sun.squawk.util.MathUtils;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 /**
  *
- * @author Vincente
+ * @author Vincente!
  */
 public class XboxDrive extends Command {
 
@@ -94,8 +96,22 @@ public class XboxDrive extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		//gyro.updateDesiredHeading(stick.getTwist());
-		drive.mecanumDrive(controller.getRawAxis(1), controller.getRawAxis(2), controller.getRawAxis(4), gyro.getAngle());
-
+		double x = controller.getRawAxis(1);
+		if(Math.abs(x) < .05)
+			x = 0;
+		x-=.05;
+		x = MathUtils.pow(x, 3);
+		double y = controller.getRawAxis(2);
+		if(Math.abs(y) < .05)
+			y = 0;
+		y = MathUtils.pow(y, 3);
+		y-=.05;
+		double twist = controller.getRawAxis(4);
+		if(Math.abs(twist) < .05)
+			twist = 0;
+		twist = MathUtils.pow(twist, 3);
+		twist-=.05;
+		drive.mecanumDrive(x, y, twist, gyro.getAngle());
 	}
 
 
