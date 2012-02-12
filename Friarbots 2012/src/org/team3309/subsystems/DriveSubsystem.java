@@ -99,4 +99,8 @@ public class DriveSubsystem extends Subsystem {
 	public void brake(){
 		mDrive.stopMotor();
 	}
+	
+	public CANJaguar[] getMotors(){
+		return new CANJaguar[]{lFront, lBack, rFront, rBack};
+	}
 }
