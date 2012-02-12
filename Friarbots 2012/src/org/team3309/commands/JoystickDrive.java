@@ -19,26 +19,37 @@ public class JoystickDrive extends Command {
 
 	private JoystickButton driveGyroResetButton;
 	private JoystickButton balanceGyroResetButton;
+	private JoystickButton balanceButton;
+	private JoystickButton balanceCancelButton;
 	
+	private BalanceCommand balanceCommand;
 	
 	private DriveSubsystem drive 	= null;
 	private Joystick stick 			= null;
+	
 	private boolean finished		= false;
 	
 	public Gyro gyro;
 	public Gyro bgyro;
 
 	public JoystickDrive(int joystickID) {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
-		drive = DriveSubsystem.getInstance();
+		drive 					= DriveSubsystem.getInstance();
+		
 		requires(drive);
-		//requires(drive);
-		stick = OI.getInstance().getJoystick(joystickID);
-		gyro = Gyro.getInstance(1, 2);
-		bgyro = Gyro.getInstance(1, 1);
-		driveGyroResetButton = new JoystickButton(stick, 3);
-		balanceGyroResetButton = new JoystickButton(stick, 5);
+		
+		stick			 		= OI.getInstance().getJoystick(joystickID);
+		
+		gyro 					= Gyro.getInstance(1, 2);
+		bgyro 					= Gyro.getInstance(1, 1);
+		
+		driveGyroResetButton 	= new JoystickButton(stick, 3);
+		balanceGyroResetButton 	= new JoystickButton(stick, 5);
+		
+		balanceButton 			= new JoystickButton(stick, 12);
+		balanceCancelButton 	= new JoystickButton(stick, 11);
+		
+		balanceCommand			= new BalanceCommand();
+		
 	}
 	
 	public Joystick getJoystick(){
@@ -48,28 +59,20 @@ public class JoystickDrive extends Command {
 	// Called just before this Command runs the first time
 	protected void initialize() {
 		driveGyroResetButton.whenPressed(new Command(){
-
 			protected void initialize() {
-				
 			}
-
 			protected void execute() {
 				gyro.reset();
 			}
-
 			protected boolean isFinished() {
 				return true;
 			}
-
-			protected void end() {
-				
+			protected void end() {	
 			}
-
-			protected void interrupted() {
-				
+			protected void interrupted() {	
 			}
-			
 		});
+		
 		balanceGyroResetButton.whenPressed(new Command(){
 			protected void initialized() {
 			}
@@ -89,13 +92,30 @@ public class JoystickDrive extends Command {
 			}
 			
 		});
+		
+		
+		balanceButton.whenPressed(balanceCommand);
+		balanceCancelButton.whenPressed(new Command(){
+			protected void end() {
+			}
+			protected void execute() {
+				balanceCommand.cancel();
+			}
+			protected void initialize() {
+			}
+			protected void interrupted() {
+			}
+			protected boolean isFinished() {
+				return false;
+			}
+		});
+		
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		//gyro.updateDesiredHeading(stick.getTwist());
 		drive.mecanumDrive(stick.getX(), stick.getY(), stick.getTwist(), gyro.getAngle());
-
 	}
 
 

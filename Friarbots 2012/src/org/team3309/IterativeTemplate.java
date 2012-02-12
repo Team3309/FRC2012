@@ -9,7 +9,7 @@ package org.team3309;
 
 
 import org.team3309.commands.BalanceCommand;
-import org.team3309.commands.JoystickDrive;
+import org.team3309.commands.XboxDrive;
 import org.team3309.subsystems.DriveSubsystem;
 import org.team3309.subsystems.PneumaticsSubsystem;
 
@@ -27,27 +27,27 @@ import edu.wpi.first.wpilibj.command.Scheduler;
  */
 public class IterativeTemplate extends IterativeRobot {
 
-//Delcare Subsystems
+	//Delcare Subsystems
 	DriveSubsystem drive;
 	PneumaticsSubsystem pneumatics;
 
-//Declare Commands
+	//Declare Commands
 	Command autonomousCommand;    
 	BalanceCommand balanceCommand;
-	JoystickDrive driveCommand;
-	//XboxDrive driveCommand;
-	
-//Declare Buttons
+	//JoystickDrive driveCommand;
+	XboxDrive driveCommand;
+
+	//Declare Buttons
 	JoystickButton balanceButton;
 	JoystickButton balanceCancelButton;
-	
+
 
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
 	public void robotInit() {
-		
+
 		// instantiate the command used for the autonomous period
 
 		// create the instance of the operator interface class
@@ -56,18 +56,15 @@ public class IterativeTemplate extends IterativeRobot {
 
 		// initialize all subsystems here.
 		drive = DriveSubsystem.getInstance();
-//		pneumatics = PneumaticsSubsystem.getInstance();
-//		pneumatics.start();
-		
+		//		pneumatics = PneumaticsSubsystem.getInstance();
+		//		pneumatics.start();
+
 		//initialize commands
 		balanceCommand = new BalanceCommand();
-		driveCommand = new JoystickDrive(1);
-		//driveCommand = new XboxDrive(1);
 		
-		//set button commands here	
-		balanceButton = new JoystickButton(OI.getInstance().getJoystick(1), 12);
-		balanceCancelButton = new JoystickButton(OI.getInstance().getJoystick(1), 11);
-		
+		//driveCommand = new JoystickDrive(1);
+		driveCommand = new XboxDrive(1);
+
 	}
 
 	public void disabledInit(){
@@ -88,28 +85,6 @@ public class IterativeTemplate extends IterativeRobot {
 
 	public void teleopInit() {
 		driveCommand.start();
-		balanceButton.whenPressed(balanceCommand);
-
-		balanceCancelButton.whenPressed(new Command(){
-			protected void end() {
-				
-			}
-			protected void execute() {
-				balanceCommand.cancel();
-			}
-			protected void initialize() {
-				
-			}
-			protected void interrupted() {
-				
-			}
-			protected boolean isFinished() {
-				return false;
-			}
-			
-		});
-		
-		
 	}
 
 	/**
