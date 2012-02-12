@@ -6,6 +6,7 @@ package org.team3309.subsystems;
 
 import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.RobotDrive.MotorType;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -56,6 +57,8 @@ public class DriveSubsystem extends Subsystem {
         initCAN();
         mDrive = new RobotDrive(lFront, lBack, rFront, rBack);
         mDrive.setSafetyEnabled(false);
+        mDrive.setInvertedMotor(MotorType.kFrontLeft, true);
+        mDrive.setInvertedMotor(MotorType.kRearLeft, true);
     }
     
     /**

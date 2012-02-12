@@ -11,6 +11,7 @@ package org.team3309;
 import org.team3309.commands.BalanceCommand;
 import org.team3309.commands.JoystickDrive;
 import org.team3309.subsystems.DriveSubsystem;
+import org.team3309.subsystems.PneumaticsSubsystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -26,11 +27,17 @@ import edu.wpi.first.wpilibj.command.Scheduler;
  */
 public class IterativeTemplate extends IterativeRobot {
 
+//Delcare Subsystems
+	DriveSubsystem drive;
+	PneumaticsSubsystem pneumatics;
+
+//Declare Commands
 	Command autonomousCommand;    
 	BalanceCommand balanceCommand;
 	JoystickDrive driveCommand;
-	DriveSubsystem drive;
-
+	//XboxDrive driveCommand;
+	
+//Declare Buttons
 	JoystickButton balanceButton;
 	JoystickButton balanceCancelButton;
 	
@@ -48,13 +55,19 @@ public class IterativeTemplate extends IterativeRobot {
 		OI.getInstance();
 
 		// initialize all subsystems here.
-
+		drive = DriveSubsystem.getInstance();
+//		pneumatics = PneumaticsSubsystem.getInstance();
+//		pneumatics.start();
+		
+		//initialize commands
+		balanceCommand = new BalanceCommand();
+		driveCommand = new JoystickDrive(1);
+		//driveCommand = new XboxDrive(1);
+		
+		//set button commands here	
 		balanceButton = new JoystickButton(OI.getInstance().getJoystick(1), 12);
 		balanceCancelButton = new JoystickButton(OI.getInstance().getJoystick(1), 11);
-
-		driveCommand = new JoystickDrive(1);
-		drive = DriveSubsystem.getInstance();
-		balanceCommand = new BalanceCommand();
+		
 	}
 
 	public void disabledInit(){
@@ -78,28 +91,25 @@ public class IterativeTemplate extends IterativeRobot {
 		balanceButton.whenPressed(balanceCommand);
 
 		balanceCancelButton.whenPressed(new Command(){
-
-			protected void initialize() {
-
+			protected void end() {
+				
 			}
-
 			protected void execute() {
 				balanceCommand.cancel();
 			}
-
-			protected boolean isFinished() {
-				return true;
+			protected void initialize() {
+				
 			}
-
-			protected void end() {
-
-			}
-
 			protected void interrupted() {
-
+				
 			}
-
+			protected boolean isFinished() {
+				return false;
+			}
+			
 		});
+		
+		
 	}
 
 	/**
@@ -107,30 +117,6 @@ public class IterativeTemplate extends IterativeRobot {
 	 */
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		
-		/*
-		if(!balancing){
-			driveCommand.start();
-		}
-		//System.out.println(gyro.getAngle());
-		if(joystick.getRawButton(12)){
-			balancing = true;
-			initialAngle = gyro.getAngle();
-		}
-		while(balancing){
-			//System.out.println(gyro.getAngle());
-			if(Math.abs(initialAngle - gyro.getAngle()) < (initialAngle - 1)){
-				drive.mecanumDrive(0, -.34, 0, 0);
-			}
-			else{
-				Timer.delay(.3);
-				drive.mecanumDrive(0, .34, 0,0);
-				if(Math.abs(initialAngle - gyro.getAngle()) < 2)
-					balancing = false;
-			}
-			if(joystick.getRawButton(11))
-				balancing = false;	 
-		}*/
 	}
 }
 
