@@ -33,7 +33,7 @@ import com.sun.squawk.util.SquawkHashtable;
  * You can edit this file over FTP.
  * An example of a key-value pair is: balanceSpeed=.25
  * Key-value pairs are separated by new lines
- * You must call {@link reload} if you want to reload properties after {@link getInstance} was called
+ * You must call {@link #reload()} if you want to reload properties after {@link #getInstance()} was called
  * @author vmagro
  *
  */
@@ -80,7 +80,7 @@ public class Properties {
 	}
 	
 	/**
-	 * Reloads the properties from the file after {@link getInstance} is called for the first time
+	 * Reloads the properties from the file after {@link #getInstance()} is called for the first time
 	 * You do not need to call this method unless you want to reload properties without rebooting
 	 * @throws IOException
 	 */
