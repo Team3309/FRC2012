@@ -21,10 +21,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class XboxDrive extends Command {
 
 	private JoystickButton driveGyroResetButton;
-	private JoystickButton balanceGyroResetButton;
-	private JoystickButton balanceButton;
-	private JoystickButton balanceCancelButton;
-	
+
 	public Gyro gyro;
 	public Gyro bgyro;
 	
@@ -43,15 +40,6 @@ public class XboxDrive extends Command {
 		controller = OI.getInstance().getJoystick(joystickID);
 		
 		gyro = Gyro.getInstance(1, 2);
-		bgyro = Gyro.getInstance(1, 1);
-		
-		driveGyroResetButton = new JoystickButton(controller, XboxMap.B_LEFT_STICK);
-		balanceGyroResetButton = new JoystickButton(controller, XboxMap.B_RIGHT_STICK);
-		
-		balanceButton = new JoystickButton(controller, XboxMap.B_START);
-		balanceCancelButton	= new JoystickButton(controller, XboxMap.B_BACK);
-		
-		balanceCommand = new BalanceCommand();
 	}
 	
 	public Joystick getJoystick(){
@@ -73,36 +61,6 @@ public class XboxDrive extends Command {
 			protected void interrupted() {
 			}
 			
-		});
-		balanceGyroResetButton.whenPressed(new Command(){
-			protected void execute() {
-				bgyro.reset();
-			}
-			protected void end(){
-			}
-			protected void interrupted(){
-			}
-			protected void initialize() {
-			}
-			protected boolean isFinished() {
-				return false;
-			}
-		});
-		
-		balanceButton.whenPressed(balanceCommand);
-		balanceCancelButton.whenPressed(new Command(){
-			protected void end() {
-			}
-			protected void execute() {
-				balanceCommand.cancel();
-			}
-			protected void initialize() {
-			}
-			protected void interrupted() {
-			}
-			protected boolean isFinished() {
-				return false;
-			}
 		});
 	}
 

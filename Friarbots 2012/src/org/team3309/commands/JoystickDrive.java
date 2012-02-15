@@ -18,11 +18,6 @@ import edu.wpi.first.wpilibj.command.Command;
 public class JoystickDrive extends Command {
 
 	private JoystickButton driveGyroResetButton;
-	private JoystickButton balanceGyroResetButton;
-	private JoystickButton balanceButton;
-	private JoystickButton balanceCancelButton;
-	
-	private BalanceCommand balanceCommand;
 	
 	private DriveSubsystem drive 	= null;
 	private Joystick stick 			= null;
@@ -30,7 +25,6 @@ public class JoystickDrive extends Command {
 	private boolean finished		= false;
 	
 	public Gyro gyro;
-	public Gyro bgyro;
 
 	public JoystickDrive(int joystickID) {
 		drive 					= DriveSubsystem.getInstance();
@@ -40,16 +34,8 @@ public class JoystickDrive extends Command {
 		stick			 		= OI.getInstance().getJoystick(joystickID);
 		
 		gyro 					= Gyro.getInstance(1, 2);
-		bgyro 					= Gyro.getInstance(1, 1);
 		
-		driveGyroResetButton 	= new JoystickButton(stick, 3);
-		balanceGyroResetButton 	= new JoystickButton(stick, 5);
-		
-		balanceButton 			= new JoystickButton(stick, 12);
-		balanceCancelButton 	= new JoystickButton(stick, 11);
-		
-		balanceCommand			= new BalanceCommand();
-		
+		driveGyroResetButton 	= new JoystickButton(stick, 3);		
 	}
 	
 	public Joystick getJoystick(){
@@ -70,43 +56,6 @@ public class JoystickDrive extends Command {
 			protected void end() {	
 			}
 			protected void interrupted() {	
-			}
-		});
-		
-		balanceGyroResetButton.whenPressed(new Command(){
-			protected void initialized() {
-			}
-			protected void execute() {
-				bgyro.reset();
-			}
-			protected void end(){
-			}
-			protected void interrupted(){
-			}
-			protected void isFinsihed(){
-			}
-			protected void initialize() {
-			}
-			protected boolean isFinished() {
-				return false;
-			}
-			
-		});
-		
-		
-		balanceButton.whenPressed(balanceCommand);
-		balanceCancelButton.whenPressed(new Command(){
-			protected void end() {
-			}
-			protected void execute() {
-				balanceCommand.cancel();
-			}
-			protected void initialize() {
-			}
-			protected void interrupted() {
-			}
-			protected boolean isFinished() {
-				return false;
 			}
 		});
 		

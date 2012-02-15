@@ -6,6 +6,7 @@ import org.team3309.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -42,10 +43,10 @@ public class BalanceCommand extends Command {
 		while(balancing){
 			System.out.println(Math.abs(initialAngle - gyro.getAngle()));
 			if(Math.abs(gyro.getAngle()) < SmartDashboard.getDouble("Stop Angle", 14)){
-				drive.mecanumDrive(0, .3, 0,0);
+				drive.mecanumDrive(0, .04, 0,0);
 					System.out.println("It's Balanced!!!!");
 				if(Math.abs(gyro.getAngle()) < 5){
-					drive.mecanumDrive(0, .4, 0,0);
+					drive.mecanumDrive(0, .08, 0,0);
 					Timer.delay(.06);
 					drive.brake();
 					balancing = false;
@@ -53,12 +54,12 @@ public class BalanceCommand extends Command {
 			}
 			else if(Math.abs(initialAngle - gyro.getAngle()) < SmartDashboard.getDouble("AngleThreshhold", 20)){
 				if(x==1 && Math.abs(initialAngle - gyro.getAngle()) < 20){
-				drive.mecanumDrive(0, -.5, 0, 0);
+				drive.mecanumDrive(0, SmartDashboard.getDouble("Forward Speed",-.25), 0, 0);
 				Timer.delay(.7);
 				x=2;
 				}
 				if(Math.abs(initialAngle - gyro.getAngle()) < 18 && x==2){
-					drive.mecanumDrive(0,-.3,0,0);
+					drive.mecanumDrive(0,-.16,0,0);
 					Timer.delay(.7);
 					x=1;
 				}
