@@ -9,6 +9,7 @@ package org.team3309;
 
 
 import org.team3309.commands.BalanceCommand;
+import org.team3309.commands.JoystickDrive;
 import org.team3309.commands.XboxDrive;
 import org.team3309.subsystems.DriveSubsystem;
 import org.team3309.subsystems.PneumaticsSubsystem;
@@ -34,8 +35,8 @@ public class IterativeTemplate extends IterativeRobot {
 	//Declare Commands
 	Command autonomousCommand;    
 	BalanceCommand balanceCommand;
-	//JoystickDrive driveCommand;
-	XboxDrive driveCommand;
+	JoystickDrive driveCommand;
+	//XboxDrive driveCommand;
 
 	//Declare Buttons
 	JoystickButton balanceButton;
@@ -62,8 +63,8 @@ public class IterativeTemplate extends IterativeRobot {
 		//initialize commands
 		balanceCommand = new BalanceCommand();
 		
-		//driveCommand = new JoystickDrive(1);
-		driveCommand = new XboxDrive(1);
+		driveCommand = new JoystickDrive(1);
+		//driveCommand = new XboxDrive(1);
 
 	}
 
