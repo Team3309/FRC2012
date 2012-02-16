@@ -1,100 +1,68 @@
 package org.team3309.commands;
 
-import org.team3309.OI;
 import org.team3309.subsystems.DriveSubsystem;
 
+import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.Gyro;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class BalanceCommand extends Command {
 
-	private static final boolean balanced = false;
-	Joystick stick 					= null; 
-	edu.wpi.first.wpilibj.Gyro gyro = null;
-	DriveSubsystem drive 			= null;
+	private DriveSubsystem drive;
+	private CANJaguar[] motors;
+	private Gyro gyro = new Gyro(1,1);
+	
+	private boolean balancing = false;
 
-	boolean finished 				= false;
-	double initialAngle 			= 0;
-	boolean balancing				= false;
-	int x							= 0;
-	double driveUpSpeed				= .23;
-
-	public BalanceCommand(){
-		super();
-		stick = OI.getInstance().getJoystick(1);
-		gyro = new Gyro(1,1);
+	public BalanceCommand() {
 		drive = DriveSubsystem.getInstance();
 		requires(drive);
+		motors = drive.getMotors();
 	}
 
 	protected void initialize() {
-		//initialAngle = gyro.getAngle();
-		finished = false;
-		balancing = true;
-		x=1;
+		try {
+			for (int i=0; i<motors.length; i++) {
+				CANJaguar jag = motors[i];
+				jag.changeControlMode(CANJaguar.ControlMode.kPosition);
+				jag.configNeutralMode(CANJaguar.NeutralMode.kBrake);
+				jag.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+				jag.configEncoderCodesPerRev(360);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	protected void execute() {
-		initialAngle = gyro.getAngle();
-		while(balancing){
-			System.out.println(Math.abs(initialAngle - gyro.getAngle()));
-			if(Math.abs(gyro.getAngle()) < SmartDashboard.getDouble("Stop Angle", 14)){
-				drive.mecanumDrive(0, .04, 0,0);
-					System.out.println("It's Balanced!!!!");
-				if(Math.abs(gyro.getAngle()) < 5){
-					drive.mecanumDrive(0, .08, 0,0);
-					Timer.delay(.06);
-					drive.brake();
-					balancing = false;
+		try{
+			gyro.reset();
+			while(balancing){
+				double theta = gyro.getAngle();
+				if(Math.abs(theta - 17) < 2){
+					for(int i=0; i<motors.length; i++)
+						motors[i].setX(36, (byte) 0x42);
+				}
+				if(Math.abs(theta) < 2){
+					for(int i=0; i<motors.length; i++)
+						motors[i].setX(0, (byte) 0x42);
 				}
 			}
-			else if(Math.abs(initialAngle - gyro.getAngle()) < SmartDashboard.getDouble("AngleThreshhold", 20)){
-				if(x==1 && Math.abs(initialAngle - gyro.getAngle()) < 20){
-				drive.mecanumDrive(0, SmartDashboard.getDouble("Forward Speed",-.25), 0, 0);
-				Timer.delay(.7);
-				x=2;
-				}
-				if(Math.abs(initialAngle - gyro.getAngle()) < 18 && x==2){
-					drive.mecanumDrive(0,-.16,0,0);
-					Timer.delay(.7);
-					x=1;
-				}
-				System.out.println("Driving Up");
-			}
-
-			else{
-				//if(Math.abs(initialAngle - gyro.getAngle()) > SmartDashboard.getDouble("AngleThreshhold", 20))
-				drive.mecanumDrive(0, SmartDashboard.getDouble("BackwardSpeed",.24), 0,0);
-				drive.mecanumDrive(0, .26, 0,0);
-				
-				System.out.println("Fixing");
-
-			}
-			if(stick.getRawButton(11)){
-				balancing = false;
-				cancel();
-			}
-			Timer.delay(.5);
-
-
+		}catch(Exception ex){
+			ex.printStackTrace();
 		}
 	}
 
 	protected boolean isFinished() {
-		return balanced;
+		return balancing;
 	}
 
 	protected void end() {
-		// TODO Auto-generated method stub
-
+		
 	}
 
 	protected void interrupted() {
-		// TODO Auto-generated method stub
-
+		
 	}
+
 }
