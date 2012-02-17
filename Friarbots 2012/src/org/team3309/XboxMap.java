@@ -26,6 +26,8 @@ public class XboxMap {
 	//Axis
 	public static final int A_LEFT_X				= 1;
 	public static final int A_LEFT_Y				= 2;
-	public static final int A_RIGHT_X				= 3;
-	public static final int A_RIGHT_Y				= 4;
+	public static final int A_LEFT_TRIGGER			= 3;
+	public static final int A_RIGHT_TRIGGER			= 4;
+	public static final int A_RIGHT_X				= 5;
+	public static final int A_RIGHT_Y				= 6;
 }

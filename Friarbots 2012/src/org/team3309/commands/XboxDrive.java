@@ -47,7 +47,7 @@ public class XboxDrive extends Command {
 	}
 
 	protected void initialize() {
-		driveGyroResetButton.whenPressed(new Command(){
+/*		driveGyroResetButton.whenPressed(new Command(){
 			protected void initialize() {	
 			}
 			protected void execute() {
@@ -59,9 +59,9 @@ public class XboxDrive extends Command {
 			protected void end() {	
 			}
 			protected void interrupted() {
-			}
-			
+			}		
 		});
+*/
 	}
 
 	protected void execute() {
@@ -91,6 +91,7 @@ public class XboxDrive extends Command {
 		twist-=.05;
 		
 		drive.mecanumDrive(x, y, twist, gyro.getAngle());
+		System.out.println(x + "\t" + y + "\t" + twist);
 	}
 
 	protected boolean isFinished() {
