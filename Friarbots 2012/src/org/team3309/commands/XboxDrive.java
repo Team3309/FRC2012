@@ -22,14 +22,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class XboxDrive extends Command {
 
 	private JoystickButton driveGyroResetButton;
-	private JoystickButton balanceGyroResetButton;
-	private JoystickButton balanceButton;
-	private JoystickButton balanceCancelButton;
-
 	public Gyro gyro;
-	public Gyro bgyro;
-
-	private BalanceCommand balanceCommand;
 
 	private DriveSubsystem drive = null;
 	private Joystick controller = null;
@@ -38,23 +31,11 @@ public class XboxDrive extends Command {
 
 	public XboxDrive(int joystickID) {
 		drive = DriveSubsystem.getInstance();
-
 		requires(drive);
-
 		controller = OI.getInstance().getJoystick(joystickID);
-
 		gyro = Gyro.getInstance(1, 2);
-		bgyro = Gyro.getInstance(1, 1);
-
 		driveGyroResetButton = new JoystickButton(controller,
 				XboxMap.B_LEFT_STICK);
-		balanceGyroResetButton = new JoystickButton(controller,
-				XboxMap.B_RIGHT_STICK);
-
-		balanceButton = new JoystickButton(controller, XboxMap.B_START);
-		balanceCancelButton = new JoystickButton(controller, XboxMap.B_BACK);
-
-		balanceCommand = new BalanceCommand();
 	}
 
 	public Joystick getJoystick() {
@@ -65,65 +46,20 @@ public class XboxDrive extends Command {
 		driveGyroResetButton.whenPressed(new Command() {
 			protected void initialize() {
 			}
-
 			protected void execute() {
 				gyro.reset();
 			}
-
 			protected boolean isFinished() {
 				return true;
 			}
-
 			protected void end() {
 			}
-
 			protected void interrupted() {
-			}
-
-		});
-		balanceGyroResetButton.whenPressed(new Command() {
-			protected void execute() {
-				bgyro.reset();
-			}
-
-			protected void end() {
-			}
-
-			protected void interrupted() {
-			}
-
-			protected void initialize() {
-			}
-
-			protected boolean isFinished() {
-				return false;
-			}
-		});
-
-		balanceButton.whenPressed(balanceCommand);
-		balanceCancelButton.whenPressed(new Command() {
-			protected void end() {
-			}
-
-			protected void execute() {
-				balanceCommand.cancel();
-			}
-
-			protected void initialize() {
-			}
-
-			protected void interrupted() {
-			}
-
-			protected boolean isFinished() {
-				return false;
 			}
 		});
 	}
 
 	protected void execute() {
-		// gyro.updateDesiredHeading(stick.getTwist());
-
 		// Following Algorithm Corrects loose Joystick on Xbox controller with
 		// cubic functions
 
@@ -150,14 +86,12 @@ public class XboxDrive extends Command {
 
 		drive.mecanumDrive(x, y, twist, gyro.getAngle());
 	}
-
+	
 	protected boolean isFinished() {
 		return finished;
 	}
-
 	protected void end() {
 	}
-
 	protected void interrupted() {
 	}
 }

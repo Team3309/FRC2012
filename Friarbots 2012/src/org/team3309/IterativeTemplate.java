@@ -38,6 +38,7 @@ public class IterativeTemplate extends IterativeRobot {
 	// Declare Commands
 	Command autonomousCommand;
 	BalanceCommand balanceCommand;
+	
 	JoystickDrive driveCommand;
 	// XboxDrive driveCommand;
 
@@ -72,6 +73,14 @@ public class IterativeTemplate extends IterativeRobot {
 		driveCommand = new JoystickDrive(1);
 		// driveCommand = new XboxDrive(1);
 
+		//Buttons for joystick
+		balanceButton = new JoystickButton(OI.getInstance().getJoystick(1), 12);
+		balanceCancelButton = new JoystickButton(OI.getInstance().getJoystick(1), 11);
+
+		//Buttons for XboxController
+		//balanceButton = new JoystickButton(OI.getInstance().getJoystick(1), XboxMap.B_START);
+		//balanceCancelButton	= new JoystickButton(OI.getInstance().getJoystick(1), XboxMap.B_BACK);
+
 	}
 
 	public void disabledInit() {
@@ -95,6 +104,24 @@ public class IterativeTemplate extends IterativeRobot {
 		
 		new JoystickButton(stick, 6).whenPressed(new DeployUbarCommand());
 		new JoystickButton(stick, 4).whenPressed(new RetractUbarCommand());
+
+		balanceButton.whenPressed(balanceCommand);
+
+		balanceCancelButton.whenPressed(new Command(){
+			protected void end() {			
+			}
+			protected void execute() {
+				// TODO Auto-generated method stub
+				balanceCommand.cancel();
+			}
+			protected void initialize() {
+			}
+			protected void interrupted() {			
+			}
+			protected boolean isFinished() {
+				return false;
+			}			
+		});
 	}
 
 	/**
