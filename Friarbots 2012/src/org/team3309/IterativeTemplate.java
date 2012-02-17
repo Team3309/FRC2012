@@ -7,11 +7,10 @@
 
 package org.team3309;
 
-
 import org.team3309.commands.BalanceCommand;
 import org.team3309.commands.JoystickDrive;
 import org.team3309.commands.XboxDrive;
-import org.team3309.subsystems.DriveSubsystem;
+import org.team3309.properties.Properties;
 import org.team3309.subsystems.PneumaticsSubsystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -29,25 +28,22 @@ import edu.wpi.first.wpilibj.command.Scheduler;
  */
 public class IterativeTemplate extends IterativeRobot {
 
-	//Delcare Subsystems
-	DriveSubsystem drive;
+	// Declare Subsystems
+	// DriveSubsystem drive;
 	PneumaticsSubsystem pneumatics;
 
-	//Joystick
-	Joystick stick;
-	
-	//Declare Commands
-	Command autonomousCommand;    
+	// Declare Commands
+	Command autonomousCommand;
 	BalanceCommand balanceCommand;
-	//JoystickDrive driveCommand;
-	XboxDrive driveCommand;
-
-	//Declare Buttons
+	
+	//Drive Controls
+	JoystickDrive 	driveCommand;
+	//XboxDrive 		driveCommand;
+	
+	// Declare Buttons
 	JoystickButton balanceButton;
 	JoystickButton balanceCancelButton;
 
-	
-	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -59,29 +55,30 @@ public class IterativeTemplate extends IterativeRobot {
 		// create the instance of the operator interface class
 		// this will associate all the buttons with the appropriate commands
 		OI.getInstance();
+		Properties.getInstance();
 
 		// initialize all subsystems here.
-		drive = DriveSubsystem.getInstance();
-		//		pneumatics = PneumaticsSubsystem.getInstance();
-		//		pneumatics.start();
+		// drive = DriveSubsystem.getInstance();
+		// pneumatics = PneumaticsSubsystem.getInstance();
+		// pneumatics.start();
 
-		//initialize commands
+		// initialize commands
 		balanceCommand = new BalanceCommand();
-		
-		//driveCommand = new JoystickDrive(1);
-		driveCommand = new XboxDrive(1);
-		
+
+		driveCommand = new JoystickDrive(1);
+		//driveCommand = new XboxDrive(1);
+
 		//Buttons for joystick
-		//balanceButton = new JoystickButton(OI.getInstance().getJoystick(1), 12);
-		//balanceCancelButton = new JoystickButton(OI.getInstance().getJoystick(1), 11);
-		
+		balanceButton = new JoystickButton(OI.getInstance().getJoystick(1), 12);
+		balanceCancelButton = new JoystickButton(OI.getInstance().getJoystick(1), 11);
+
 		//Buttons for XboxController
-		balanceButton = new JoystickButton(OI.getInstance().getJoystick(1), XboxMap.B_START);
-		balanceCancelButton	= new JoystickButton(OI.getInstance().getJoystick(1), XboxMap.B_BACK);
-		
+		//balanceButton = new JoystickButton(OI.getInstance().getJoystick(1), XboxMap.B_START);
+		//balanceCancelButton	= new JoystickButton(OI.getInstance().getJoystick(1), XboxMap.B_BACK);
+
 	}
 
-	public void disabledInit(){
+	public void disabledInit() {
 		balanceCommand.cancel();
 		Scheduler.getInstance().run();
 	}
@@ -99,9 +96,9 @@ public class IterativeTemplate extends IterativeRobot {
 
 	public void teleopInit() {
 		driveCommand.start();
-		
+
 		balanceButton.whenPressed(balanceCommand);
-		
+
 		balanceCancelButton.whenPressed(new Command(){
 			protected void end() {			
 			}
@@ -126,4 +123,3 @@ public class IterativeTemplate extends IterativeRobot {
 		Scheduler.getInstance().run();
 	}
 }
-

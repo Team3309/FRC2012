@@ -2,8 +2,7 @@ package org.team3309;
 
 public class XboxMap {
 	/*
-	 * Xbox 360 Controller Mapping
-	 * - Vincente
+	 * Xbox 360 Controller Mapping - Vincente
 	 */
 	
 	//Buttons
