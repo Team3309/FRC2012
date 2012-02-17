@@ -4,5 +4,7 @@ public interface PositionJaguar {
 
 	public void absolute(double pos);
 	public void add(double delta);
+	public void start();
+	public void stop();
 	
 }
