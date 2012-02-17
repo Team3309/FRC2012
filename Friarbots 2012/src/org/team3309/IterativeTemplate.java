@@ -8,11 +8,14 @@
 package org.team3309;
 
 import org.team3309.commands.BalanceCommand;
+import org.team3309.commands.DeployUbarCommand;
 import org.team3309.commands.JoystickDrive;
+import org.team3309.commands.RetractUbarCommand;
 import org.team3309.properties.Properties;
 import org.team3309.subsystems.PneumaticsSubsystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -26,6 +29,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
  */
 public class IterativeTemplate extends IterativeRobot {
 
+	Joystick stick;
+	
 	// Declare Subsystems
 	// DriveSubsystem drive;
 	PneumaticsSubsystem pneumatics;
@@ -52,12 +57,15 @@ public class IterativeTemplate extends IterativeRobot {
 		// this will associate all the buttons with the appropriate commands
 		OI.getInstance();
 		Properties.getInstance();
+		PneumaticsSubsystem.getInstance();
 
 		// initialize all subsystems here.
 		// drive = DriveSubsystem.getInstance();
 		// pneumatics = PneumaticsSubsystem.getInstance();
 		// pneumatics.start();
 
+		stick = OI.getInstance().getJoystick(1);
+		
 		// initialize commands
 		balanceCommand = new BalanceCommand();
 
@@ -84,6 +92,9 @@ public class IterativeTemplate extends IterativeRobot {
 
 	public void teleopInit() {
 		driveCommand.start();
+		
+		new JoystickButton(stick, 6).whenPressed(new DeployUbarCommand());
+		new JoystickButton(stick, 4).whenPressed(new RetractUbarCommand());
 	}
 
 	/**

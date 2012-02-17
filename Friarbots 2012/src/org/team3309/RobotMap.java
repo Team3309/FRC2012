@@ -30,5 +30,10 @@ public class RobotMap {
 	public static final int ENCODER_FRONT_LEFT_B = 4;
 	public static final int ENCODER_FRONT_RIGHT_A = 5;
 	public static final int ENCODER_FRONT_RIGHT_B = 6;
+	
+	public static final int PNEUMATIC_COMPRESSOR_RELAY = 1;
+	public static final int PNEUMATIC_PRESSURE_SWITCH = 9;
+	public static final int PNEUMATIC_SOLENOID_FORWARD = 1;
+	public static final int PNEUMATIC_SOLENOID_REVERSE = 2;
 
 }
