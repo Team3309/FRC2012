@@ -35,7 +35,7 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput, Runna
 		} catch (CANTimeoutException e) {
 			e.printStackTrace();
 		}
-		mController = new SendablePIDController(10, 0.1, 0, this, this);
+		mController = new SendablePIDController(0, .04, 0.048, this, this);
 		mController.setInputRange(-sMaxSpeed, sMaxSpeed);
 		mController.setOutputRange(-sMaxSpeed, sMaxSpeed);
 		mEncoder = new Encoder(aChannel, bChannel);
@@ -52,11 +52,10 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput, Runna
 		} catch (CANTimeoutException e) {
 			e.printStackTrace();
 		}
-		SmartDashboard.putDouble("speedJagSet", output / sMaxSpeed);
+		SmartDashboard.putDouble("PID Output", output);
 	}
 
 	public double pidGet() {
-		System.out.println("returning "+mRPM+" for pidGet");
 		return mRPM;
 	}
 

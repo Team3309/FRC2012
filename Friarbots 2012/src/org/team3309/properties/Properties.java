@@ -84,13 +84,19 @@ public class Properties {
 	 * You do not need to call this method unless you want to reload properties without rebooting
 	 * @throws IOException
 	 */
-	public void reload() throws IOException {
-		BufferedReader in = new BufferedReader(new InputStreamReader(((FileConnection)Connector.open("file://"+sPath)).openInputStream()));
-		String line = null;
-		while((line = in.readLine()) != null) {
-			String key = line.substring(0, line.indexOf("="));
-			String value = line.substring(line.indexOf("="));
-			map.put(key, value);
+	public void reload() {
+		try {
+			BufferedReader in = new BufferedReader(new InputStreamReader(
+					((FileConnection) Connector.open("file://" + sPath))
+							.openInputStream()));
+			String line = null;
+			while ((line = in.readLine()) != null) {
+				String key = line.substring(0, line.indexOf("="));
+				String value = line.substring(line.indexOf("=")+1);
+				map.put(key, value);
+			}
+		} catch (IOException ex) {
+			ex.printStackTrace();
 		}
 	}
 	
