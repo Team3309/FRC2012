@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class BalanceCommand extends Command{
 
 	private static final boolean balanced = false;
-	
+
 	Joystick stick 					= null; 
 	edu.wpi.first.wpilibj.Gyro gyro = null;
 	DriveSubsystem drive 			= null;
@@ -20,7 +20,7 @@ public class BalanceCommand extends Command{
 	double initialAngle 			= 0;
 	int x							= 0;
 	double driveUpSpeed				= .23;
-	
+
 	boolean startBalance			= false;
 	boolean balancing				= false;
 	boolean finished 				= false;
@@ -47,7 +47,7 @@ public class BalanceCommand extends Command{
 				balancing = true;
 			}
 		}
-		
+
 		while(balancing){
 			if(Math.abs(initialAngle - gyro.getAngle()) < 2){
 				//driveFoward(1.5);
@@ -57,7 +57,6 @@ public class BalanceCommand extends Command{
 			}
 		}
 	}
-
 	protected boolean isFinished() {
 		// TODO Auto-generated method stub
 		return false;

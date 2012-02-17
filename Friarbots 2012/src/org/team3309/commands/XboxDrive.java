@@ -24,8 +24,6 @@ public class XboxDrive extends Command {
 	private JoystickButton driveGyroResetButton;
 	public Gyro gyro;
 
-	private BalanceCommand balanceCommand;
-
 	private DriveSubsystem drive = null;
 	private Joystick controller = null;
 
@@ -33,17 +31,11 @@ public class XboxDrive extends Command {
 
 	public XboxDrive(int joystickID) {
 		drive = DriveSubsystem.getInstance();
-
 		requires(drive);
-
 		controller = OI.getInstance().getJoystick(joystickID);
-
 		gyro = Gyro.getInstance(1, 2);
-
 		driveGyroResetButton = new JoystickButton(controller,
 				XboxMap.B_LEFT_STICK);
-
-		balanceCommand = new BalanceCommand();
 	}
 
 	public Joystick getJoystick() {
@@ -54,26 +46,20 @@ public class XboxDrive extends Command {
 		driveGyroResetButton.whenPressed(new Command() {
 			protected void initialize() {
 			}
-
 			protected void execute() {
 				gyro.reset();
 			}
-
 			protected boolean isFinished() {
 				return true;
 			}
-
 			protected void end() {
 			}
-
 			protected void interrupted() {
 			}
 		});
 	}
 
 	protected void execute() {
-		// gyro.updateDesiredHeading(stick.getTwist());
-
 		// Following Algorithm Corrects loose Joystick on Xbox controller with
 		// cubic functions
 
@@ -99,16 +85,13 @@ public class XboxDrive extends Command {
 		twist -= .05;
 
 		drive.mecanumDrive(x, y, twist, gyro.getAngle());
-		System.out.println(x + "\t" + y + "\t" + twist);
 	}
-
+	
 	protected boolean isFinished() {
 		return finished;
 	}
-
 	protected void end() {
 	}
-
 	protected void interrupted() {
 	}
 }

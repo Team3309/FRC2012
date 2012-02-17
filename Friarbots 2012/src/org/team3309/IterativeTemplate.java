@@ -9,12 +9,10 @@ package org.team3309;
 
 import org.team3309.commands.BalanceCommand;
 import org.team3309.commands.JoystickDrive;
-import org.team3309.commands.XboxDrive;
 import org.team3309.properties.Properties;
 import org.team3309.subsystems.PneumaticsSubsystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -36,10 +34,9 @@ public class IterativeTemplate extends IterativeRobot {
 	Command autonomousCommand;
 	BalanceCommand balanceCommand;
 	
-	//Drive Controls
-	JoystickDrive 	driveCommand;
-	//XboxDrive 		driveCommand;
-	
+	JoystickDrive driveCommand;
+	// XboxDrive driveCommand;
+
 	// Declare Buttons
 	JoystickButton balanceButton;
 	JoystickButton balanceCancelButton;
@@ -66,7 +63,7 @@ public class IterativeTemplate extends IterativeRobot {
 		balanceCommand = new BalanceCommand();
 
 		driveCommand = new JoystickDrive(1);
-		//driveCommand = new XboxDrive(1);
+		// driveCommand = new XboxDrive(1);
 
 		//Buttons for joystick
 		balanceButton = new JoystickButton(OI.getInstance().getJoystick(1), 12);
