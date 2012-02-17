@@ -16,7 +16,8 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 	private SendablePIDController mController = null;
 	private Encoder mEncoder = null;
 
-	public static final double sMaxSpeed = 500;
+	public static final double DEAD_ZONE = 15;
+	public static final double sMaxSpeed = 50;
 	private int canId = 0;
 
 	private boolean enabled = false;
@@ -41,12 +42,14 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 		mController = new SendablePIDController(0, .04, 0.048, this, this);
 		mController.setInputRange(-sMaxSpeed, sMaxSpeed);
 		mController.setOutputRange(-sMaxSpeed, sMaxSpeed);
+		mController.setTolerance(10);
 		mEncoder = new Encoder(aChannel, bChannel);
 		mEncoder.setDistancePerPulse(2.0 / 360.0); // 360 counts to go 2'
 		mEncoder.start();
 		SmartDashboard.putData("Jag" + this.canId + " PID", mController);
 
 		mThread = new Thread(this, "SpeedJaguar" + canId);
+		mThread.start();
 	}
 
 	public void pidWrite(double output) {
@@ -55,21 +58,10 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 		} catch (CANTimeoutException e) {
 			e.printStackTrace();
 		}
-		SmartDashboard.putDouble("PID Output", output);
 	}
 
 	public double pidGet() {
 		return mRPM;
-	}
-
-	public void disable() {
-		try {
-			mJaguar.disableControl();
-		} catch (CANTimeoutException e) {
-			e.printStackTrace();
-		}
-		mController.disable();
-		mEncoder.stop();
 	}
 
 	public double get() {
@@ -79,13 +71,42 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 	public void set(double x) {
 		if (!enabled)
 			enable();
+		if(Math.abs(x) < DEAD_ZONE){
+			try {
+				mJaguar.setX(0);
+			} catch (CANTimeoutException e) {
+				e.printStackTrace();
+			}
+			mController.setSetpoint(0);
+			disable();
+		}
 		mController.setSetpoint(x);
 	}
 
 	public void set(double x, byte arg1) {
 		if (!enabled)
 			enable();
+		if(Math.abs(x) < DEAD_ZONE){
+			try {
+				mJaguar.setX(0);
+			} catch (CANTimeoutException e) {
+				e.printStackTrace();
+			}
+			mController.setSetpoint(0);
+			disable();
+		}
 		mController.setSetpoint(x);
+	}
+	
+	public void disable() {
+		enabled = false;
+		try {
+			mJaguar.disableControl();
+		} catch (CANTimeoutException e) {
+			e.printStackTrace();
+		}
+		mController.disable();
+		mEncoder.stop();
 	}
 
 	public void enable() {
@@ -97,21 +118,16 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 			e.printStackTrace();
 		}
 		enabled = true;
-		mThread.start();
 	}
 
 	public void run() {
 		while (true) {
 			if (enabled) {
 				int curCount = mEncoder.get();
-				SmartDashboard.putInt("EncoderCount", curCount);
 				double revms = (60000 * Math.abs(curCount - lastCount) / REVOLUTION)
 						/ DELTA_T;
-				SmartDashboard.putInt("DeltaCount",
-						Math.abs(curCount - lastCount));
-				SmartDashboard.putDouble("r/ms", revms);
 				mRPM = revms; // 60000*rev/ms = rev/min
-				SmartDashboard.putDouble("SpeedJagRPM", mRPM);
+				SmartDashboard.putDouble(canId+"RPM", mRPM);
 				try {
 					Thread.sleep(DELTA_T);
 				} catch (InterruptedException e) {

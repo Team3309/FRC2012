@@ -6,9 +6,13 @@ package org.team3309.subsystems;
 
 import org.team3309.RobotMap;
 import org.team3309.commands.JoystickDrive;
-import org.team3309.pid.SpeedJaguar;
-import org.team3309.subsystems.SpeedDrive.MotorType;
 
+import com.sun.squawk.util.MathUtils;
+
+import edu.wpi.first.wpilibj.CANJaguar;
+import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.RobotDrive.MotorType;
+import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -19,9 +23,15 @@ public class DriveSubsystem extends Subsystem {
 
 	private static DriveSubsystem instance = null;
 	private static JoystickDrive command = new JoystickDrive(1);
-	public SpeedDrive mDrive = null;
-
-	private SpeedJaguar lFront, lBack, rFront, rBack;
+	//public SpeedDrive mDrive = null;
+	public RobotDrive mDrive = null;
+	
+	private CANJaguar lFront, lBack, rFront, rBack;
+	//private SpeedJaguar lFront, lBack, rFront, rBack;
+	
+	private static final int MAX_CAN_ATTEMPTS 	= 5;
+    private int canInitAttempts 				= 0;
+    private boolean canSuccesful 				= false;
 
 	// put right side negative to correct polarity
 
@@ -46,7 +56,7 @@ public class DriveSubsystem extends Subsystem {
 	 * Initializes the subsystem
 	 */
 	private DriveSubsystem() {
-		lFront = new SpeedJaguar(RobotMap.JAG_FRONT_LEFT,
+		/*lFront = new SpeedJaguar(RobotMap.JAG_FRONT_LEFT,
 				RobotMap.ENCODER_FRONT_LEFT_A, RobotMap.ENCODER_FRONT_LEFT_B);
 		lBack = new SpeedJaguar(RobotMap.JAG_BACK_LEFT,
 				RobotMap.ENCODER_BACK_LEFT_A, RobotMap.ENCODER_BACK_LEFT_B);
@@ -54,15 +64,43 @@ public class DriveSubsystem extends Subsystem {
 				RobotMap.ENCODER_FRONT_RIGHT_A, RobotMap.ENCODER_FRONT_RIGHT_B);
 		rBack = new SpeedJaguar(RobotMap.JAG_BACK_RIGHT,
 				RobotMap.ENCODER_BACK_RIGHT_A, RobotMap.ENCODER_BACK_RIGHT_B);
-		mDrive = new SpeedDrive(lFront, lBack, rFront, rBack);
+		mDrive = new SpeedDrive(lFront, lBack, rFront, rBack);*/
+		initCAN();
+		mDrive = new RobotDrive(lFront, lBack, rFront, rBack);
 		mDrive.setSafetyEnabled(false);
 		// set the left side motors to inverted to keep correct wiring polarity
 		mDrive.setInvertedMotor(MotorType.kFrontLeft, true);
 		mDrive.setInvertedMotor(MotorType.kRearLeft, true);
 	}
+	
+	/**
+     * Attempts to initialize the CANJaguars
+     * Tries MAX_CAN_ATTEMPTS to initialize the Jaguars in case of CANTimeoutException being thrown
+     * This method recalls itself up to MAX_CAN_ATTEMPTS to attempt to correct temporary CAN timeouts that may occur when the robot boots
+     */
+    private void initCAN(){
+        if(canInitAttempts < MAX_CAN_ATTEMPTS)
+            try {
+                lFront  = new CANJaguar(RobotMap.JAG_FRONT_LEFT);
+                lBack   = new CANJaguar(RobotMap.JAG_BACK_LEFT);
+                rFront  = new CANJaguar(RobotMap.JAG_FRONT_RIGHT);
+                rBack   = new CANJaguar(RobotMap.JAG_BACK_RIGHT);
+                
+                lFront.configNeutralMode(CANJaguar.NeutralMode.kBrake);
+        		lBack.configNeutralMode(CANJaguar.NeutralMode.kBrake);
+        		rFront.configNeutralMode(CANJaguar.NeutralMode.kBrake);
+        		rBack.configNeutralMode(CANJaguar.NeutralMode.kBrake);
+        		
+                canInitAttempts++;
+            } catch (CANTimeoutException ctex) {
+                ctex.printStackTrace();
+                initCAN();
+            }
+        else canSuccesful = false;
+    }
 
 	public void mecanumDrive(double x, double y, double twist, double g) {
-		mDrive.mecanumDrive_Cartesian(-x, -y, -twist, g);
+		mDrive.mecanumDrive_Cartesian(MathUtils.pow(-x,3), MathUtils.pow(-y, 3), MathUtils.pow(-twist,3), g);
 	}
 
 	public void mecanumDrive(double x, double y, double twist) {

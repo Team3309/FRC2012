@@ -1,0 +1,8 @@
+package org.team3309.pid;
+
+public interface PositionJaguar {
+
+	public void absolute(double pos);
+	public void add(double delta);
+	
+}
