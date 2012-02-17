@@ -9,41 +9,44 @@ import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.smartdashboard.SendablePIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput, Runnable{
-	
+public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
+		Runnable {
+
 	private CANJaguar mJaguar = null;
 	private SendablePIDController mController = null;
 	private Encoder mEncoder = null;
-	
-	private static final double sMaxSpeed = 500;
+
+	public static final double sMaxSpeed = 500;
 	private int canId = 0;
-	
+
 	private boolean enabled = false;
-	
+
 	private Thread mThread;
-	
+
 	private int lastCount = 0;
 	private double mRPM = 0;
-	
-	private static final int REVOLUTION = 360; //encoder ticks per revolution
-	private static final int DELTA_T	= 100; //100ms between each sample
-	
-	public SpeedJaguar(int canId, int aChannel, int bChannel){
+
+	private static final int REVOLUTION = 360; // encoder ticks per revolution
+	private static final int DELTA_T = 100; // 100ms between each sample
+
+	public SpeedJaguar(int canId, int aChannel, int bChannel) {
 		this.canId = canId;
 		try {
 			mJaguar = new CANJaguar(canId);
 		} catch (CANTimeoutException e) {
 			e.printStackTrace();
 		}
+		// treat P as D and I as P and D as I
+		// this is necessary when using speed control
 		mController = new SendablePIDController(0, .04, 0.048, this, this);
 		mController.setInputRange(-sMaxSpeed, sMaxSpeed);
 		mController.setOutputRange(-sMaxSpeed, sMaxSpeed);
 		mEncoder = new Encoder(aChannel, bChannel);
-		mEncoder.setDistancePerPulse(2.0 / 360.0); //360 counts to go 2'
+		mEncoder.setDistancePerPulse(2.0 / 360.0); // 360 counts to go 2'
 		mEncoder.start();
-		SmartDashboard.putData("Jag"+canId+" PID", mController);
-		
-		mThread = new Thread(this, "SpeedJaguar"+canId);
+		SmartDashboard.putData("Jag" + this.canId + " PID", mController);
+
+		mThread = new Thread(this, "SpeedJaguar" + canId);
 	}
 
 	public void pidWrite(double output) {
@@ -74,18 +77,18 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput, Runna
 	}
 
 	public void set(double x) {
-		if(!enabled)
+		if (!enabled)
 			enable();
 		mController.setSetpoint(x);
 	}
 
 	public void set(double x, byte arg1) {
-		if(!enabled)
+		if (!enabled)
 			enable();
 		mController.setSetpoint(x);
 	}
-	
-	public void enable(){
+
+	public void enable() {
 		mController.enable();
 		mEncoder.start();
 		try {
@@ -98,14 +101,16 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput, Runna
 	}
 
 	public void run() {
-		while(true){
-			if(enabled){
+		while (true) {
+			if (enabled) {
 				int curCount = mEncoder.get();
 				SmartDashboard.putInt("EncoderCount", curCount);
-				double revms = (60000*Math.abs(curCount-lastCount)/REVOLUTION)/DELTA_T;
-				SmartDashboard.putInt("DeltaCount", Math.abs(curCount-lastCount));
+				double revms = (60000 * Math.abs(curCount - lastCount) / REVOLUTION)
+						/ DELTA_T;
+				SmartDashboard.putInt("DeltaCount",
+						Math.abs(curCount - lastCount));
 				SmartDashboard.putDouble("r/ms", revms);
-				mRPM = revms; //60000*rev/ms = rev/min
+				mRPM = revms; // 60000*rev/ms = rev/min
 				SmartDashboard.putDouble("SpeedJagRPM", mRPM);
 				try {
 					Thread.sleep(DELTA_T);
