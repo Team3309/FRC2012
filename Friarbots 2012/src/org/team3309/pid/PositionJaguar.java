@@ -6,5 +6,7 @@ public interface PositionJaguar {
 	public void add(double delta);
 	public void start();
 	public void stop();
+	public void brake();
+	public void setInverted();
 	
 }
