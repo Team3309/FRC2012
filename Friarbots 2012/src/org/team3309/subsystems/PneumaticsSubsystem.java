@@ -24,16 +24,19 @@ public class PneumaticsSubsystem extends Subsystem {
 
 	// Initialize your subsystem here
 	private PneumaticsSubsystem() {
+		mSolenoid = new DoubleSolenoid(RobotMap.PNEUMATIC_SOLENOID_FORWARD, RobotMap.PNEUMATIC_SOLENOID_REVERSE);
 		mCompressor = new Compressor(RobotMap.PNEUMATIC_PRESSURE_SWITCH,
 				RobotMap.PNEUMATIC_COMPRESSOR_RELAY);
 		mCompressor.start();
 	}
 	
 	public void deployUbar(){
+		mCompressor.start();
 		mSolenoid.set(DoubleSolenoid.Value.kForward);
 	}
 	
 	public void retractUbar(){
+		mCompressor.start();
 		mSolenoid.set(DoubleSolenoid.Value.kReverse);
 	}
 

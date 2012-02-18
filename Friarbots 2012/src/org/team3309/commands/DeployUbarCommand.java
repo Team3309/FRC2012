@@ -8,6 +8,8 @@ public class DeployUbarCommand extends Command{
 	
 	private PneumaticsSubsystem pneumatics;
 	
+	private boolean finished = false;
+	
 	public DeployUbarCommand(){
 		pneumatics = PneumaticsSubsystem.getInstance();
 		requires(pneumatics);
@@ -19,10 +21,11 @@ public class DeployUbarCommand extends Command{
 
 	protected void execute() {
 		pneumatics.deployUbar();
+		finished = true;
 	}
 
 	protected boolean isFinished() {
-		return true;
+		return finished;
 	}
 
 	protected void end() {

@@ -8,6 +8,8 @@ public class RetractUbarCommand extends Command{
 	
 	private PneumaticsSubsystem pneumatics;
 	
+	private boolean finished = false;
+	
 	public RetractUbarCommand(){
 		pneumatics = PneumaticsSubsystem.getInstance();
 		requires(pneumatics);
@@ -19,10 +21,11 @@ public class RetractUbarCommand extends Command{
 
 	protected void execute() {
 		pneumatics.retractUbar();
+		finished = true;
 	}
 
 	protected boolean isFinished() {
-		return true;
+		return finished;
 	}
 
 	protected void end() {

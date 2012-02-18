@@ -45,6 +45,8 @@ public class IterativeTemplate extends IterativeRobot {
 	// Declare Buttons
 	JoystickButton balanceButton;
 	JoystickButton balanceCancelButton;
+	JoystickButton deployUbarButton;
+	JoystickButton retractUbarButton;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -77,10 +79,16 @@ public class IterativeTemplate extends IterativeRobot {
 		balanceButton = new JoystickButton(OI.getInstance().getJoystick(1), 12);
 		balanceCancelButton = new JoystickButton(OI.getInstance().getJoystick(1), 11);
 
+		deployUbarButton = new JoystickButton(stick, 6);
+		retractUbarButton = new JoystickButton(stick, 4);
+		
+		
+
 		//Buttons for XboxController
 		//balanceButton = new JoystickButton(OI.getInstance().getJoystick(1), XboxMap.B_START);
 		//balanceCancelButton	= new JoystickButton(OI.getInstance().getJoystick(1), XboxMap.B_BACK);
 
+		
 	}
 
 	public void disabledInit() {
@@ -101,9 +109,6 @@ public class IterativeTemplate extends IterativeRobot {
 
 	public void teleopInit() {
 		driveCommand.start();
-		
-		new JoystickButton(stick, 6).whenPressed(new DeployUbarCommand());
-		new JoystickButton(stick, 4).whenPressed(new RetractUbarCommand());
 
 		balanceButton.whenPressed(balanceCommand);
 
@@ -122,6 +127,9 @@ public class IterativeTemplate extends IterativeRobot {
 				return false;
 			}			
 		});
+		
+		deployUbarButton.whenPressed(new DeployUbarCommand());
+		retractUbarButton.whenPressed(new RetractUbarCommand());
 	}
 
 	/**
