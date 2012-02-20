@@ -47,7 +47,6 @@ public class VisionSubsystem extends Subsystem {
 	Thread getInfo = new Thread() {
 		public void run() {
 			String tempIn = "";
-			org.json.me.JSONObject obj;
 			while(true){
 				try {
 					if(!tempIn.equals(in.readLine())){
@@ -63,23 +62,11 @@ public class VisionSubsystem extends Subsystem {
 	};
 
 	public double getRPM(){
-		double rpm = 0;
-		try {
-			rpm = (double) data.get(VisionKeys.RPM);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return rpm;
+		return data.optDouble(VisionKeys.RPM);
 	}
 
 	public double getAngle(){
-		double angle = 0;
-		try{
-			angle = (double) data.get(VisionKeys.OFF_ANGLE);
-		} catch(JSONException e){
-			e.printStackTrace();
-		}
-		return angle;
+		return data.optDouble(VisionKeys.OFF_ANGLE);
 	}
 
 }
