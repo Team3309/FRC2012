@@ -36,6 +36,9 @@ public class PositionJaguarImpl implements PositionJaguar, PIDSource, PIDOutput{
 		mEncoder.start();
 		mPid.enable();
 	}
+	public int getAngle(){
+		return mEncoder.get();
+	}
 
 	public void absolute(double pos) {
 		if(!enabled)
@@ -90,6 +93,10 @@ public class PositionJaguarImpl implements PositionJaguar, PIDSource, PIDOutput{
 			if(Math.abs(pos - mPid.getSetpoint()) <= TOLERANCE)
 				return;
 		}
+	}
+
+	public void setVoltage(double x) {
+		mJag.set(x);
 	}
 
 }

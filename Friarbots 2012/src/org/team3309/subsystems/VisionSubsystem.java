@@ -17,9 +17,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class VisionSubsystem extends Subsystem {
 
-	VisionSubsystem instance 	= null;
-	SocketConnection socket 	= null;
-	BufferedReader in 			= null;
+	private static VisionSubsystem instance 	= null;
+	private SocketConnection socket 	= null;
+	private BufferedReader in 			= null;
 
 	JSONObject data				= null;
 
@@ -35,7 +35,7 @@ public class VisionSubsystem extends Subsystem {
 		}
 	}
 
-	public VisionSubsystem getInstance() {
+	public static VisionSubsystem getInstance() {
 		if (instance == null)
 			instance = new VisionSubsystem();
 		return instance;
@@ -65,8 +65,12 @@ public class VisionSubsystem extends Subsystem {
 		return data.optDouble(VisionKeys.RPM);
 	}
 
-	public double getAngle(){
+	public double getOffAngle(){
 		return data.optDouble(VisionKeys.OFF_ANGLE);
 	}
 
+	public boolean canShoot(){
+		return false;
+	}
+	
 }
