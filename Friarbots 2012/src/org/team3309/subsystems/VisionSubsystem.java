@@ -1,12 +1,10 @@
 package org.team3309.subsystems;
 
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 import javax.microedition.io.Connector;
 import javax.microedition.io.SocketConnection;
 
-import org.json.me.JSONArray;
 import org.json.me.JSONException;
 import org.json.me.JSONObject;
 import org.team3309.VisionKeys;
@@ -17,13 +15,14 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class VisionSubsystem extends Subsystem {
 
-	VisionSubsystem instance 	= null;
-	SocketConnection socket 	= null;
-	BufferedReader in 			= null;
+	static VisionSubsystem instance 		= null;
+	SocketConnection socket 				= null;
+	BufferedReader in 						= null;
+	JSONObject data							= null;
 
-	JSONObject data				= null;
-
-	boolean connected 			= false;
+	boolean connected	 					= false;
+	
+	public static final double MAX_OFF_ANGLE	= 32;
 
 	public VisionSubsystem() {
 		try {
@@ -35,7 +34,7 @@ public class VisionSubsystem extends Subsystem {
 		}
 	}
 
-	public VisionSubsystem getInstance() {
+	public static VisionSubsystem getInstance() {
 		if (instance == null)
 			instance = new VisionSubsystem();
 		return instance;
@@ -72,7 +71,7 @@ public class VisionSubsystem extends Subsystem {
 		return rpm;
 	}
 
-	public double getAngle(){
+	public double getOffAngle(){
 		double angle = 0;
 		try{
 			angle = (double) data.get(VisionKeys.OFF_ANGLE);
@@ -80,6 +79,13 @@ public class VisionSubsystem extends Subsystem {
 			e.printStackTrace();
 		}
 		return angle;
+	}
+	
+	public boolean canShoot(){
+		boolean temp = false;
+		if(getOffAngle()<MAX_OFF_ANGLE)
+			temp = true;
+		return temp;
 	}
 
 }

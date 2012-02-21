@@ -36,6 +36,9 @@ public class PositionJaguarImpl implements PositionJaguar, PIDSource, PIDOutput{
 		mEncoder.start();
 		mPid.enable();
 	}
+	public int getAngle(){
+		return mEncoder.get();
+	}
 
 	public void absolute(double pos) {
 		if(!enabled)
