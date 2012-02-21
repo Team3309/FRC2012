@@ -12,8 +12,9 @@ public class RobotMap {
 	public static final int JAG_FRONT_RIGHT	= 3;
 	public static final int JAG_FRONT_LEFT 	= 4;
 	public static final int JAG_BACK_LEFT 	= 5;
-	public static final int JAG_TURRET		= 6;
-	public static final int JAG_SHOOTER		= 7;
+	public static final int JAG_ELEVATOR	= 6;
+	public static final int JAG_TURRET		= 7;
+	public static final int JAG_SHOOTER		= 8;
 
 	public static final int ENCODER_BACK_LEFT_A 	= 1;
 	public static final int ENCODER_BACK_LEFT_B 	= 2;
