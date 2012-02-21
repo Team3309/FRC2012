@@ -74,6 +74,10 @@ public class ShooterSubsystem extends Subsystem{
 		//Insert Voltage Control for Elevate For Manual Override
 		elevJag.setVoltage(d);
 	}
+	
+	public void manualRotate(double x){
+		rotator.setVoltage(x);
+	}
 
 	/*
 	 * Moves the ball into the shooter
