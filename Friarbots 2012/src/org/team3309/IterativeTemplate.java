@@ -62,7 +62,7 @@ public class IterativeTemplate extends IterativeRobot {
 		// this will associate all the buttons with the appropriate commands
 		OI.getInstance();
 		Properties.getInstance();
-		//PneumaticsSubsystem.getInstance();
+		PneumaticsSubsystem.getInstance();
 
 		// initialize all subsystems here.
 		// drive = DriveSubsystem.getInstance();
@@ -127,9 +127,10 @@ public class IterativeTemplate extends IterativeRobot {
 			}			
 		});
 		
-		//deployUbarButton.whenPressed(new DeployUbarCommand());
-		//retractUbarButton.whenPressed(new RetractUbarCommand());
+		deployUbarButton.whenPressed(new DeployUbarCommand());
+		retractUbarButton.whenPressed(new RetractUbarCommand());
 		
+		//new AutoShooterCommand().start();
 		new ManualShooterCommand().start();
 	}
 
@@ -138,5 +139,6 @@ public class IterativeTemplate extends IterativeRobot {
 	 */
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		//System.out.println(OI.getInstance().getJoystick(1).getRawAxis(4) + "\t" + OI.getInstance().getJoystick(1).getRawAxis(5));
 	}
 }
