@@ -11,7 +11,7 @@ public class AutoShooterCommand extends Command{
 
 	private ShooterSubsystem shooter;
 	private Joystick shootStick;
-	private VisionSubsystem vision;
+	//private VisionSubsystem vision;
 
 	public static double ANGLE_TOLERANCE = 3;
 	
@@ -27,7 +27,7 @@ public class AutoShooterCommand extends Command{
 		
 		shootStick = OI.getInstance().getJoystick(2);
 		
-		vision = VisionSubsystem.getInstance();
+		//vision = VisionSubsystem.getInstance();
 	}
 
 	protected void initialize() {
@@ -44,12 +44,17 @@ public class AutoShooterCommand extends Command{
 	 */
 	protected void execute() {
 		
+		if(shooter.ballInFeeder())
+			shooter.elevateBall();
+		
+		/*
 		//Code for Elevator
 				
-		if(shooter.ballAtTop() && vision.canShoot() && shootStick.getTrigger())
+		//if(shooter.ballAtTop() && vision.canShoot() && shootStick.getTrigger())
+		if(shooter.ballAtTop() && shootStick.getTrigger())
 			shooter.shootBall(); 
 		
-		else if(autoElevator && shooter.getBallInFeeder())
+		else if(autoElevator && shooter.ballInFeeder())
 			shooter.elevateBall();
 		
 		//Manual Override which overthrows the topSensor break... can manually put it into shooter
@@ -62,23 +67,23 @@ public class AutoShooterCommand extends Command{
 		 * 
 		 * .... Probably doesn't work.....
 		 */
-		if(autoTargetting){	
+		/*if(autoTargetting){	
 			if(vision.getOffAngle() < -ANGLE_TOLERANCE)
 				shooter.rotateTurret(5);
 			else if(Math.abs(vision.getOffAngle()) > ANGLE_TOLERANCE)
 				shooter.rotateTurret(-5);
-		}
+		}*/
 		//Manual Turret Override
-		else{
+		/*else{
 			shooter.rotateTurret(shootStick.getX());
-		}	
+		}
 	
 		/*
 		 * Button 2 turns on auto targeting
 		 * Button 3 turns off auto targeting
 		 * Button 8 turns on auto Elevator
 		 * Button 9 turns off auto Elevator
-		 */
+		 *//*
 		if(shootStick.getRawButton(2))
 			autoTargetting = true;
 		if(shootStick.getRawButton(3))
@@ -86,7 +91,7 @@ public class AutoShooterCommand extends Command{
 		if(shootStick.getRawButton(8))
 			autoElevator = true;
 		if(shootStick.getRawButton(9))
-			autoElevator = false;
+			autoElevator = false;*/
 	}
 
 	protected boolean isFinished() {

@@ -1,7 +1,7 @@
 package org.team3309;
 
 /**
- * The RobotMap is a mapping from the ports sensors and actuators are wired into
+ * The RobotMap is a mapping from ALL the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
@@ -14,8 +14,9 @@ public class RobotMap {
 	public static final int JAG_BACK_LEFT 	= 5;
 	public static final int JAG_ELEVATOR	= 6;
 	public static final int JAG_TURRET		= 7;
-	public static final int JAG_SHOOTER		= 8;
-
+	public static final int JAG_SHOOTER_1	= 8;
+	public static final int JAG_SHOOTER_2	= 9;
+	
 	public static final int ENCODER_BACK_LEFT_A 	= 1;
 	public static final int ENCODER_BACK_LEFT_B 	= 2;
 	public static final int ENCODER_BACK_RIGHT_A 	= 7;
@@ -38,6 +39,6 @@ public class RobotMap {
 	public static final int PNEUMATIC_SOLENOID_REVERSE 	= 2;
 	
 	//Still have to install
-	public static final int DIGITALINPUT_FEEDER		= 1;
-	public static final int DIGITALINPUT_TOP_SENSOR	= 2;
+	public static final int DIGITALINPUT_FEEDER		= 10;
+	public static final int DIGITALINPUT_TOP_SENSOR	= 11;
 }
