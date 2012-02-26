@@ -84,7 +84,7 @@ public class ShooterSubsystem extends Subsystem{
 			System.out.println("no ball at top");
 			elevJag.set(-.75);
 		}
-		if(ballAtTop){
+		if(ballAtTop()){
 			System.out.println("ball at top, stopping");
 			elevJag.set(0);
 		}

@@ -130,8 +130,8 @@ public class IterativeTemplate extends IterativeRobot {
 		deployUbarButton.whenPressed(new DeployUbarCommand());
 		retractUbarButton.whenPressed(new RetractUbarCommand());
 		
-		//new AutoShooterCommand().start();
-		new ManualShooterCommand().start();
+		new AutoShooterCommand().start();
+		//new ManualShooterCommand().start();
 	}
 
 	/**
