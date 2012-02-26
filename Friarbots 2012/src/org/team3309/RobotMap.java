@@ -38,6 +38,6 @@ public class RobotMap {
 	public static final int PNEUMATIC_SOLENOID_REVERSE 	= 2;
 	
 	//Still have to install
-	public static final int DIGITALINPUT_FEEDER		= 1;
-	public static final int DIGITALINPUT_TOP_SENSOR	= 2;
+	public static final int DIGITALINPUT_FEEDER		= 10;
+	public static final int DIGITALINPUT_TOP_SENSOR	= 11;
 }
