@@ -111,8 +111,7 @@ public class BalanceCommand extends Command{
 	}
 
 	private static double inchToRev(double inches){
-		double revs = inches/(8*Math.PI*360);
-		return revs;
+		return (8*Math.PI*360)/inches;
 	}
 
 }
