@@ -17,7 +17,9 @@ public class AutoShooterCommand extends Command{
 	
 	private boolean autoTargetting;
 	private boolean autoElevator;
-
+	private boolean temp1;
+	private boolean temp2;
+	
 	public AutoShooterCommand(){
 		autoTargetting 	= true;
 		autoElevator	= true;
@@ -27,10 +29,14 @@ public class AutoShooterCommand extends Command{
 		
 		shootStick = OI.getInstance().getJoystick(2);
 		
+		temp1 = false;
+		temp2 = false;
+		
 		//vision = VisionSubsystem.getInstance();
 	}
 
 	protected void initialize() {
+
 	}
 
 	/*
@@ -43,6 +49,12 @@ public class AutoShooterCommand extends Command{
 	 * 		elevate the ball to the top
 	 */
 	protected void execute() {
+		
+		if(shooter.ballAtTop() != temp1 || shooter.ballInFeeder() != temp2){
+			System.out.println("Top: " + shooter.ballAtTop() + "\t" + "Bottom: " + shooter.ballInFeeder());
+			temp1 = shooter.ballAtTop();
+			temp2 = shooter.ballInFeeder();
+		}
 		
 		if(shooter.ballInFeeder())
 			shooter.elevateBall();

@@ -40,5 +40,5 @@ public class RobotMap {
 	
 	//Still have to install
 	public static final int DIGITALINPUT_FEEDER		= 10;
-	public static final int DIGITALINPUT_TOP_SENSOR	= 11;
+	public static final int DIGITALINPUT_TOP_SENSOR	= 14;
 }

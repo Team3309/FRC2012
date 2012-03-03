@@ -27,9 +27,8 @@ public class ShooterSubsystem extends Subsystem{
 	public static final int SHOOTER_SPEED 		= 500; 	//In RPM
 
 	//private AutoShooterCommand command 			= new AutoShooterCommand();
-
 	
-	private static final boolean TOP_SENSOR_ON = false;
+	private static final boolean TOP_SENSOR_ON = true;
 	private static final boolean FEEDER_SENSOR_ON = false;
 	
 	public static ShooterSubsystem getInstance(){
@@ -66,7 +65,7 @@ public class ShooterSubsystem extends Subsystem{
 	//If there i a ball in the front feeder, it adds one to the ball count
 	public boolean ballInFeeder(){
 		if(feederSensor.get() == FEEDER_SENSOR_ON){
-			System.out.println("ball in feeder");
+			//System.out.println("ball in feeder");
 			ballsInElevator++;
 		}
 		return feederSensor.get() == FEEDER_SENSOR_ON;
@@ -81,7 +80,7 @@ public class ShooterSubsystem extends Subsystem{
 	//position control
 	public void elevateBall(){
 		while(!ballAtTop()){
-			System.out.println("no ball at top");
+			//System.out.println("no ball at top");
 			elevJag.set(-.75);
 		}
 		if(ballAtTop()){

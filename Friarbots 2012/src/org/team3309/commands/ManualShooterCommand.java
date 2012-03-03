@@ -29,25 +29,18 @@ public class ManualShooterCommand extends Command{
 		temp1 = shooter.ballAtTop();
 		temp2 = shooter.ballInFeeder();
 		System.out.println("Top: " + shooter.ballAtTop() + "\t" + "Bottom: " + shooter.ballInFeeder());
-		
 	}
 	
 	protected void execute() {
-		if(auto)
-			shooter.manualElevate(stick.getThrottle());
-		else if(!auto)
-			shooter.manualElevate(stick.getY());
-		
-
 		
 		if(shooter.ballAtTop() != temp1 || shooter.ballInFeeder() != temp2){
 			System.out.println("Top: " + shooter.ballAtTop() + "\t" + "Bottom: " + shooter.ballInFeeder());
 			temp1 = shooter.ballAtTop();
 			temp2 = shooter.ballInFeeder();
 		}
-		//shooter.manualRotate(driveStick.getRawAxis(4));
-		shooter.manualRotate(stick.getX());
 		
+		//if(shooter.ballInFeeder())
+			//shooter.elevateBall();
 	}
 
 	protected boolean isFinished() {
