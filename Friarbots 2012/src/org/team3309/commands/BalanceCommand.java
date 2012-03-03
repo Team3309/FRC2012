@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class BalanceCommand extends Command{
 
-	private static final boolean balanced = false;
+	private boolean balanced = false;
 
 	Joystick stick 					= null; 
 	edu.wpi.first.wpilibj.Gyro gyro = null;
@@ -34,6 +34,11 @@ public class BalanceCommand extends Command{
 	boolean finished 				= false;
 	double  tempAngle				= 0;
 	int y 							= 0;
+	
+	
+	private static final double TOLERANCE = 5;
+	private static final double INCHES_TO_MOVE = inchToRev(1);
+	private static final double BALANCED_ANGLE = 0;
 
 	public BalanceCommand(){
 		super();
@@ -50,17 +55,28 @@ public class BalanceCommand extends Command{
 	}
 
 	protected void initialize() {
-		//initialAngle = gyro.getAngle();
+		initialAngle = gyro.getAngle();
 		finished = false;
 		startBalance = true;
 	}
 
-	protected void execute() {	
-
+	protected void execute() {
+		if(Math.abs(gyro.getAngle() - BALANCED_ANGLE) < TOLERANCE){
+			balanced = true;
+			System.out.println("Balanced!");
+			brake();
+			return;
+		}
+		else{ //not balanced
+			System.out.print("Moving forward "+INCHES_TO_MOVE+" rev");
+			drive(INCHES_TO_MOVE);
+			waitForFinish();
+			System.out.println(" finished moving");
+		}
+		
 	}
 	protected boolean isFinished() {
-		// TODO Auto-generated method stub
-		return false;
+		return balanced;
 	}
 
 	protected void end() {
@@ -68,20 +84,16 @@ public class BalanceCommand extends Command{
 
 	protected void interrupted() {
 	}
+	
+	private double getAdjustedAngle(){
+		return gyro.getAngle() - initialAngle;
+	}
 
 	private void drive(double d){
-		//pDrive1.add(inchToRev(d));
-		//pDrive2.add(inchToRev(d));
-		//pDrive3.add(inchToRev(d));
-		//pDrive4.add(inchToRev(d));
-
-		d = d*360;
-
 		pDrive1.add(-d);
 		pDrive2.add(d);
 		pDrive3.add(-d);
 		pDrive4.add(d);
-		//jag.waitForFinsih();
 	}
 
 	private void brake(){
@@ -98,7 +110,7 @@ public class BalanceCommand extends Command{
 		pDrive4.waitForFinish();
 	}
 
-	private double inchToRev(double inches){
+	private static double inchToRev(double inches){
 		double revs = inches/(8*Math.PI*360);
 		return revs;
 	}
