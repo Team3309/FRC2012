@@ -100,7 +100,7 @@ public class DriveSubsystem extends Subsystem {
     }
 
 	public void mecanumDrive(double x, double y, double twist, double g) {
-		mDrive.mecanumDrive_Cartesian(MathUtils.pow(-x,3), MathUtils.pow(-y, 3), MathUtils.pow(-twist,3), g);
+		mDrive.mecanumDrive_Cartesian(MathUtils.pow(x,3), MathUtils.pow(y, 3), MathUtils.pow(-twist,3), g);
 	}
 
 	public void mecanumDrive(double x, double y, double twist) {

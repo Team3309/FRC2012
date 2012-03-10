@@ -51,7 +51,7 @@ public class BalanceCommand extends Command{
 		pDrive3			= new PositionJaguarImpl(RobotMap.JAG_FRONT_LEFT, RobotMap.ENCODER_FRONT_LEFT_A, RobotMap.ENCODER_FRONT_LEFT_B);
 		pDrive4			= new PositionJaguarImpl(RobotMap.JAG_FRONT_RIGHT, RobotMap.ENCODER_FRONT_RIGHT_A, RobotMap.ENCODER_FRONT_RIGHT_B);
 
-		//requires(drive);
+		requires(drive);
 	}
 
 	protected void initialize() {
@@ -90,9 +90,9 @@ public class BalanceCommand extends Command{
 	}
 
 	private void drive(double d){
-		pDrive1.add(-d);
+		pDrive1.add(d);
 		pDrive2.add(d);
-		pDrive3.add(-d);
+		pDrive3.add(d);
 		pDrive4.add(d);
 	}
 
@@ -111,7 +111,7 @@ public class BalanceCommand extends Command{
 	}
 
 	private static double inchToRev(double inches){
-		return (8*Math.PI*360)/inches;
+		return (360/(8*Math.PI))*inches;
 	}
 
 }

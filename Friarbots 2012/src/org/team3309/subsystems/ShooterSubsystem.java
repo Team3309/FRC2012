@@ -65,7 +65,7 @@ public class ShooterSubsystem extends Subsystem{
 	//If there i a ball in the front feeder, it adds one to the ball count
 	public boolean ballInFeeder(){
 		if(feederSensor.get() == FEEDER_SENSOR_ON){
-			//System.out.println("ball in feeder");
+			System.out.println("ball in feeder");
 			ballsInElevator++;
 		}
 		return feederSensor.get() == FEEDER_SENSOR_ON;
