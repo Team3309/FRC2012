@@ -16,6 +16,7 @@ public class PositionJaguarImpl implements PositionJaguar, PIDSource, PIDOutput{
 	
 	private boolean enabled = false;
 	private int multiplier = 1;
+	private static final int TOLERANCE = 10;
 	
 	public PositionJaguarImpl(int canId, int encoderA, int encoderB){
 		try {
@@ -34,6 +35,9 @@ public class PositionJaguarImpl implements PositionJaguar, PIDSource, PIDOutput{
 	public void start(){
 		mEncoder.start();
 		mPid.enable();
+	}
+	public int getAngle(){
+		return mEncoder.get();
 	}
 
 	public void absolute(double pos) {
@@ -81,6 +85,18 @@ public class PositionJaguarImpl implements PositionJaguar, PIDSource, PIDOutput{
 
 	public void setInverted() {
 		multiplier = -1;
+	}
+
+	public void waitForFinish() {
+		while(true){
+			int pos = mEncoder.get();
+			if(Math.abs(pos - mPid.getSetpoint()) <= TOLERANCE)
+				return;
+		}
+	}
+
+	public void setVoltage(double x) {
+		mJag.set(x);
 	}
 
 }

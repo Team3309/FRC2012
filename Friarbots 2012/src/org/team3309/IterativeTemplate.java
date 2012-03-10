@@ -7,9 +7,11 @@
 
 package org.team3309;
 
+import org.team3309.commands.AutoShooterCommand;
 import org.team3309.commands.BalanceCommand;
 import org.team3309.commands.DeployUbarCommand;
 import org.team3309.commands.JoystickDrive;
+import org.team3309.commands.ManualShooterCommand;
 import org.team3309.commands.RetractUbarCommand;
 import org.team3309.properties.Properties;
 import org.team3309.subsystems.PneumaticsSubsystem;
@@ -41,7 +43,7 @@ public class IterativeTemplate extends IterativeRobot {
 	
 	JoystickDrive driveCommand;
 	// XboxDrive driveCommand;
-
+	
 	// Declare Buttons
 	JoystickButton balanceButton;
 	JoystickButton balanceCancelButton;
@@ -64,8 +66,6 @@ public class IterativeTemplate extends IterativeRobot {
 
 		// initialize all subsystems here.
 		// drive = DriveSubsystem.getInstance();
-		// pneumatics = PneumaticsSubsystem.getInstance();
-		// pneumatics.start();
 
 		stick = OI.getInstance().getJoystick(1);
 		
@@ -74,7 +74,7 @@ public class IterativeTemplate extends IterativeRobot {
 
 		driveCommand = new JoystickDrive(1);
 		// driveCommand = new XboxDrive(1);
-
+		
 		//Buttons for joystick
 		balanceButton = new JoystickButton(OI.getInstance().getJoystick(1), 12);
 		balanceCancelButton = new JoystickButton(OI.getInstance().getJoystick(1), 11);
@@ -97,7 +97,6 @@ public class IterativeTemplate extends IterativeRobot {
 	}
 
 	public void autonomousInit() {
-
 	}
 
 	/**
@@ -130,6 +129,10 @@ public class IterativeTemplate extends IterativeRobot {
 		
 		deployUbarButton.whenPressed(new DeployUbarCommand());
 		retractUbarButton.whenPressed(new RetractUbarCommand());
+		
+		new AutoShooterCommand().start();
+		//new ManualShooterCommand().start();
+		
 	}
 
 	/**
@@ -137,5 +140,6 @@ public class IterativeTemplate extends IterativeRobot {
 	 */
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		//System.out.println(OI.getInstance().getJoystick(1).getRawAxis(4) + "\t" + OI.getInstance().getJoystick(1).getRawAxis(5));
 	}
 }

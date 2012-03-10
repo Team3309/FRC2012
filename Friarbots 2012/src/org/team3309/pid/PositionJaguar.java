@@ -8,5 +8,7 @@ public interface PositionJaguar {
 	public void stop();
 	public void brake();
 	public void setInverted();
+	public void waitForFinish();
+	public void setVoltage(double x);
 	
 }
