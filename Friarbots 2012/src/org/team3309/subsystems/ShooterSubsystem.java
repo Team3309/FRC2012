@@ -121,15 +121,15 @@ public class ShooterSubsystem extends Subsystem{
 	}
 
 	//Rotates the turret a certain change 
-	//Prevents going over max range
+	//Prevents going over max range: 270 degrees turning angle
 	public void rotateTurret(double delta){
-//		if(rotator.getAngle()<135 && rotator.getAngle()>-135)
-//			rotator.add(delta);
+		if(rotator.get()<135 && rotator.get()>-135)
+			rotator.set(rotator.get() + delta);
 	}
 	
 	//gets the angle of the turret
-	public int getTurretAngle(){
-//		return rotator.getAngle();
+	public double getTurretAngle(){
+		//return rotator.getX();
 		return 0;
 	}
 
