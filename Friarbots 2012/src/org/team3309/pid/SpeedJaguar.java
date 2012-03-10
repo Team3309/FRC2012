@@ -17,7 +17,7 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 	private Encoder mEncoder = null;
 
 	public static final double DEAD_ZONE = 15;
-	public static final double sMaxSpeed = 50;
+	public static final double sMaxSpeed = 500;
 	private int canId = 0;
 
 	private boolean enabled = false;
@@ -31,6 +31,10 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 	private static final int DELTA_T = 100; // 100ms between each sample
 
 	public SpeedJaguar(int canId, int aChannel, int bChannel) {
+		this(canId, new Encoder(aChannel, bChannel));
+	}
+	
+	public SpeedJaguar(int canId, Encoder encoder){
 		this.canId = canId;
 		try {
 			mJaguar = new CANJaguar(canId);
@@ -43,7 +47,7 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 		mController.setInputRange(-sMaxSpeed, sMaxSpeed);
 		mController.setOutputRange(-sMaxSpeed, sMaxSpeed);
 		mController.setTolerance(10);
-		mEncoder = new Encoder(aChannel, bChannel);
+		mEncoder = encoder;
 		mEncoder.setDistancePerPulse(2.0 / 360.0); // 360 counts to go 2'
 		mEncoder.start();
 		SmartDashboard.putData("Jag" + this.canId + " PID", mController);
@@ -71,7 +75,7 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 	public void set(double x) {
 		if (!enabled)
 			enable();
-		if(Math.abs(x) < DEAD_ZONE){
+		if (Math.abs(x) < DEAD_ZONE) {
 			try {
 				mJaguar.setX(0);
 			} catch (CANTimeoutException e) {
@@ -86,7 +90,7 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 	public void set(double x, byte arg1) {
 		if (!enabled)
 			enable();
-		if(Math.abs(x) < DEAD_ZONE){
+		if (Math.abs(x) < DEAD_ZONE) {
 			try {
 				mJaguar.setX(0);
 			} catch (CANTimeoutException e) {
@@ -97,7 +101,7 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 		}
 		mController.setSetpoint(x);
 	}
-	
+
 	public void disable() {
 		enabled = false;
 		try {
@@ -127,7 +131,7 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 				double revms = (60000 * Math.abs(curCount - lastCount) / REVOLUTION)
 						/ DELTA_T;
 				mRPM = revms; // 60000*rev/ms = rev/min
-				SmartDashboard.putDouble(canId+"RPM", mRPM);
+				SmartDashboard.putDouble(canId + "RPM", mRPM);
 				try {
 					Thread.sleep(DELTA_T);
 				} catch (InterruptedException e) {

@@ -7,14 +7,16 @@ import org.team3309.pid.SpeedJaguar;
 
 import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ShooterSubsystem extends Subsystem{
 
 	private static ShooterSubsystem instance = null;
 
-	private SpeedJaguar shooterJag;
+	private SpeedJaguar shooterJag1, shooterJag2;
 	//private PositionJaguarImpl rotator;
 	private CANJaguar rotator, elevJag;
 
@@ -41,8 +43,11 @@ public class ShooterSubsystem extends Subsystem{
 		//setDefaultCommand(command);
 		feederSensor = new DigitalInput(RobotMap.DIGITALINPUT_FEEDER);
 		topSensor	= new DigitalInput(RobotMap.DIGITALINPUT_TOP_SENSOR);
-
-		//shooterJag 	= new SpeedJaguar(RobotMap.JAG_SHOOTER, RobotMap.ENCODER_SHOOTER_A, RobotMap.ENCODER_SHOOTER_B);
+		
+		Encoder shooterEncoder = new Encoder(RobotMap.ENCODER_SHOOTER_A, RobotMap.ENCODER_SHOOTER_B);
+		shooterJag1 	= new SpeedJaguar(RobotMap.JAG_SHOOTER_1, shooterEncoder);
+		shooterJag2		= new SpeedJaguar(RobotMap.JAG_SHOOTER_2, shooterEncoder);
+		
 		//rotator		= new PositionJaguarImpl(RobotMap.JAG_TURRET, RobotMap.ENCODER_TURRET_A, RobotMap.ENCODER_TURRET_B);
 		try {
 			elevJag			= new CANJaguar(RobotMap.JAG_ELEVATOR);
@@ -111,7 +116,8 @@ public class ShooterSubsystem extends Subsystem{
 
 	//Starts the shooter
 	public void spinUpShooter(){
-		shooterJag.set(SHOOTER_SPEED);
+		shooterJag1.set(SmartDashboard.getDouble("ShooterRPM", 0));
+		shooterJag2.set(SmartDashboard.getDouble("ShooterRPM", 0));
 	}
 
 	//Rotates the turret a certain change 
