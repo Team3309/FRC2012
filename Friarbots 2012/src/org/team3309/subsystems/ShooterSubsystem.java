@@ -129,8 +129,7 @@ public class ShooterSubsystem extends Subsystem{
 	
 	//gets the angle of the turret
 	public double getTurretAngle(){
-		//return rotator.getX();
-		return 0;
+		return rotator.get();
 	}
 
 	//Stops the elevator
