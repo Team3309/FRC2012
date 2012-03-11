@@ -115,7 +115,6 @@ public class IterativeTemplate extends IterativeRobot {
 			protected void end() {			
 			}
 			protected void execute() {
-				// TODO Auto-generated method stub
 				balanceCommand.cancel();
 			}
 			protected void initialize() {

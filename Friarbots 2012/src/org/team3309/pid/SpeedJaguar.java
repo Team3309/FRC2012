@@ -50,7 +50,7 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 		mEncoder = encoder;
 		mEncoder.setDistancePerPulse(2.0 / 360.0); // 360 counts to go 2'
 		mEncoder.start();
-		SmartDashboard.putData("Jag" + this.canId + " PID", mController);
+		//SmartDashboard.putData("Jag" + this.canId + " PID", mController);
 
 		mThread = new Thread(this, "SpeedJaguar" + canId);
 		mThread.start();
