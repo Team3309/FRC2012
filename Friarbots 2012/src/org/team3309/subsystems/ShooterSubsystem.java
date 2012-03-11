@@ -44,7 +44,7 @@ public class ShooterSubsystem extends Subsystem{
 			rotator.changeControlMode(CANJaguar.ControlMode.kPosition);
 			rotator.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
 			rotator.configEncoderCodesPerRev(16);
-			//rotator.setPID(p, i, d)
+			rotator.setPID(100, 0, 0);
 		} catch (CANTimeoutException e) {
 			e.printStackTrace();
 		}
