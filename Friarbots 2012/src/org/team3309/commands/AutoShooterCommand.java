@@ -25,7 +25,7 @@ public class AutoShooterCommand extends Command{
 		vision = VisionSubsystem.getInstance();
 		shooter = ShooterSubsystem.getInstance();
 		requires(shooter);
-		requires(elevator);
+		//requires(elevator);
 		shootStick = OI.getInstance().getJoystick(2);
 	}
 
