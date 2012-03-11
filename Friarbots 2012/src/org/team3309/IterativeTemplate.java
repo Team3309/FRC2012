@@ -10,6 +10,7 @@ package org.team3309;
 import org.team3309.commands.ButtonCommands;
 import org.team3309.commands.JoystickDrive;
 import org.team3309.properties.Properties;
+import org.team3309.subsystems.ElevatorSubsystem;
 import org.team3309.subsystems.PneumaticsSubsystem;
 import org.team3309.subsystems.ShooterSubsystem;
 
@@ -30,6 +31,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class IterativeTemplate extends IterativeRobot {
 
 	Joystick stick;
+	Joystick shooterStick;
 	
 	// Declare Subsystems
 	// DriveSubsystem drive;
@@ -62,6 +64,7 @@ public class IterativeTemplate extends IterativeRobot {
 		// drive = DriveSubsystem.getInstance();
 
 		stick = OI.getInstance().getJoystick(1);
+		shooterStick = OI.getInstance().getJoystick(2);
 		
 		// initialize commands
 		driveCommand = new JoystickDrive(1);
@@ -91,6 +94,7 @@ public class IterativeTemplate extends IterativeRobot {
 		//deployUbarButton.whenPressed(ButtonCommands.deployUbar);
 		//retractUbarButton.whenPressed(ButtonCommands.retractUbar);	
 		ButtonCommands.manualTurret.start();
+		//ButtonCommands.autoElevate.start();
 	}
 
 	/**
@@ -100,6 +104,12 @@ public class IterativeTemplate extends IterativeRobot {
 		Scheduler.getInstance().run();
 		//System.out.println("teleopPeriodic");
 		//ShooterSubsystem.getInstance().setRPM(500);
-		ShooterSubsystem.getInstance().setPercentVbus(OI.getInstance().getJoystick(2).getY());
+		ShooterSubsystem.getInstance().setPercentVbus(shooterStick.getY());
+		if(shooterStick.getRawButton(6))
+			ElevatorSubsystem.getInstance().manualElevate(1);
+		else if(shooterStick.getRawButton(7))
+			ElevatorSubsystem.getInstance().manualElevate(-1);
+		else
+			ElevatorSubsystem.getInstance().manualElevate(0);
 	}
 }

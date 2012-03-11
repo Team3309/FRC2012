@@ -15,6 +15,7 @@ public class ButtonCommands {
 	/*public static Command deployUbar	= new DeployUbarCommand();
 	public static Command retractUbar	= new RetractUbarCommand();
 	public static Command autoShooter	= new AutoShooterCommand();*/
+	public static Command autoElevate	= new AutoElevateCommand();
 }
 
 class AutoTurretCommand extends Command{
