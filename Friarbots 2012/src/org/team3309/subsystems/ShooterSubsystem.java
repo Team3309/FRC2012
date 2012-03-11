@@ -1,9 +1,9 @@
 package org.team3309.subsystems;
 
+import org.team3309.CANJaguar;
 import org.team3309.RobotMap;
 import org.team3309.pid.SpeedJaguar;
 
-import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -38,11 +38,22 @@ public class ShooterSubsystem extends Subsystem{
 			e.printStackTrace();
 		}
 		elevator = ElevatorSubsystem.getInstance();
+		
+		try {
+			rotator = new CANJaguar(RobotMap.JAG_TURRET);
+			rotator.changeControlMode(CANJaguar.ControlMode.kPosition);
+			rotator.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
+			rotator.configEncoderCodesPerRev(16);
+			//rotator.setPID(p, i, d)
+		} catch (CANTimeoutException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void manualRotate(double x){
 		rotator.set(x);
 	}
+	
 	public void shootBall(){
 		if(elevator.ballAtTop()){
 			elevator.shoot();
@@ -51,9 +62,9 @@ public class ShooterSubsystem extends Subsystem{
 	}
 
 	//Starts the shooter
-	public void spinUpShooter(){
-		shooterJag1.set(SmartDashboard.getDouble("ShooterRPM", 0));
-		shooterJag2.set(SmartDashboard.getDouble("ShooterRPM", 0));
+	public void setRPM(double rpm){
+		shooterJag1.set(rpm);
+		shooterJag2.set(rpm);
 	}
 
 	//Rotates the turret a certain change 
