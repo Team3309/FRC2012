@@ -20,7 +20,7 @@ public class VisionSubsystem extends Subsystem {
 	JSONObject data								= null;
 	boolean connected 							= false;
 
-	public VisionSubsystem() {
+	private VisionSubsystem() {
 		try {
 			socket 	= (SocketConnection) Connector.open(VisionKeys.BRAIN_SOCKET);
 			in 		= new BufferedReader(new InputStreamReader(socket.openDataInputStream()));
