@@ -15,6 +15,7 @@ public class ButtonCommands {
 	public static Command deployUbar	= new DeployUbarCommand();
 	public static Command retractUbar	= new RetractUbarCommand();
 	public static Command autoShooter	= new AutoShooterCommand();
+	public static Command shoot			= new ShootCommand();
 	
 }
 
@@ -136,7 +137,22 @@ class ManualElevateCommand extends Command{
 	}
 	protected void execute(){
 		elevator.manualElevate(shootStick.getY());
+	}	
+}
+class ShootCommand extends Command{
+	ShooterSubsystem shooter = null;
+	
+	protected void end(){}
+	protected void initialize(){}
+	protected void interrupted(){}
+	protected boolean isFinished(){return false;}
+	
+	public void ShooterSubsystem(){
+		shooter = ShooterSubsystem.getInstance();
+		requires(shooter);
 	}
 	
-		
+	protected void execute(){
+		shooter.shootBall();
+	}
 }
