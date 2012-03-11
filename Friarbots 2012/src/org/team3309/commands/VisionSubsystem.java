@@ -23,13 +23,13 @@ public class VisionSubsystem extends Subsystem {
 	boolean connected 			= false;
 
 	public VisionSubsystem() {
-		try {
+		/*try {
 			socket 	= (SocketConnection) Connector.open(VisionKeys.BRAIN_SOCKET);
 			in 		= new BufferedReader(new InputStreamReader(socket.openDataInputStream()));
 			getInfo.start();
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 	public VisionSubsystem getInstance() {

@@ -88,8 +88,8 @@ public class IterativeTemplate extends IterativeRobot {
 
 	public void teleopInit() {		
 		driveCommand.start();	
-		deployUbarButton.whenPressed(ButtonCommands.deployUbar);
-		retractUbarButton.whenPressed(ButtonCommands.retractUbar);	
+		//deployUbarButton.whenPressed(ButtonCommands.deployUbar);
+		//retractUbarButton.whenPressed(ButtonCommands.retractUbar);	
 		ButtonCommands.manualTurret.start();
 	}
 
@@ -98,6 +98,8 @@ public class IterativeTemplate extends IterativeRobot {
 	 */
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		ShooterSubsystem.getInstance().setRPM(500);
+		//System.out.println("teleopPeriodic");
+		//ShooterSubsystem.getInstance().setRPM(500);
+		ShooterSubsystem.getInstance().setPercentVbus(OI.getInstance().getJoystick(2).getY());
 	}
 }

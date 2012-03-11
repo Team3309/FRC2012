@@ -28,16 +28,17 @@ public class ShooterSubsystem extends Subsystem{
 	}
 
 	private ShooterSubsystem(){	
-		
+		shooterMotor = new ShooterMotor();
 		elevator = ElevatorSubsystem.getInstance();
 		
 		try {
 			rotator = new CANJaguar(RobotMap.JAG_TURRET);
-			rotator.changeControlMode(CANJaguar.ControlMode.kPosition);
 			rotator.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
 			rotator.configEncoderCodesPerRev(16);
+			rotator.changeControlMode(CANJaguar.ControlMode.kPosition);
 			rotator.setPID(70, 0, 0);
-			rotator.configSoftPositionLimits(135, -135);
+			rotator.configMaxOutputVoltage(4.2);
+			rotator.enableControl(0);
 		} catch (CANTimeoutException e) {
 			e.printStackTrace();
 		}
@@ -57,6 +58,10 @@ public class ShooterSubsystem extends Subsystem{
 	//Starts the shooter
 	public void setRPM(double rpm){
 		shooterMotor.setRpm(rpm);
+	}
+	
+	public void setPercentVbus(double x){
+		shooterMotor.setPercentVbus(x);
 	}
 
 	//Rotates the turret a certain change 

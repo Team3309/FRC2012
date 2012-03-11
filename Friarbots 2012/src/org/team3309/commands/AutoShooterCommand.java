@@ -17,7 +17,7 @@ public class AutoShooterCommand extends Command{
 		vision = VisionSubsystem.getInstance();
 		shooter = ShooterSubsystem.getInstance();
 		requires(shooter);
-		new JoystickButton(OI.getInstance().getJoystick(2), 1).whenPressed(ButtonCommands.shoot);
+		//new JoystickButton(OI.getInstance().getJoystick(2), 1).whenPressed(ButtonCommands.shoot);
 	}
 
 	protected void initialize() {}

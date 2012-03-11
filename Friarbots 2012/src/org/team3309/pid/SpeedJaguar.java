@@ -43,7 +43,7 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 		}
 		// treat P as D and I as P and D as I
 		// this is necessary when using speed control
-		mController = new SendablePIDController(0, 20, 0.048, this, this);
+		mController = new SendablePIDController(0, 1000, 0.0, this, this);
 		mController.setInputRange(-sMaxSpeed, sMaxSpeed);
 		mController.setOutputRange(-sMaxSpeed, sMaxSpeed);
 		mController.setTolerance(10);
