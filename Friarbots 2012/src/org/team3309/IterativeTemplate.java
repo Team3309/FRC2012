@@ -90,10 +90,14 @@ public class IterativeTemplate extends IterativeRobot {
 	}
 
 	public void teleopInit() {		
-		driveCommand.start();	
-		//deployUbarButton.whenPressed(ButtonCommands.deployUbar);
-		//retractUbarButton.whenPressed(ButtonCommands.retractUbar);	
+		System.out.println("In teleop Init");
+		driveCommand.start();
+		System.out.println("Started Drive");
+		deployUbarButton.whenPressed(ButtonCommands.deployUbar);
+		retractUbarButton.whenPressed(ButtonCommands.retractUbar);	
+		System.out.println("Started Ubar Commands");
 		ButtonCommands.manualTurret.start();
+		System.out.println("Started Manual Turret Command");
 		//ButtonCommands.autoElevate.start();
 	}
 
