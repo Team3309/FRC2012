@@ -29,8 +29,8 @@ public class RobotMap {
 	//Still have to install
 	public static final int ENCODER_TURRET_A		= 7;
 	public static final int ENCODER_TURRET_B		= 8;
-	public static final int ENCODER_SHOOTER_A		= 9;
-	public static final int ENCODER_SHOOTER_B		= 10;
+	public static final int ENCODER_SHOOTER_A		= 12;
+	public static final int ENCODER_SHOOTER_B		= 13;
 	
 
 	public static final int PNEUMATIC_COMPRESSOR_RELAY 	= 1;

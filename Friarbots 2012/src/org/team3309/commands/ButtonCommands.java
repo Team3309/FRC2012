@@ -15,7 +15,6 @@ public class ButtonCommands {
 	public static Command deployUbar	= new DeployUbarCommand();
 	public static Command retractUbar	= new RetractUbarCommand();
 	public static Command autoShooter	= new AutoShooterCommand();
-	
 }
 
 class AutoTurretCommand extends Command{
@@ -24,7 +23,7 @@ class AutoTurretCommand extends Command{
 	
 	public AutoTurretCommand(){
 		rotator = ShooterSubsystem.getInstance();
-		vision 	= VisionSubsystem.getInstance();
+		//vision 	= VisionSubsystem.getInstance();
 	}
 	
 	protected void end(){}
@@ -47,8 +46,19 @@ class ManualTurretCommand extends Command{
 	}
 	protected void end(){}
 	protected void execute() {
-		shooter.rotateTurret(shootStick.getX());
+		if(shootStick.getRawButton(4)){
+			shooter.setTurretAngle(135);
+			System.out.println("Button 4");
 		}
+		if(shootStick.getRawButton(3)){
+			shooter.setTurretAngle(0);
+			System.out.println("Button 3");
+		}
+		if(shootStick.getRawButton(5)){
+			shooter.setTurretAngle(-135);
+			System.out.println("Button 5");
+		}
+	}
 	protected void initialize(){}
 	protected void interrupted(){}
 	protected boolean isFinished(){return false;}	

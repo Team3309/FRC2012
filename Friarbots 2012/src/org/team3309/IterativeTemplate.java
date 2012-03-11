@@ -11,12 +11,14 @@ import org.team3309.commands.ButtonCommands;
 import org.team3309.commands.JoystickDrive;
 import org.team3309.properties.Properties;
 import org.team3309.subsystems.PneumaticsSubsystem;
+import org.team3309.subsystems.ShooterSubsystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -88,6 +90,7 @@ public class IterativeTemplate extends IterativeRobot {
 		driveCommand.start();	
 		deployUbarButton.whenPressed(ButtonCommands.deployUbar);
 		retractUbarButton.whenPressed(ButtonCommands.retractUbar);	
+		ButtonCommands.manualTurret.start();
 	}
 
 	/**
@@ -95,5 +98,6 @@ public class IterativeTemplate extends IterativeRobot {
 	 */
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		ShooterSubsystem.getInstance().setRPM(500);
 	}
 }

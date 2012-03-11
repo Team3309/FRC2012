@@ -43,14 +43,14 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 		}
 		// treat P as D and I as P and D as I
 		// this is necessary when using speed control
-		mController = new SendablePIDController(0, .04, 0.048, this, this);
+		mController = new SendablePIDController(0, 20, 0.048, this, this);
 		mController.setInputRange(-sMaxSpeed, sMaxSpeed);
 		mController.setOutputRange(-sMaxSpeed, sMaxSpeed);
 		mController.setTolerance(10);
 		mEncoder = encoder;
 		mEncoder.setDistancePerPulse(2.0 / 360.0); // 360 counts to go 2'
 		mEncoder.start();
-		//SmartDashboard.putData("Jag" + this.canId + " PID", mController);
+		SmartDashboard.putData("Jag" + this.canId + " PID", mController);
 
 		mThread = new Thread(this, "SpeedJaguar" + canId);
 		mThread.start();
@@ -70,6 +70,10 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 
 	public double get() {
 		return mRPM;
+	}
+	
+	public double getVoltageSet(){
+		return mJaguar.get();
 	}
 
 	public void set(double x) {
@@ -131,7 +135,7 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 				double revms = (60000 * Math.abs(curCount - lastCount) / REVOLUTION)
 						/ DELTA_T;
 				mRPM = revms; // 60000*rev/ms = rev/min
-				SmartDashboard.putDouble(canId + "RPM", mRPM);
+				//SmartDashboard.putDouble(canId + "RPM", mRPM);
 				try {
 					Thread.sleep(DELTA_T);
 				} catch (InterruptedException e) {
