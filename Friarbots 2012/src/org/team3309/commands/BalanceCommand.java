@@ -6,11 +6,9 @@ import org.team3309.pid.PositionJaguar;
 import org.team3309.pid.PositionJaguarImpl;
 import org.team3309.pid.SpeedJaguar;
 import org.team3309.subsystems.DriveSubsystem;
-import org.team3309.subsystems.PneumaticsSubsystem;
 
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class BalanceCommand extends Command{

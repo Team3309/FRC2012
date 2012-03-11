@@ -1,12 +1,9 @@
 package org.team3309.subsystems;
 
 import org.team3309.RobotMap;
-import org.team3309.commands.AutoShooterCommand;
-import org.team3309.pid.PositionJaguarImpl;
 import org.team3309.pid.SpeedJaguar;
 
 import edu.wpi.first.wpilibj.CANJaguar;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.command.Subsystem;
