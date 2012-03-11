@@ -146,7 +146,22 @@ class ManualElevateCommand extends Command{
 	}
 	protected void execute(){
 		elevator.manualElevate(shootStick.getY());
+	}	
+}
+class ShootCommand extends Command{
+	ShooterSubsystem shooter = null;
+	
+	protected void end(){}
+	protected void initialize(){}
+	protected void interrupted(){}
+	protected boolean isFinished(){return false;}
+	
+	public void ShooterSubsystem(){
+		shooter = ShooterSubsystem.getInstance();
+		requires(shooter);
 	}
 	
-		
+	protected void execute(){
+		shooter.shootBall();
+	}
 }
