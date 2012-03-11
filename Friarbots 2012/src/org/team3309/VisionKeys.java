@@ -9,4 +9,5 @@ public class VisionKeys {
 	public static final String RPM 				= "rpm";
 	public static final String OFF_ANGLE		= "angle";
 	public static final String DISTANCE			= "distance";
+	public static final String CAN_SHOOT		= "canShoot";
 }
