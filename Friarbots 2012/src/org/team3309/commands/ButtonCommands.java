@@ -15,7 +15,7 @@ public class ButtonCommands {
 	public static Command deployUbar	= new DeployUbarCommand();
 	public static Command retractUbar	= new RetractUbarCommand();
 	//public static Command autoShooter	= new AutoShooterCommand();*/
-	//public static Command autoElevate	= new AutoElevateCommand();
+	public static Command autoElevate	= new AutoElevateCommand();
 }
 
 class AutoTurretCommand extends Command{
@@ -117,15 +117,9 @@ class AutoElevateCommand extends Command{
 	}
 	protected void end() {}
 	protected void execute() {
-		//Just info stuff
-		if(elevator.ballAtTop() != temp1 || elevator.ballInFeeder() != temp2){
-			System.out.println("Top: " + elevator.ballAtTop() + "\t" + "Bottom: " + elevator.ballInFeeder());
-			temp1 = elevator.ballAtTop();
-			temp2 = elevator.ballInFeeder();
-		}
-		//Actual execution of stuff
-		if(elevator.ballInFeeder())
+		while(elevator.ballAtBot()){
 			elevator.elevateBall();
+		}
 	}
 	protected void initialize(){}
 	protected void interrupted(){}
@@ -146,7 +140,12 @@ class ManualElevateCommand extends Command{
 		requires(elevator);
 	}
 	protected void execute(){
-		elevator.manualElevate(shootStick.getY());
+		if(shootStick.getRawButton(6))
+			ElevatorSubsystem.getInstance().manualElevate(1);
+		else if(shootStick.getRawButton(7))
+			ElevatorSubsystem.getInstance().manualElevate(-1);
+		else
+			ElevatorSubsystem.getInstance().manualElevate(0);
 	}	
 }
 class ShootCommand extends Command{
@@ -166,3 +165,24 @@ class ShootCommand extends Command{
 		shooter.shootBall();
 	}
 }
+
+class PrepShootCommand extends Command{
+	ElevatorSubsystem elevator= null;
+	
+	protected void end(){}
+	protected void initialize(){}
+	protected void interrupted(){}
+	protected boolean isFinished(){
+		return elevator.ballAtTop();
+	}
+	
+	public void ShooterSubsystem(){
+		elevator = ElevatorSubsystem.getInstance();
+		requires(elevator);
+	}
+	
+	protected void execute(){
+		elevator.elevateBall();
+	}
+}
+

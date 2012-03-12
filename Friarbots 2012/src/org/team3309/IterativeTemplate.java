@@ -45,6 +45,8 @@ public class IterativeTemplate extends IterativeRobot {
 	// Declare Buttons
 	JoystickButton deployUbarButton;
 	JoystickButton retractUbarButton;
+	JoystickButton autoElevateButton;
+	JoystickButton manualElevateButton;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -72,6 +74,9 @@ public class IterativeTemplate extends IterativeRobot {
 		//Buttons for joystick
 		deployUbarButton = new JoystickButton(stick, 6);
 		retractUbarButton = new JoystickButton(stick, 4);	
+		
+		autoElevateButton = new JoystickButton(shooterStick, 8);
+		manualElevateButton = new JoystickButton(shooterStick, 9);
 	}
 
 	public void disabledInit() {
@@ -91,14 +96,19 @@ public class IterativeTemplate extends IterativeRobot {
 
 	public void teleopInit() {		
 		System.out.println("In teleop Init");
+		
 		driveCommand.start();
 		System.out.println("Started Drive");
+		
 		deployUbarButton.whenPressed(ButtonCommands.deployUbar);
 		retractUbarButton.whenPressed(ButtonCommands.retractUbar);	
-		System.out.println("Started Ubar Commands");
+		System.out.println("Started Ubar");
+		
 		ButtonCommands.manualTurret.start();
-		System.out.println("Started Manual Turret Command");
-		//ButtonCommands.autoElevate.start();
+		System.out.println("Started Manual Turret");
+		
+		ButtonCommands.autoElevate.start();
+		System.out.println("Started Automatic Elevation");
 	}
 
 	/**
@@ -109,11 +119,5 @@ public class IterativeTemplate extends IterativeRobot {
 		//System.out.println("teleopPeriodic");
 		//ShooterSubsystem.getInstance().setRPM(500);
 		ShooterSubsystem.getInstance().setPercentVbus(shooterStick.getY());
-		if(shooterStick.getRawButton(6))
-			ElevatorSubsystem.getInstance().manualElevate(1);
-		else if(shooterStick.getRawButton(7))
-			ElevatorSubsystem.getInstance().manualElevate(-1);
-		else
-			ElevatorSubsystem.getInstance().manualElevate(0);
 	}
 }

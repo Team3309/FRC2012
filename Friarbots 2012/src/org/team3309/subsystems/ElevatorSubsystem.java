@@ -13,13 +13,11 @@ public class ElevatorSubsystem extends Subsystem {
 	
 	private static ElevatorSubsystem instance = null;
 	
-	private int ballsInElevator 					= 0;
+	private boolean ballAtBot						= false;
 	private boolean ballAtTop						= false;
 	private static final boolean TOP_SENSOR_ON 		= false;
 	private static final boolean FEEDER_SENSOR_ON 	= false;
-	
-	public static final int COUNTS_TO_ELEVATE 	= 0;	//How many encoder counts in an elevator cycle
-	
+		
 	public static ElevatorSubsystem getInstance(){
 		if(instance == null)
 			instance = new ElevatorSubsystem();
@@ -36,26 +34,14 @@ public class ElevatorSubsystem extends Subsystem {
 		}
 	}
 	
-	//Gets the number of balls in the elevator
-	public int getBallsInElevator(){
-		return ballsInElevator;
-	}
-
-	//If there is a ball in the front feeder, it adds one to the ball count
-	public boolean ballInFeeder(){
-		if(feederSensor.get() == FEEDER_SENSOR_ON){
-			System.out.println("ball in feeder");
-			ballsInElevator++;
-		}
+	public boolean ballAtBot(){
 		return feederSensor.get() == FEEDER_SENSOR_ON;
 	}
 
-	//Checks to see whether there is a ball at top
 	public boolean ballAtTop(){
 		return topSensor.get() == TOP_SENSOR_ON;
 	}
 
-	//Moves the ball until it hits the top of the elevator 
 	public void elevateBall(){
 		while(!ballAtTop()){
 			elevJag.set(-.75);
@@ -64,12 +50,8 @@ public class ElevatorSubsystem extends Subsystem {
 			elevJag.set(0);
 		}
 	}
-	
-	public void takeOutBallInElevator(){
-		ballsInElevator--;
-	}
+
 	public void manualElevate(double d){
-		//Insert Voltage Control for Elevate For Manual Override
 		elevJag.set(d);
 	}
 	public void shoot(){

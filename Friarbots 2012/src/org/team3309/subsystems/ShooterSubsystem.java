@@ -51,7 +51,6 @@ public class ShooterSubsystem extends Subsystem{
 	public void shootBall(){
 		if(elevator.ballAtTop()){
 			elevator.shoot();
-			elevator.takeOutBallInElevator();
 		}
 	}
 
