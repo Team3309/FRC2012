@@ -93,4 +93,16 @@ public class ShooterSubsystem extends Subsystem{
 	public void brakeElev(){
 		//elevJag.brake();
 	}
+
+	public double getP() {
+		return shooterMotor.getP();
+	}
+	
+	public double getI(){
+		return shooterMotor.getI();
+	}
+	
+	public double getD(){
+		return shooterMotor.getD();
+	}
 }

@@ -45,6 +45,8 @@ public class IterativeTemplate extends IterativeRobot {
 	// Declare Buttons
 	JoystickButton deployUbarButton;
 	JoystickButton retractUbarButton;
+	
+	ShooterSubsystem shooter;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -59,6 +61,7 @@ public class IterativeTemplate extends IterativeRobot {
 		OI.getInstance();
 		Properties.getInstance();
 		PneumaticsSubsystem.getInstance();
+		shooter = ShooterSubsystem.getInstance();
 
 		// initialize all subsystems here.
 		// drive = DriveSubsystem.getInstance();
@@ -87,6 +90,7 @@ public class IterativeTemplate extends IterativeRobot {
 	 */
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		ShooterSubsystem.getInstance().setRPM(3000);
 	}
 
 	public void teleopInit() {		
@@ -99,6 +103,8 @@ public class IterativeTemplate extends IterativeRobot {
 		ButtonCommands.manualTurret.start();
 		System.out.println("Started Manual Turret Command");
 		//ButtonCommands.autoElevate.start();
+		
+		
 	}
 
 	/**
@@ -107,12 +113,11 @@ public class IterativeTemplate extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		//System.out.println("teleopPeriodic");
-		SmartDashboard.putDouble("CurrentRPM", ShooterSubsystem.getInstance().getRPM());
+		SmartDashboard.putDouble("CurrentRPM", shooter.getRPM());
 		//ShooterSubsystem.getInstance().setRPM(SmartDashboard.getDouble("RPM",0));
-		ShooterSubsystem.getInstance().setRPM(3000);
 		//System.out.println(ShooterSubsystem.getInstance().getRPM());
 		
-		//ShooterSubsystem.getInstance().setPercentVbus(shooterStick.getY());
+		ShooterSubsystem.getInstance().setPercentVbus(shooterStick.getY());
 		if(shooterStick.getRawButton(6))
 			ElevatorSubsystem.getInstance().manualElevate(1);
 		else if(shooterStick.getRawButton(7))

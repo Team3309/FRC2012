@@ -60,7 +60,7 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 	public void setPID(double p, double i, double d){
 		// treat P as D and I as P and D as I
 		// this is necessary when using speed control
-		mController.setPID(i, d, p);
+		mController.setPID(d, p, i);
 	}
 	
 	public void setEncoderTicksPerRev(int ticks){
@@ -68,12 +68,12 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 	}
 
 	public void pidWrite(double output) {
-		try {
+		/*try {
 			mJaguar.setX(output / sMaxSpeed);
 		} catch (CANTimeoutException e) {
 			e.printStackTrace();
 		}
-		SmartDashboard.putDouble("SpeedJag"+canId+" set", output/sMaxSpeed);
+		SmartDashboard.putDouble("SpeedJag"+canId+" set", output/sMaxSpeed);*/
 	}
 
 	public double pidGet() {
@@ -163,6 +163,21 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 		if(!enabled)
 			enable();
 		mJaguar.set(x);
+	}
+
+	// treat P as D and I as P and D as I
+	// this is necessary when using speed control
+	
+	public double getP() {
+		return mController.getI();
+	}
+	
+	public double getI(){
+		return mController.getD();
+	}
+	
+	public double getD(){
+		return mController.getP();
 	}
 
 }

@@ -24,6 +24,18 @@ public class ShooterMotor{
 		jag1.setPID(p, i, d);
 	}
 	
+	public double getP(){
+		return jag1.getP();
+	}
+	
+	public double getI(){
+		return jag1.getI();
+	}
+	
+	public double getD(){
+		return jag1.getD();
+	}
+	
 	public void setRpm(double rpm){
 		jag1.set(rpm);
 		jag2.set(jag1.getVoltageSet());
