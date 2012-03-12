@@ -12,10 +12,10 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ButtonCommands {
 	//public static Command autoTurret	= new AutoTurretCommand();
 	public static Command manualTurret 	= new ManualTurretCommand();
-	/*public static Command deployUbar	= new DeployUbarCommand();
+	public static Command deployUbar	= new DeployUbarCommand();
 	public static Command retractUbar	= new RetractUbarCommand();
-	public static Command autoShooter	= new AutoShooterCommand();*/
-	public static Command autoElevate	= new AutoElevateCommand();
+	//public static Command autoShooter	= new AutoShooterCommand();*/
+	//public static Command autoElevate	= new AutoElevateCommand();
 }
 
 class AutoTurretCommand extends Command{
