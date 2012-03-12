@@ -29,6 +29,7 @@ public class ShooterSubsystem extends Subsystem{
 
 	private ShooterSubsystem(){	
 		shooterMotor = new ShooterMotor();
+		//shooterMotor.setPid(100000, 100, 0);
 		elevator = ElevatorSubsystem.getInstance();
 		
 		try {
@@ -42,6 +43,10 @@ public class ShooterSubsystem extends Subsystem{
 		} catch (CANTimeoutException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void setPid(double p, double i, double d){
+		shooterMotor.setPid(p, i, d);
 	}
 	
 	public void manualRotate(double x){
@@ -60,6 +65,10 @@ public class ShooterSubsystem extends Subsystem{
 		shooterMotor.setRpm(rpm);
 	}
 	
+	public double getRPM(){
+		return shooterMotor.getRpm();
+	}
+	
 	public void setPercentVbus(double x){
 		shooterMotor.setPercentVbus(x);
 	}
@@ -67,9 +76,11 @@ public class ShooterSubsystem extends Subsystem{
 	//Rotates the turret a certain change 
 	//Prevents going over max range: 270 degrees turning angle
 	public void rotateTurret(double delta){
+		setTurretAngle(rotator.get()+delta);
 	}
 	
 	public void setTurretAngle(double angle){
+		System.out.println("Setting turret to "+angle);
 		rotator.set(angle);
 	}
 	

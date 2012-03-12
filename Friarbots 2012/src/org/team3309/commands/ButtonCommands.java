@@ -48,7 +48,7 @@ class ManualTurretCommand extends Command{
 	protected void end(){}
 	protected void execute() {
 		if(shootStick.getRawButton(4)){
-			shooter.setTurretAngle(135);
+			shooter.rotateTurret(2);
 			System.out.println("Button 4");
 		}
 		if(shootStick.getRawButton(3)){
@@ -56,8 +56,13 @@ class ManualTurretCommand extends Command{
 			System.out.println("Button 3");
 		}
 		if(shootStick.getRawButton(5)){
-			shooter.setTurretAngle(-135);
+			shooter.rotateTurret(-2);
 			System.out.println("Button 5");
+		}
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 	protected void initialize(){}
