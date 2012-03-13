@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -92,6 +91,7 @@ public class IterativeTemplate extends IterativeRobot {
 	 */
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		ShooterSubsystem.getInstance().setRPM(3000);
 	}
 
 	public void teleopInit() {		
@@ -107,7 +107,7 @@ public class IterativeTemplate extends IterativeRobot {
 		ButtonCommands.manualTurret.start();
 		System.out.println("Started Manual Turret");
 		
-		ButtonCommands.autoElevate.start();
+		//ButtonCommands.autoElevate.start();
 		System.out.println("Started Automatic Elevation");
 	}
 
@@ -117,7 +117,10 @@ public class IterativeTemplate extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		//System.out.println("teleopPeriodic");
-		//ShooterSubsystem.getInstance().setRPM(500);
+		//ShooterSubsystem.getInstance().setRPM(SmartDashboard.getDouble("RPM",0));
+		//System.out.println(ShooterSubsystem.getInstance().getRPM());
+		
 		ShooterSubsystem.getInstance().setPercentVbus(shooterStick.getY());
+		
 	}
 }

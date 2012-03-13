@@ -57,5 +57,19 @@ public class ElevatorSubsystem extends Subsystem {
 	public void shoot(){
 		//TODO WRITE METHOD!!
 	}
+	public void brake(){
+		elevJag.set(0);
+	}
+	
+	public double getPosition(){
+		try {
+			return elevJag.getPosition();
+		} catch (CANTimeoutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
 	protected void initDefaultCommand(){}
 }

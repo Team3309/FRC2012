@@ -11,14 +11,16 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class ShooterSubsystem extends Subsystem{
 
-	private static ShooterSubsystem instance = null;
+	private static ShooterSubsystem instance 	= null;
 
 	private ShooterMotor shooterMotor;
 	private CANJaguar rotator;
-	private ElevatorSubsystem elevator = null;
+	private ElevatorSubsystem elevator 			= null;
 
 	public static final int SHOOTER_SPEED 		= 500; 	//In RPM
 
+	private static final double turretOffest = 0;
+	
 	protected void initDefaultCommand(){}
 	
 	public static ShooterSubsystem getInstance(){
@@ -29,6 +31,7 @@ public class ShooterSubsystem extends Subsystem{
 
 	private ShooterSubsystem(){	
 		shooterMotor = new ShooterMotor();
+		//shooterMotor.setPid(100000, 100, 0);
 		elevator = ElevatorSubsystem.getInstance();
 		
 		try {
@@ -42,6 +45,10 @@ public class ShooterSubsystem extends Subsystem{
 		} catch (CANTimeoutException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void setPid(double p, double i, double d){
+		shooterMotor.setPid(p, i, d);
 	}
 	
 	public void manualRotate(double x){
@@ -59,6 +66,10 @@ public class ShooterSubsystem extends Subsystem{
 		shooterMotor.setRpm(rpm);
 	}
 	
+	public double getRPM(){
+		return shooterMotor.getRpm();
+	}
+	
 	public void setPercentVbus(double x){
 		shooterMotor.setPercentVbus(x);
 	}
@@ -66,9 +77,20 @@ public class ShooterSubsystem extends Subsystem{
 	//Rotates the turret a certain change 
 	//Prevents going over max range: 270 degrees turning angle
 	public void rotateTurret(double delta){
+		try{
+			
+			if((rotator.getForwardLimitOK() && delta < 0) || (!rotator.getForwardLimitOK() || delta < 0))
+				setTurretAngle(rotator.get() + delta);
+			else if((rotator.getReverseLimitOK() && delta > 0) || (!rotator.getReverseLimitOK() || delta > 0))
+				setTurretAngle(rotator.get() + delta);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	public void setTurretAngle(double angle){
+		System.out.println("Setting turret to "+angle);
 		rotator.set(angle);
 	}
 	
@@ -80,5 +102,17 @@ public class ShooterSubsystem extends Subsystem{
 	//Stops the elevator
 	public void brakeElev(){
 		//elevJag.brake();
+	}
+
+	public double getP() {
+		return shooterMotor.getP();
+	}
+	
+	public double getI(){
+		return shooterMotor.getI();
+	}
+	
+	public double getD(){
+		return shooterMotor.getD();
 	}
 }

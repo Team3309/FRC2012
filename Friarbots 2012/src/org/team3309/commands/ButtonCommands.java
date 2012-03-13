@@ -48,7 +48,7 @@ class ManualTurretCommand extends Command{
 	protected void end(){}
 	protected void execute() {
 		if(shootStick.getRawButton(4)){
-			shooter.setTurretAngle(135);
+			shooter.rotateTurret(1);
 			System.out.println("Button 4");
 		}
 		if(shootStick.getRawButton(3)){
@@ -56,8 +56,13 @@ class ManualTurretCommand extends Command{
 			System.out.println("Button 3");
 		}
 		if(shootStick.getRawButton(5)){
-			shooter.setTurretAngle(-135);
+			shooter.rotateTurret(-1);
 			System.out.println("Button 5");
+		}
+		try {
+			Thread.sleep(0);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 	}
 	protected void initialize(){}
@@ -108,18 +113,19 @@ class RetractUbarCommand extends Command{
 class AutoElevateCommand extends Command{
 
 	private ElevatorSubsystem elevator;
-	private boolean temp1 = false;
-	private boolean temp2 = false;
 	
 	public AutoElevateCommand(){
 		elevator = ElevatorSubsystem.getInstance();
-		requires(elevator);
 	}
 	protected void end() {}
 	protected void execute() {
-		while(elevator.ballAtBot()){
+		if(elevator.ballAtBot())
 			elevator.elevateBall();
-		}
+		else if(elevator.ballAtTop())
+			elevator.brake();
+		else
+			elevator.brake();
+		
 	}
 	protected void initialize(){}
 	protected void interrupted(){}
