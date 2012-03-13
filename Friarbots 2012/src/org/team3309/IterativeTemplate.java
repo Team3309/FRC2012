@@ -113,11 +113,11 @@ public class IterativeTemplate extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		//System.out.println("teleopPeriodic");
-		SmartDashboard.putDouble("CurrentRPM", shooter.getRPM());
+		SmartDashboard.putDouble("CurrentVoltage", shooter.getVoltage());
 		//ShooterSubsystem.getInstance().setRPM(SmartDashboard.getDouble("RPM",0));
 		//System.out.println(ShooterSubsystem.getInstance().getRPM());
 		
-		ShooterSubsystem.getInstance().setPercentVbus(shooterStick.getY());
+		shooter.setPercentVbus(shooterStick.getY());
 		if(shooterStick.getRawButton(6))
 			ElevatorSubsystem.getInstance().manualElevate(1);
 		else if(shooterStick.getRawButton(7))

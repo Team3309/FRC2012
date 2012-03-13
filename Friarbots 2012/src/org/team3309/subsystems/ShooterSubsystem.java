@@ -60,13 +60,8 @@ public class ShooterSubsystem extends Subsystem{
 		}
 	}
 
-	//Starts the shooter
-	public void setRPM(double rpm){
-		shooterMotor.setRpm(rpm);
-	}
-	
-	public double getRPM(){
-		return shooterMotor.getRpm();
+	public double getVoltage(){
+		return shooterMotor.getVoltage();
 	}
 	
 	public void setPercentVbus(double x){
