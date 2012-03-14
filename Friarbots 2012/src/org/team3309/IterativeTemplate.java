@@ -97,7 +97,7 @@ public class IterativeTemplate extends IterativeRobot {
 		Scheduler.getInstance().run();
 	}
 
-	public void teleopInit() {		
+	public void teleopInit() {
 		System.out.println("In teleop Init");
 		
 		driveCommand.start();
@@ -125,7 +125,7 @@ public class IterativeTemplate extends IterativeRobot {
 		//ShooterSubsystem.getInstance().setRPM(SmartDashboard.getDouble("RPM",0));
 		//System.out.println(ShooterSubsystem.getInstance().getRPM());
 
-		ShooterSubsystem.getInstance().setPercentVbus(shooterStick.getY());
+		shooter.setPercentVbus(shooterStick.getY());
 
 		SmartDashboard.putDouble("Elevator Position", ElevatorSubsystem.getInstance().getPosition());
 	}

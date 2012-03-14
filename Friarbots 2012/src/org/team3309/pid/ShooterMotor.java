@@ -15,6 +15,13 @@ public class ShooterMotor{
 		try {
 			jag1 = new CANJaguar(RobotMap.JAG_SHOOTER_1);
 			jag2 = new CANJaguar(RobotMap.JAG_SHOOTER_2);
+			
+			jag1.changeControlMode(CANJaguar.ControlMode.kVoltage);
+			jag2.changeControlMode(CANJaguar.ControlMode.kVoltage);
+			jag1.setPID(10, 0, 0);
+			jag2.setPID(10, 0, 0);
+			jag1.enableControl();
+			jag2.enableControl();
 		} catch (CANTimeoutException e) {
 			e.printStackTrace();
 		}
@@ -64,7 +71,7 @@ public class ShooterMotor{
 
 	public void setPercentVbus(double x) {
 		try{
-			if(jag1.getControlMode() == CANJaguar.ControlMode.kVoltage){
+			if(jag1.getControlMode() == CANJaguar.ControlMode.kPercentVbus){
 				jag1.setX(x);
 				jag2.setX(x);
 			}
@@ -76,6 +83,8 @@ public class ShooterMotor{
 				jag2.setPID(p, i, d);
 				jag1.enableControl();
 				jag2.enableControl();
+				jag1.setX(x);
+				jag2.setX(x);
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
