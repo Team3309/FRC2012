@@ -14,8 +14,9 @@ public class ButtonCommands {
 	public static Command manualTurret 	= new ManualTurretCommand();
 	public static Command deployUbar	= new DeployUbarCommand();
 	public static Command retractUbar	= new RetractUbarCommand();
+	public static Command manualShooter = new ManualElevateCommand();
 	//public static Command autoShooter	= new AutoShooterCommand();*/
-	public static Command autoElevate	= new AutoElevateCommand();
+	//public static Command autoElevate	= new AutoElevateCommand();
 }
 
 class AutoTurretCommand extends Command{
@@ -131,6 +132,7 @@ class AutoElevateCommand extends Command{
 	protected void interrupted(){}
 	protected boolean isFinished() {return false;}	
 }
+
 class ManualElevateCommand extends Command{
 	private Joystick shootStick;
 	private ElevatorSubsystem elevator;
@@ -154,6 +156,7 @@ class ManualElevateCommand extends Command{
 			ElevatorSubsystem.getInstance().manualElevate(0);
 	}	
 }
+
 class ShootCommand extends Command{
 	ShooterSubsystem shooter = null;
 	

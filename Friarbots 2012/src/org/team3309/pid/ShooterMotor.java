@@ -77,8 +77,8 @@ public class ShooterMotor{
 			}
 			else{
 				double p=jag1.getP(), i=jag1.getI(), d=jag1.getD();
-				jag1.changeControlMode(CANJaguar.ControlMode.kVoltage);
-				jag2.changeControlMode(CANJaguar.ControlMode.kVoltage);
+				jag1.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
+				jag2.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
 				jag1.setPID(p, i, d);
 				jag2.setPID(p, i, d);
 				jag1.enableControl();

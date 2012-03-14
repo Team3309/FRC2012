@@ -110,6 +110,8 @@ public class IterativeTemplate extends IterativeRobot {
 		ButtonCommands.manualTurret.start();
 		System.out.println("Started Manual Turret");
 		
+		ButtonCommands.manualShooter.start();
+		
 		//ButtonCommands.autoElevate.start();
 		System.out.println("Started Automatic Elevation");
 	}
