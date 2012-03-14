@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -35,7 +36,9 @@ public class IterativeTemplate extends IterativeRobot {
 	// Declare Subsystems
 	// DriveSubsystem drive;
 	PneumaticsSubsystem pneumatics;
-
+	ShooterSubsystem shooter;
+	
+	
 	// Declare Commands
 	Command autonomousCommand;
 	
@@ -63,7 +66,8 @@ public class IterativeTemplate extends IterativeRobot {
 
 		// initialize all subsystems here.
 		// drive = DriveSubsystem.getInstance();
-
+		shooter = ShooterSubsystem.getInstance();
+		
 		stick = OI.getInstance().getJoystick(1);
 		shooterStick = OI.getInstance().getJoystick(2);
 		
@@ -91,7 +95,6 @@ public class IterativeTemplate extends IterativeRobot {
 	 */
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-		ShooterSubsystem.getInstance().setRPM(3000);
 	}
 
 	public void teleopInit() {		
@@ -117,10 +120,13 @@ public class IterativeTemplate extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		//System.out.println("teleopPeriodic");
+
+		SmartDashboard.putDouble("CurrentVoltage", shooter.getVoltage());
 		//ShooterSubsystem.getInstance().setRPM(SmartDashboard.getDouble("RPM",0));
 		//System.out.println(ShooterSubsystem.getInstance().getRPM());
-		
+
 		ShooterSubsystem.getInstance().setPercentVbus(shooterStick.getY());
-		
+
+		SmartDashboard.putDouble("Elevator Position", ElevatorSubsystem.getInstance().getPosition());
 	}
 }
