@@ -1,11 +1,8 @@
 package org.team3309.commands;
 
-import org.team3309.OI;
 import org.team3309.subsystems.ShooterSubsystem;
 import org.team3309.subsystems.VisionSubsystem;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class AutoShooterCommand extends Command{

@@ -10,10 +10,13 @@ package org.team3309;
 import org.team3309.commands.ButtonCommands;
 import org.team3309.commands.JoystickDrive;
 import org.team3309.properties.Properties;
+import org.team3309.subsystems.DriveSubsystem;
 import org.team3309.subsystems.ElevatorSubsystem;
+import org.team3309.subsystems.Gyro;
 import org.team3309.subsystems.PneumaticsSubsystem;
 import org.team3309.subsystems.ShooterSubsystem;
 
+import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -32,18 +35,23 @@ public class IterativeTemplate extends IterativeRobot {
 
 	Joystick stick;
 	Joystick shooterStick;
-	
+
+	//Autonomous Stuff
+	EZ0 uSonic;
+	AnalogChannel jumper;
+	private final static double DISTANCE_FROM_BOARD = 21;
+
 	// Declare Subsystems
-	// DriveSubsystem drive;
+	DriveSubsystem drive;
 	PneumaticsSubsystem pneumatics;
 	ShooterSubsystem shooter;
-	
-	
+
+
 	// Declare Commands
 	Command autonomousCommand;
-	
+
 	JoystickDrive driveCommand;
-	
+
 	// Declare Buttons
 	JoystickButton deployUbarButton;
 	JoystickButton retractUbarButton;
@@ -64,22 +72,25 @@ public class IterativeTemplate extends IterativeRobot {
 		Properties.getInstance();
 		PneumaticsSubsystem.getInstance();
 
+
 		// initialize all subsystems here.
-		// drive = DriveSubsystem.getInstance();
+		drive = DriveSubsystem.getInstance();
 		shooter = ShooterSubsystem.getInstance();
-		
 		stick = OI.getInstance().getJoystick(1);
 		shooterStick = OI.getInstance().getJoystick(2);
-		
+
 		// initialize commands
 		driveCommand = new JoystickDrive(1);
-		
+
 		//Buttons for joystick
 		deployUbarButton = new JoystickButton(stick, 6);
 		retractUbarButton = new JoystickButton(stick, 4);	
-		
+
 		autoElevateButton = new JoystickButton(shooterStick, 8);
 		manualElevateButton = new JoystickButton(shooterStick, 9);
+
+		uSonic = new EZ0(RobotMap.ANALOGINPUT_ULTRASONIC);
+		jumper = new AnalogChannel(RobotMap.ANALOGINPUT_JUMPER);
 	}
 
 	public void disabledInit() {
@@ -87,7 +98,8 @@ public class IterativeTemplate extends IterativeRobot {
 	}
 
 	public void autonomousInit() {
-		
+		Gyro.getInstance(1, RobotMap.DRIVE_GYRO).reset();
+		PneumaticsSubsystem.getInstance().retractUbar();
 	}
 
 	/**
@@ -95,40 +107,55 @@ public class IterativeTemplate extends IterativeRobot {
 	 */
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		if(jumper.getVoltage() > 4){
+			 if(uSonic.getInches() > DISTANCE_FROM_BOARD){
+				 drive.mecanumDrive(0, .65, 0, 0);
+			 }
+			 else if(uSonic.getInches() <= DISTANCE_FROM_BOARD){
+				 shooter.setVoltage(7.2);
+				 if(Math.abs(shooter.getVoltage() - 7.2)<.5)
+					 ElevatorSubsystem.getInstance().manualElevate(1);
+				 drive.brake();
+			 }
+		 }
+		 System.out.println(uSonic.getInches());
+
 	}
 
-	public void teleopInit() {
+	public void teleopInit() {		
 		System.out.println("In teleop Init");
-		
+
 		driveCommand.start();
 		System.out.println("Started Drive");
-		
+
 		deployUbarButton.whenPressed(ButtonCommands.deployUbar);
 		retractUbarButton.whenPressed(ButtonCommands.retractUbar);	
 		System.out.println("Started Ubar");
-		
+
 		ButtonCommands.manualTurret.start();
 		System.out.println("Started Manual Turret");
-		
-		ButtonCommands.manualShooter.start();
-		
+
 		//ButtonCommands.autoElevate.start();
-		System.out.println("Started Automatic Elevation");
+		ButtonCommands.manualElevate.start();
+		//System.out.println("Started Automatic Elevation");
 	}
 
 	/**
 	 * This function is called periodically during operator control
 	 */
-	public void teleopPeriodic() {
+	public void teleopPeriodic(){
 		Scheduler.getInstance().run();
 		//System.out.println("teleopPeriodic");
 
 		SmartDashboard.putDouble("CurrentVoltage", shooter.getVoltage());
+
 		//ShooterSubsystem.getInstance().setRPM(SmartDashboard.getDouble("RPM",0));
 		//System.out.println(ShooterSubsystem.getInstance().getRPM());
 
-		shooter.setPercentVbus(shooterStick.getY());
-
+		if(shooterStick.getTrigger())
+			shooter.setVoltage(7.2);
+		if(shooterStick.getRawButton(10))
+			shooter.setPercentVbus(-shooterStick.getY());
 		SmartDashboard.putDouble("Elevator Position", ElevatorSubsystem.getInstance().getPosition());
 	}
 }

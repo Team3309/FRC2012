@@ -1,10 +1,10 @@
 package org.team3309.subsystems;
 
-import org.team3309.CANJaguar;
 import org.team3309.RobotMap;
 import org.team3309.pid.ShooterMotor;
 import org.team3309.pid.SpeedJaguar;
 
+import edu.wpi.first.wpilibj.CANJaguar;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -97,5 +97,9 @@ public class ShooterSubsystem extends Subsystem{
 	//Stops the elevator
 	public void brakeElev(){
 		//elevJag.brake();
+	}
+
+	public void setVoltage(double d) {
+		shooterMotor.setVoltage(d);
 	}
 }

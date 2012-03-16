@@ -5,6 +5,7 @@
 package org.team3309.commands;
 
 import org.team3309.OI;
+import org.team3309.RobotMap;
 import org.team3309.subsystems.DriveSubsystem;
 import org.team3309.subsystems.Gyro;
 
@@ -34,7 +35,7 @@ public class JoystickDrive extends Command {
 
 		stick = OI.getInstance().getJoystick(joystickID);
 
-		gyro = Gyro.getInstance(1, 2);
+		gyro = Gyro.getInstance(1, RobotMap.DRIVE_GYRO);
 
 		driveGyroResetButton = new JoystickButton(stick, 3);
 	}
@@ -69,7 +70,7 @@ public class JoystickDrive extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		// gyro.updateDesiredHeading(stick.getTwist());
-		drive.mecanumDrive(stick.getX(), stick.getY(), stick.getTwist(),
+		drive.mecanumDrive(-stick.getX(), -stick.getY(), stick.getTwist(),
 				gyro.getAngle());
 	}
 

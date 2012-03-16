@@ -31,7 +31,6 @@ public class DriveSubsystem extends Subsystem {
 	
 	private static final int MAX_CAN_ATTEMPTS 	= 5;
     private int canInitAttempts 				= 0;
-    private boolean canSuccesful 				= false;
 
 	// put right side negative to correct polarity
 
@@ -96,7 +95,6 @@ public class DriveSubsystem extends Subsystem {
                 ctex.printStackTrace();
                 initCAN();
             }
-        else canSuccesful = false;
     }
 
 	public void mecanumDrive(double x, double y, double twist, double g) {
