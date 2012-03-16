@@ -99,7 +99,7 @@ public class IterativeTemplate extends IterativeRobot {
 
 	public void autonomousInit() {
 		Gyro.getInstance(1, RobotMap.DRIVE_GYRO).reset();
-		PneumaticsSubsystem.getInstance().retractUbar();
+		//PneumaticsSubsystem.getInstance().retractUbar();
 	}
 
 	/**
@@ -152,10 +152,22 @@ public class IterativeTemplate extends IterativeRobot {
 		//ShooterSubsystem.getInstance().setRPM(SmartDashboard.getDouble("RPM",0));
 		//System.out.println(ShooterSubsystem.getInstance().getRPM());
 
-		if(shooterStick.getTrigger())
+		if(shooterStick.getTrigger()){
 			shooter.setVoltage(7.2);
-		if(shooterStick.getRawButton(10))
-			shooter.setPercentVbus(-shooterStick.getY());
+			System.out.println("Shooter trigger on");
+		}
+		else if(shooterStick.getRawButton(10)){
+			shooter.setVoltage(calcShootVolt(-shooterStick.getY()));
+			System.out.println("Shooter = "+calcShootVolt(-shooterStick.getY()));
+		}
+		else
+			shooter.setVoltage(0);
 		SmartDashboard.putDouble("Elevator Position", ElevatorSubsystem.getInstance().getPosition());
+	}
+	
+	private double calcShootVolt(double orig){
+		//orig *= .75;
+		double desired = 7.2;
+		return desired + orig;
 	}
 }

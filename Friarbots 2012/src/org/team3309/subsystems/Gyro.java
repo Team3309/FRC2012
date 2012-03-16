@@ -19,6 +19,7 @@ public class Gyro extends Subsystem {
 	private final double MIN_SPEED = 0.25;
 
 	private double desiredHeading = 0;
+	private boolean disabled = false;
 
 	public static Gyro getInstance(int slot, int channel) {
 		if (instance == null) {
@@ -42,16 +43,26 @@ public class Gyro extends Subsystem {
 	}
 
 	public double getAngle() {
+		if(disabled)
+			return 0;
 		return convertAngle(gyro.getAngle());
 	}
 
 	public double getConvertedAngle() {
-		return convertAngle(gyro.getAngle());
+		return convertAngle(getAngle());
 	}
 
 	public void reset() {
 		desiredHeading = 0;
 		gyro.reset();
+	}
+	
+	public void disable(){
+		disabled = true;
+	}
+	
+	public void enable(){
+		disabled = false;
 	}
 
 	/**

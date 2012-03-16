@@ -60,11 +60,6 @@ class ManualTurretCommand extends Command{
 			shooter.rotateTurret(-1);
 			System.out.println("Button 5");
 		}
-		try {
-			Thread.sleep(0);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
 	}
 	protected void initialize(){}
 	protected void interrupted(){}

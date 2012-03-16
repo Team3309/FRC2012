@@ -72,6 +72,10 @@ public class JoystickDrive extends Command {
 		// gyro.updateDesiredHeading(stick.getTwist());
 		drive.mecanumDrive(-stick.getX(), -stick.getY(), stick.getTwist(),
 				gyro.getAngle());
+		if(stick.getRawButton(10))
+			gyro.disable();
+		if(stick.getRawButton(11))
+			gyro.enable();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

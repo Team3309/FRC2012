@@ -1,8 +1,5 @@
 package org.team3309.commands;
 
-import java.io.InputStreamReader;
-
-import javax.microedition.io.Connector;
 import javax.microedition.io.SocketConnection;
 
 import org.json.me.JSONObject;

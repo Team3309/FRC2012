@@ -13,8 +13,6 @@ public class ElevatorSubsystem extends Subsystem {
 	
 	private static ElevatorSubsystem instance = null;
 	
-	private boolean ballAtBot						= false;
-	private boolean ballAtTop						= false;
 	private static final boolean TOP_SENSOR_ON 		= false;
 	private static final boolean FEEDER_SENSOR_ON 	= false;
 		
@@ -43,22 +41,36 @@ public class ElevatorSubsystem extends Subsystem {
 	}
 
 	public void elevateBall(){
-		while(!ballAtTop()){
-			elevJag.set(-.75);
-		}
-		if(ballAtTop()){
-			elevJag.set(0);
+		try{
+			while(!ballAtTop()){
+				elevJag.setX(-.75);
+			}
+			if(ballAtTop()){
+				elevJag.setX(0);
+			}
+		}catch(Exception ex){
+			ex.printStackTrace();
 		}
 	}
 
 	public void manualElevate(double d){
-		elevJag.set(d);
+		try {
+			elevJag.setX(d);
+		} catch (CANTimeoutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public void shoot(){
 		//TODO WRITE METHOD!!
 	}
 	public void brake(){
-		elevJag.set(0);
+		try {
+			elevJag.setX(0);
+		} catch (CANTimeoutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public double getPosition(){

@@ -2,10 +2,8 @@ package org.team3309.subsystems;
 
 import org.team3309.RobotMap;
 import org.team3309.pid.ShooterMotor;
-import org.team3309.pid.SpeedJaguar;
 
 import edu.wpi.first.wpilibj.CANJaguar;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -18,8 +16,6 @@ public class ShooterSubsystem extends Subsystem{
 	private ElevatorSubsystem elevator 			= null;
 
 	public static final int SHOOTER_SPEED 		= 500; 	//In RPM
-
-	private static final double turretOffest = 0;
 	
 	protected void initDefaultCommand(){}
 	
@@ -52,7 +48,12 @@ public class ShooterSubsystem extends Subsystem{
 	}
 	
 	public void manualRotate(double x){
-		rotator.set(x);
+		try {
+			rotator.setX(x);
+		} catch (CANTimeoutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void shootBall(){
@@ -75,28 +76,34 @@ public class ShooterSubsystem extends Subsystem{
 		try{
 			
 			if((rotator.getForwardLimitOK() && delta < 0) || (!rotator.getForwardLimitOK() || delta < 0))
-				setTurretAngle(rotator.get() + delta);
+				setTurretAngle(rotator.getPosition() + delta);
 			else if((rotator.getReverseLimitOK() && delta > 0) || (!rotator.getReverseLimitOK() || delta > 0))
-				setTurretAngle(rotator.get() + delta);
+				setTurretAngle(rotator.getPosition() + delta);
 			
-		}catch(Exception e){
+		}catch(CANTimeoutException e){
 			e.printStackTrace();
 		}
 	}
 	
 	public void setTurretAngle(double angle){
 		System.out.println("Setting turret to "+angle);
-		rotator.set(angle);
+		try {
+			rotator.setX(angle);
+		} catch (CANTimeoutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	//gets the angle of the turret
 	public double getTurretAngle(){
-		return rotator.get();
-	}
-
-	//Stops the elevator
-	public void brakeElev(){
-		//elevJag.brake();
+		try {
+			return rotator.getPosition();
+		} catch (CANTimeoutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0.0;
 	}
 
 	public void setVoltage(double d) {

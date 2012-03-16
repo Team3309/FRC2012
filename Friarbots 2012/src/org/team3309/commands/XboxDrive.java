@@ -45,7 +45,7 @@ public class XboxDrive extends Command {
 		gyro = Gyro.getInstance(1, 2);
 		driveGyroResetButton = new JoystickButton(controller,
 				XboxMap.B_LEFT_STICK);
-		shooter.getInstance();
+		shooter = ShooterSubsystem.getInstance();
 	}
 
 	public Joystick getJoystick() {
