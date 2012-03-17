@@ -42,8 +42,11 @@ public class RobotMap {
 	public static final int DIGITALINPUT_FEEDER		= 10;
 	public static final int DIGITALINPUT_TOP_SENSOR	= 14;
 	
-	public static final int ANALOGINPUT_JUMPER		= 7;
 	public static final int ANALOGINPUT_ULTRASONIC	= 3;
 	
 	public static final int DRIVE_GYRO				= 2;
+	
+	public static final int ANALOGINPUT_JUMPER_MIDDLE = 6;
+	public static final int ANALOGINPUT_JUMPER_HIGH		= 7;
+	public static final int ANALOGINPUT_JUMPER_DISABLE_AUTO	= 5;
 }

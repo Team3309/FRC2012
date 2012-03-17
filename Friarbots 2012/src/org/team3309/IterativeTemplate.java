@@ -19,6 +19,7 @@ import org.team3309.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -38,8 +39,10 @@ public class IterativeTemplate extends IterativeRobot {
 
 	//Autonomous Stuff
 	EZ0 uSonic;
-	AnalogChannel jumper;
-	private final static double DISTANCE_FROM_BOARD = 21;
+	AnalogChannel jumperHigh, jumperMiddle, jumperDisableAuto;
+	private final static double DISTANCE_FROM_BOARD = 21; //21 for top basket
+	private static final double SHOOT_VOLTAGE_MIDDLE= 6;
+	private static final double SHOOT_VOLTAGE_TOP	= 7.3;
 
 	// Declare Subsystems
 	DriveSubsystem drive;
@@ -90,7 +93,9 @@ public class IterativeTemplate extends IterativeRobot {
 		manualElevateButton = new JoystickButton(shooterStick, 9);
 
 		uSonic = new EZ0(RobotMap.ANALOGINPUT_ULTRASONIC);
-		jumper = new AnalogChannel(RobotMap.ANALOGINPUT_JUMPER);
+		jumperHigh = new AnalogChannel(RobotMap.ANALOGINPUT_JUMPER_HIGH);
+		jumperMiddle = new AnalogChannel(RobotMap.ANALOGINPUT_JUMPER_MIDDLE);
+		jumperDisableAuto = new AnalogChannel(RobotMap.ANALOGINPUT_JUMPER_DISABLE_AUTO);
 	}
 
 	public void disabledInit() {
@@ -107,18 +112,16 @@ public class IterativeTemplate extends IterativeRobot {
 	 */
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
-		if(jumper.getVoltage() > 4){
-			 if(uSonic.getInches() > DISTANCE_FROM_BOARD){
-				 drive.mecanumDrive(0, .65, 0, 0);
-			 }
-			 else if(uSonic.getInches() <= DISTANCE_FROM_BOARD){
-				 shooter.setVoltage(7.2);
-				 if(Math.abs(shooter.getVoltage() - 7.2)<.5)
-					 ElevatorSubsystem.getInstance().manualElevate(1);
-				 drive.brake();
-			 }
-		 }
-		 System.out.println(uSonic.getInches());
+		if(jumperDisableAuto.getVoltage() > 4)//disable autonomous
+			return;
+
+		if(jumperHigh.getVoltage() > 4){ //shooting in top
+			drive.mecanumDrive(0, .65, 0);
+			shooter.setPercentVbus(SHOOT_VOLTAGE_TOP);
+			Timer.delay(10);
+			ElevatorSubsystem.getInstance().manualElevate(1);
+		}
+		System.out.println(uSonic.getInches());
 
 	}
 
@@ -152,22 +155,19 @@ public class IterativeTemplate extends IterativeRobot {
 		//ShooterSubsystem.getInstance().setRPM(SmartDashboard.getDouble("RPM",0));
 		//System.out.println(ShooterSubsystem.getInstance().getRPM());
 
+		double voltage = SHOOT_VOLTAGE_TOP;
+		if(jumperMiddle.getVoltage() > 4)
+			voltage = SHOOT_VOLTAGE_MIDDLE;
 		if(shooterStick.getTrigger()){
-			shooter.setVoltage(7.2);
+			shooter.setVoltage(voltage);
 			System.out.println("Shooter trigger on");
 		}
-		else if(shooterStick.getRawButton(10)){
-			shooter.setVoltage(calcShootVolt(-shooterStick.getY()));
-			System.out.println("Shooter = "+calcShootVolt(-shooterStick.getY()));
+		else if(shooterStick.getRawButton(11)){
+			shooter.setVoltage(voltage + -shooterStick.getY());
+			System.out.println("Shooter = "+voltage + -shooterStick.getY());
 		}
 		else
 			shooter.setVoltage(0);
 		SmartDashboard.putDouble("Elevator Position", ElevatorSubsystem.getInstance().getPosition());
-	}
-	
-	private double calcShootVolt(double orig){
-		//orig *= .75;
-		double desired = 7.2;
-		return desired + orig;
 	}
 }

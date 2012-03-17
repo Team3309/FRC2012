@@ -25,12 +25,12 @@ public class DriveSubsystem extends Subsystem {
 	private static JoystickDrive command = new JoystickDrive(1);
 	//public SpeedDrive mDrive = null;
 	public RobotDrive mDrive = null;
-	
+
 	private CANJaguar lFront, lBack, rFront, rBack;
 	//private SpeedJaguar lFront, lBack, rFront, rBack;
-	
+
 	private static final int MAX_CAN_ATTEMPTS 	= 5;
-    private int canInitAttempts 				= 0;
+	private int canInitAttempts 				= 0;
 
 	// put right side negative to correct polarity
 
@@ -71,31 +71,31 @@ public class DriveSubsystem extends Subsystem {
 		mDrive.setInvertedMotor(MotorType.kFrontLeft, true);
 		mDrive.setInvertedMotor(MotorType.kRearLeft, true);
 	}
-	
+
 	/**
-     * Attempts to initialize the CANJaguars
-     * Tries MAX_CAN_ATTEMPTS to initialize the Jaguars in case of CANTimeoutException being thrown
-     * This method recalls itself up to MAX_CAN_ATTEMPTS to attempt to correct temporary CAN timeouts that may occur when the robot boots
-     */
-    private void initCAN(){
-        if(canInitAttempts < MAX_CAN_ATTEMPTS)
-            try {
-                lFront  = new CANJaguar(RobotMap.JAG_FRONT_LEFT);
-                lBack   = new CANJaguar(RobotMap.JAG_BACK_LEFT);
-                rFront  = new CANJaguar(RobotMap.JAG_FRONT_RIGHT);
-                rBack   = new CANJaguar(RobotMap.JAG_BACK_RIGHT);
-                
-                lFront.configNeutralMode(CANJaguar.NeutralMode.kBrake);
-        		lBack.configNeutralMode(CANJaguar.NeutralMode.kBrake);
-        		rFront.configNeutralMode(CANJaguar.NeutralMode.kBrake);
-        		rBack.configNeutralMode(CANJaguar.NeutralMode.kBrake);
-        		
-                canInitAttempts++;
-            } catch (CANTimeoutException ctex) {
-                ctex.printStackTrace();
-                initCAN();
-            }
-    }
+	 * Attempts to initialize the CANJaguars
+	 * Tries MAX_CAN_ATTEMPTS to initialize the Jaguars in case of CANTimeoutException being thrown
+	 * This method recalls itself up to MAX_CAN_ATTEMPTS to attempt to correct temporary CAN timeouts that may occur when the robot boots
+	 */
+	private void initCAN(){
+		if(canInitAttempts < MAX_CAN_ATTEMPTS)
+			try {
+				lFront  = new CANJaguar(RobotMap.JAG_FRONT_LEFT);
+				lBack   = new CANJaguar(RobotMap.JAG_BACK_LEFT);
+				rFront  = new CANJaguar(RobotMap.JAG_FRONT_RIGHT);
+				rBack   = new CANJaguar(RobotMap.JAG_BACK_RIGHT);
+
+				lFront.configNeutralMode(CANJaguar.NeutralMode.kBrake);
+				lBack.configNeutralMode(CANJaguar.NeutralMode.kBrake);
+				rFront.configNeutralMode(CANJaguar.NeutralMode.kBrake);
+				rBack.configNeutralMode(CANJaguar.NeutralMode.kBrake);
+
+				canInitAttempts++;
+			} catch (CANTimeoutException ctex) {
+				ctex.printStackTrace();
+				initCAN();
+			}
+	}
 
 	public void mecanumDrive(double x, double y, double twist, double g) {
 		mDrive.mecanumDrive_Cartesian(MathUtils.pow(x,3), MathUtils.pow(y, 3), MathUtils.pow(-twist,3), g);
@@ -107,6 +107,18 @@ public class DriveSubsystem extends Subsystem {
 
 	protected void initDefaultCommand() {
 
+	}
+
+	public void setBrakeMode(){
+		System.out.println("Braking Jags");
+		try{
+			lFront.configNeutralMode(CANJaguar.NeutralMode.kBrake);
+			lBack.configNeutralMode(CANJaguar.NeutralMode.kBrake);
+			rFront.configNeutralMode(CANJaguar.NeutralMode.kBrake);
+			rBack.configNeutralMode(CANJaguar.NeutralMode.kBrake);
+		}catch(CANTimeoutException ex){
+			ex.printStackTrace();
+		}
 	}
 
 	public void brake() {

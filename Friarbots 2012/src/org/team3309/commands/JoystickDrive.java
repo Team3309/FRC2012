@@ -76,6 +76,8 @@ public class JoystickDrive extends Command {
 			gyro.disable();
 		if(stick.getRawButton(11))
 			gyro.enable();
+		if(stick.getRawButton(8))
+			drive.setBrakeMode();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
