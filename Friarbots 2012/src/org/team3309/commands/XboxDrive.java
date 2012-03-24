@@ -82,7 +82,7 @@ public class XboxDrive extends Command {
 
 		//Move Motors
 		if(controller.getRawButton(XboxMap.B_LEFT_STICK))
-			drive.mecanumDrive(x*.5, y*.5, 0,0);
+			drive.mecanumDrive(x*.7, y*.7, twist*.7,0);
 		else
 			drive.mecanumDrive(x, y, twist, gyro.getAngle());
 		
