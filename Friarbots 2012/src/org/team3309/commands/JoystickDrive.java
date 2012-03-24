@@ -46,24 +46,7 @@ public class JoystickDrive extends Command {
 
 	// Called just before this Command runs the first time
 	protected void initialize() {
-		driveGyroResetButton.whenPressed(new Command() {
-			protected void initialize() {
-			}
-
-			protected void execute() {
-				gyro.reset();
-			}
-
-			protected boolean isFinished() {
-				return true;
-			}
-
-			protected void end() {
-			}
-
-			protected void interrupted() {
-			}
-		});
+		driveGyroResetButton.whenPressed(ButtonCommands.driveGyroReset);
 
 	}
 

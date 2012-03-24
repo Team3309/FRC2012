@@ -1,7 +1,9 @@
 package org.team3309.commands;
 
 import org.team3309.OI;
+import org.team3309.RobotMap;
 import org.team3309.subsystems.ElevatorSubsystem;
+import org.team3309.subsystems.Gyro;
 import org.team3309.subsystems.PneumaticsSubsystem;
 import org.team3309.subsystems.ShooterSubsystem;
 import org.team3309.subsystems.VisionSubsystem;
@@ -17,6 +19,7 @@ public class ButtonCommands {
 	public static Command retractUbar	= new RetractUbarCommand();
 	//public static Command autoShooter	= new AutoShooterCommand();*/
 	public static Command autoElevate	= new AutoElevateCommand();
+	public static Command driveGyroReset= new DriveGyroReset();
 }
 
 class AutoTurretCommand extends Command{
@@ -188,3 +191,19 @@ class PrepShootCommand extends Command{
 	}
 }
 
+class DriveGyroReset extends Command{
+	private Gyro gyro;
+	protected void initialize() {
+		gyro = Gyro.getInstance(1,RobotMap.DRIVE_GYRO);
+	}
+	protected void execute() {
+		gyro.reset();
+	}
+	protected boolean isFinished() {
+		return true;
+	}
+	protected void end() {
+	}
+	protected void interrupted() {
+	}
+}
