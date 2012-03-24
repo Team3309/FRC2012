@@ -7,7 +7,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="squawk_device.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Vinnie/.eclipse/org.eclipse.platform_3.7.0_920333535/plugins/edu.wpi.first.javadev.sunspotfrcsdk_1.0.7.1/sunspotfrcsdk/lib/WPILibJ/classes.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Vinnie/.eclipse/org.eclipse.platform_3.7.0_920333535/plugins/edu.wpi.first.javadev.sunspotfrcsdk_1.0.7.1/sunspotfrcsdk/lib/squawk_device.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

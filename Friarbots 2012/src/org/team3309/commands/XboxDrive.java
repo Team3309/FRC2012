@@ -22,10 +22,6 @@ import edu.wpi.first.wpilibj.command.Command;
  * Left  Joystick for X and Y movement
  * Left  Joystick Button for resetting gyro
  * Right Joystick for twist 
- * Start Button for initializing Balance
- * Back  Button for canceling Balance
- * Right Trigger to move turret right
- * Left  Trigger to move turret left
  */
 public class XboxDrive extends Command {
 
@@ -37,6 +33,8 @@ public class XboxDrive extends Command {
 	private Joystick controller 		= null;
 
 	private boolean finished = false;
+	private JoystickButton retractUbarButton;
+	private JoystickButton deployUbarButton;
 
 	public XboxDrive(int joystickID) {
 		drive = DriveSubsystem.getInstance();
@@ -53,46 +51,13 @@ public class XboxDrive extends Command {
 	}
 
 	protected void initialize() {
-		driveGyroResetButton.whenPressed(new Command() {
-			protected void initialize() {
-			}
-			protected void execute() {
-				gyro.reset();
-			}
-			protected boolean isFinished() {
-				return true;
-			}
-			protected void end() {
-			}
-			protected void interrupted() {
-			}
-		});
+		driveGyroResetButton.whenPressed(ButtonCommands.driveGyroReset);
 	}
 
 	protected void execute() {
 		/* Following Algorithm Corrects loose Joystick on Xbox controller with
 		 * cubic functions
 		 */
-
-/*		//Move Turret Right
-		double turretRightTwist = controller.getRawAxis(XboxMap.A_RIGHT_TRIGGER);
-		if(Math.abs(turretRightTwist) < .05)
-			turretRightTwist = 0;
-		turretRightTwist -=.05;
-		turretRightTwist = MathUtils.pow(turretRightTwist, 3);
-		
-		//Move Turret Left
-		double turretLeftTwist = controller.getRawAxis(XboxMap.A_LEFT_TRIGGER);
-		if(Math.abs(turretLeftTwist) < .05)
-			turretLeftTwist = 0;
-		turretLeftTwist -=.05;
-		turretLeftTwist = MathUtils.pow(turretLeftTwist, 3);
-		turretLeftTwist *= -1; //Make the turret turn left instead of just right
-		
-		//Calculate the total twist
-		double turretTwist = turretLeftTwist + turretRightTwist;
-		
-*/		
 		
 		//Drive X Axis - Left Controller
 		double x = controller.getRawAxis(XboxMap.A_LEFT_X);
@@ -116,8 +81,14 @@ public class XboxDrive extends Command {
 		twist -= .05;
 
 		//Move Motors
-		drive.mecanumDrive(x, y, twist, gyro.getAngle());
-//		shooter.rotateTurret(turretTwist);
+		if(controller.getRawButton(XboxMap.B_LEFT_STICK))
+			drive.mecanumDrive(x*.7, y*.7, twist*.7,0);
+		else
+			drive.mecanumDrive(x, y, twist, gyro.getAngle());
+		
+		
+		if(controller.getRawButton(XboxMap.B_START))
+			gyro.reset();
 	}
 	
 	protected boolean isFinished() {

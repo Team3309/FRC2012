@@ -86,9 +86,11 @@ public class IterativeTemplate extends IterativeRobot {
 		driveCommand = new JoystickDrive(1);
 
 		//Buttons for joystick
-		deployUbarButton = new JoystickButton(stick, 6);
-		retractUbarButton = new JoystickButton(stick, 4);	
-
+		//deployUbarButton = new JoystickButton(stick, 6);
+		//retractUbarButton = new JoystickButton(stick, 4);	
+		deployUbarButton = new JoystickButton(stick, XboxMap.B_X);
+		retractUbarButton = new JoystickButton(stick, XboxMap.B_B);	
+		
 		autoElevateButton = new JoystickButton(shooterStick, 8);
 		manualElevateButton = new JoystickButton(shooterStick, 9);
 
