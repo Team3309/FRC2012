@@ -162,7 +162,7 @@ public class IterativeTemplate extends IterativeRobot {
 			shooter.setVoltage(voltage);
 			System.out.println("Shooter trigger on");
 		}
-		else if(shooterStick.getRawButton(11)){
+		else if(shooterStick.getRawButton(2)){
 			shooter.setVoltage(voltage + -shooterStick.getY());
 			System.out.println("Shooter = "+voltage + -shooterStick.getY());
 		}
