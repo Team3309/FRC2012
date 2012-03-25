@@ -35,6 +35,9 @@ public class XboxDrive extends Command {
 	private boolean finished = false;
 	private JoystickButton retractUbarButton;
 	private JoystickButton deployUbarButton;
+	
+	public static final float fourtyFiveDegreesInRadians = (float) Math.toRadians(45);
+	public static final float oneHundredThirtyFiveDegreesInRadians = (float) Math.toRadians(135);
 
 	public XboxDrive(int joystickID) {
 		drive = DriveSubsystem.getInstance();
@@ -79,6 +82,18 @@ public class XboxDrive extends Command {
 			twist = 0;
 		twist = MathUtils.pow(twist, 3);
 		twist -= .05;
+		
+		if (x!= 0 && y != 0) {
+			double theta = MathUtils.atan(y / x);
+			double scale = 1; //Use 1 if something goes wrong
+			if (Math.abs(theta) >= fourtyFiveDegreesInRadians && Math.abs(theta) <= oneHundredThirtyFiveDegreesInRadians) {
+				scale = Math.abs(1 / Math.sin(theta));
+			} else {
+				scale = Math.abs(1 / Math.cos(theta));
+			}
+			x *= scale;
+			y *= scale;
+		}
 
 		//Move Motors
 		if(controller.getRawButton(XboxMap.B_LEFT_STICK))
