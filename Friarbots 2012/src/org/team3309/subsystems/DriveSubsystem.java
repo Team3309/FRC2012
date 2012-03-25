@@ -97,6 +97,10 @@ public class DriveSubsystem extends Subsystem {
 			}
 	}
 
+	public void mecanumDrivePolar(double magnitude, double direction, double twist){
+		mDrive.mecanumDrive_Polar(magnitude, direction, twist);
+	}
+	
 	public void mecanumDrive(double x, double y, double twist, double g) {
 		mDrive.mecanumDrive_Cartesian(MathUtils.pow(x,3), MathUtils.pow(y, 3), MathUtils.pow(-twist,3), g);
 	}

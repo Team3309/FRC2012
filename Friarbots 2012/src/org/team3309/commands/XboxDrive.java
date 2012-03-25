@@ -42,7 +42,7 @@ public class XboxDrive extends Command {
 		controller = OI.getInstance().getJoystick(joystickID);
 		gyro = Gyro.getInstance(1, 2);
 		driveGyroResetButton = new JoystickButton(controller,
-				XboxMap.B_LEFT_STICK);
+				XboxMap.B_Y);
 		shooter = ShooterSubsystem.getInstance();
 	}
 
@@ -63,8 +63,8 @@ public class XboxDrive extends Command {
 		double x = controller.getRawAxis(XboxMap.A_LEFT_X);
 		if (Math.abs(x) < .05)
 			x = 0;
-		x -= .05;
 		x = MathUtils.pow(x, 3);
+		x -= .05;
 
 		//Drive Y Axis - Left Controller
 		double y = controller.getRawAxis(XboxMap.A_LEFT_Y);
@@ -86,9 +86,12 @@ public class XboxDrive extends Command {
 		else
 			drive.mecanumDrive(x, y, twist, gyro.getAngle());
 		
-		
-		if(controller.getRawButton(XboxMap.B_START))
+		System.out.println("X: " + x + "\tY: " + y);
+			
+		if(controller.getRawButton(XboxMap.B_START)){
 			gyro.reset();
+			System.out.println("Fixing Gyro");
+		}
 	}
 	
 	protected boolean isFinished() {
