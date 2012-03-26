@@ -35,6 +35,9 @@ public class XboxDrive extends Command {
 	private boolean finished = false;
 	private JoystickButton retractUbarButton;
 	private JoystickButton deployUbarButton;
+	
+	public static final float fourtyFiveDegreesInRadians = (float) Math.toRadians(45);
+	public static final float oneHundredThirtyFiveDegreesInRadians = (float) Math.toRadians(135);
 
 	public XboxDrive(int joystickID) {
 		drive = DriveSubsystem.getInstance();
@@ -42,7 +45,7 @@ public class XboxDrive extends Command {
 		controller = OI.getInstance().getJoystick(joystickID);
 		gyro = Gyro.getInstance(1, 2);
 		driveGyroResetButton = new JoystickButton(controller,
-				XboxMap.B_LEFT_STICK);
+				XboxMap.B_Y);
 		shooter = ShooterSubsystem.getInstance();
 	}
 
@@ -63,8 +66,8 @@ public class XboxDrive extends Command {
 		double x = controller.getRawAxis(XboxMap.A_LEFT_X);
 		if (Math.abs(x) < .05)
 			x = 0;
-		x -= .05;
 		x = MathUtils.pow(x, 3);
+		x -= .05;
 
 		//Drive Y Axis - Left Controller
 		double y = controller.getRawAxis(XboxMap.A_LEFT_Y);
@@ -79,6 +82,18 @@ public class XboxDrive extends Command {
 			twist = 0;
 		twist = MathUtils.pow(twist, 3);
 		twist -= .05;
+		
+		if (x!= 0 && y != 0) {
+			double theta = MathUtils.atan(y / x);
+			double scale = 1; //Use 1 if something goes wrong
+			if (Math.abs(theta) >= fourtyFiveDegreesInRadians && Math.abs(theta) <= oneHundredThirtyFiveDegreesInRadians) {
+				scale = Math.abs(1 / Math.sin(theta));
+			} else {
+				scale = Math.abs(1 / Math.cos(theta));
+			}
+			x *= scale;
+			y *= scale;
+		}
 
 		//Move Motors
 		if(controller.getRawButton(XboxMap.B_LEFT_STICK))
@@ -86,9 +101,12 @@ public class XboxDrive extends Command {
 		else
 			drive.mecanumDrive(x, y, twist, gyro.getAngle());
 		
-		
-		if(controller.getRawButton(XboxMap.B_START))
+		System.out.println("X: " + x + "\tY: " + y);
+			
+		if(controller.getRawButton(XboxMap.B_START)){
 			gyro.reset();
+			System.out.println("Fixing Gyro");
+		}
 	}
 	
 	protected boolean isFinished() {

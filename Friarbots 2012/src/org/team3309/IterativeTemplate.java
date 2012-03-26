@@ -9,6 +9,7 @@ package org.team3309;
 
 import org.team3309.commands.ButtonCommands;
 import org.team3309.commands.JoystickDrive;
+import org.team3309.commands.XboxDrive;
 import org.team3309.properties.Properties;
 import org.team3309.subsystems.DriveSubsystem;
 import org.team3309.subsystems.ElevatorSubsystem;
@@ -53,7 +54,7 @@ public class IterativeTemplate extends IterativeRobot {
 	// Declare Commands
 	Command autonomousCommand;
 
-	JoystickDrive driveCommand;
+	XboxDrive driveCommand;
 
 	// Declare Buttons
 	JoystickButton deployUbarButton;
@@ -83,7 +84,7 @@ public class IterativeTemplate extends IterativeRobot {
 		shooterStick = OI.getInstance().getJoystick(2);
 
 		// initialize commands
-		driveCommand = new JoystickDrive(1);
+		driveCommand = new XboxDrive(1);
 
 		//Buttons for joystick
 		//deployUbarButton = new JoystickButton(stick, 6);
