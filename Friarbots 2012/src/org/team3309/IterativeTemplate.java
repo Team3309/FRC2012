@@ -180,7 +180,6 @@ public class IterativeTemplate extends IterativeRobot {
 		}
 		else
 			shooter.setVoltage(0);
-		//SmartDashboard.putDouble("Elevator Position", ElevatorSubsystem.getInstance().getPosition());
-		*/
+		//SmartDashboard.putDouble("Elevator Position", ElevatorSubsystem.getInstance().getPosition());*/
 	}
 }
