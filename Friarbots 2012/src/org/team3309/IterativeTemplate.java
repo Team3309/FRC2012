@@ -142,7 +142,7 @@ public class IterativeTemplate extends IterativeRobot {
 		System.out.println("Started Manual Turret");
 
 		//ButtonCommands.autoElevate.start();
-		ButtonCommands.manualElevate.start();
+		//ButtonCommands.manualElevate.start();
 		//System.out.println("Started Automatic Elevation");
 	}
 
@@ -171,6 +171,6 @@ public class IterativeTemplate extends IterativeRobot {
 		}
 		else
 			shooter.setVoltage(0);
-		SmartDashboard.putDouble("Elevator Position", ElevatorSubsystem.getInstance().getPosition());
+		//SmartDashboard.putDouble("Elevator Position", ElevatorSubsystem.getInstance().getPosition());
 	}
 }

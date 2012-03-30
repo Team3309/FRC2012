@@ -35,6 +35,7 @@ public class XboxDrive extends Command {
 	private boolean finished = false;
 	private JoystickButton retractUbarButton;
 	private JoystickButton deployUbarButton;
+	private double angle = 0;
 	
 	public static final float fourtyFiveDegreesInRadians = (float) Math.toRadians(45);
 	public static final float oneHundredThirtyFiveDegreesInRadians = (float) Math.toRadians(135);
@@ -68,7 +69,7 @@ public class XboxDrive extends Command {
 			x = 0;
 		x = MathUtils.pow(x, 3);
 		x -= .05;
-
+		
 		//Drive Y Axis - Left Controller
 		double y = controller.getRawAxis(XboxMap.A_LEFT_Y);
 		if (Math.abs(y) < .05)
@@ -82,6 +83,7 @@ public class XboxDrive extends Command {
 			twist = 0;
 		twist = MathUtils.pow(twist, 3);
 		twist -= .05;
+		twist = twist*-1;
 		
 		if (x!= 0 && y != 0) {
 			double theta = MathUtils.atan(y / x);
@@ -95,13 +97,34 @@ public class XboxDrive extends Command {
 			y *= scale;
 		}
 
+		
+		//Magnitude
+		double magnitude = controller.getMagnitude();
+		if(magnitude < .05)
+			magnitude = 0;
+		magnitude = MathUtils.pow(magnitude, 3);
+		magnitude -= .05;
+		magnitude = magnitude * -1;
+		
+		//Angle
+		angle = -(gyro.getAngle() - controller.getDirectionDegrees());
+		
+		
 		//Move Motors
 		if(controller.getRawButton(XboxMap.B_LEFT_STICK))
-			drive.mecanumDrive(x*.7, y*.7, twist*.7,0);
+			drive.mecanumDrivePolar(magnitude,
+					angle, twist);
+			//drive.mecanumDrive(x*.7, y*.7, twist*.7,0);
 		else
-			drive.mecanumDrive(x, y, twist, gyro.getAngle());
+			drive.mecanumDrivePolar(magnitude,
+					angle, twist);
 		
-		System.out.println("X: " + x + "\tY: " + y);
+			//drive.mecanumDrive(x, y, twist, gyro.getAngle());
+		
+		
+		
+		
+		//System.out.println("X: " + x + "\tY: " + y);
 			
 		if(controller.getRawButton(XboxMap.B_START)){
 			gyro.reset();
