@@ -16,6 +16,7 @@ import org.team3309.subsystems.ElevatorSubsystem;
 import org.team3309.subsystems.Gyro;
 import org.team3309.subsystems.PneumaticsSubsystem;
 import org.team3309.subsystems.ShooterSubsystem;
+import org.team3309.subsystems.VisionSubsystem;
 
 import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -75,6 +76,7 @@ public class IterativeTemplate extends IterativeRobot {
 		OI.getInstance();
 		Properties.getInstance();
 		PneumaticsSubsystem.getInstance();
+		VisionSubsystem.getInstance();
 
 
 		// initialize all subsystems here.
@@ -138,11 +140,11 @@ public class IterativeTemplate extends IterativeRobot {
 		retractUbarButton.whenPressed(ButtonCommands.retractUbar);	
 		System.out.println("Started Ubar");
 
-		ButtonCommands.manualTurret.start();
+		//ButtonCommands.manualTurret.start();
 		System.out.println("Started Manual Turret");
 
 		//ButtonCommands.autoElevate.start();
-		ButtonCommands.manualElevate.start();
+		//ButtonCommands.manualElevate.start();
 		//System.out.println("Started Automatic Elevation");
 	}
 
@@ -153,12 +155,19 @@ public class IterativeTemplate extends IterativeRobot {
 		Scheduler.getInstance().run();
 		//System.out.println("teleopPeriodic");
 
-		SmartDashboard.putDouble("CurrentVoltage", shooter.getVoltage());
+		double p = SmartDashboard.getDouble("P", 70);
+		double i = SmartDashboard.getDouble("I", 0);
+		double d = SmartDashboard.getDouble("D", 0);
+		ShooterSubsystem.getInstance().setPid(p, i, d);
 
 		//ShooterSubsystem.getInstance().setRPM(SmartDashboard.getDouble("RPM",0));
 		//System.out.println(ShooterSubsystem.getInstance().getRPM());
 
-		double voltage = SHOOT_VOLTAGE_TOP;
+		ShooterSubsystem.getInstance().rotateTurret(VisionSubsystem.getInstance().getOffAngle());
+		System.out.println("Vision returned "+VisionSubsystem.getInstance().getOffAngle()+" for angle");
+		
+		
+		/*double voltage = SHOOT_VOLTAGE_TOP;
 		if(jumperMiddle.getVoltage() > 4)
 			voltage = SHOOT_VOLTAGE_MIDDLE;
 		if(shooterStick.getTrigger()){
@@ -171,6 +180,7 @@ public class IterativeTemplate extends IterativeRobot {
 		}
 		else
 			shooter.setVoltage(0);
-		SmartDashboard.putDouble("Elevator Position", ElevatorSubsystem.getInstance().getPosition());
+		//SmartDashboard.putDouble("Elevator Position", ElevatorSubsystem.getInstance().getPosition());
+		*/
 	}
 }

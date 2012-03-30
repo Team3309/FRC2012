@@ -101,7 +101,7 @@ public class XboxDrive extends Command {
 		else
 			drive.mecanumDrive(x, y, twist, gyro.getAngle());
 		
-		System.out.println("X: " + x + "\tY: " + y);
+		//System.out.println("X: " + x + "\tY: " + y);
 			
 		if(controller.getRawButton(XboxMap.B_START)){
 			gyro.reset();

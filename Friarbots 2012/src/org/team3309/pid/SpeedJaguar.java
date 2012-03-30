@@ -1,7 +1,7 @@
 package org.team3309.pid;
 
 import edu.wpi.first.wpilibj.CANJaguar;
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -14,7 +14,7 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 
 	private CANJaguar mJaguar = null;
 	private SendablePIDController mController = null;
-	private Encoder mEncoder = null;
+	private Counter mCounter = null;
 
 	public static final double DEAD_ZONE = 15;
 	public static final double sMaxSpeed = 4500;
@@ -34,7 +34,7 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 		this(canId, new Encoder(aChannel, bChannel));
 	}*/
 	
-	public SpeedJaguar(int canId, int aChannel, int bChannel){
+	public SpeedJaguar(int canId, int aChannel){
 		this.canId = canId;
 		try {
 			mJaguar = new CANJaguar(canId);
@@ -47,9 +47,8 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 		mController.setInputRange(-sMaxSpeed, sMaxSpeed);
 		mController.setOutputRange(-sMaxSpeed, sMaxSpeed);
 		mController.setTolerance(10);
-		mEncoder = new Encoder(aChannel, bChannel);
-		mEncoder.setDistancePerPulse(2.0 / 360.0); // 360 counts to go 2'
-		mEncoder.start();
+		mCounter = new Counter(aChannel);
+		mCounter.start();
 		SmartDashboard.putData("Jag" + this.canId + " PID", mController);
 
 		mThread = new Thread(this, "SpeedJaguar" + canId);
@@ -126,13 +125,13 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 			e.printStackTrace();
 		}
 		mController.disable();
-		mEncoder.stop();
+		mCounter.stop();
 	}
 
 	public void enable() {
 		System.out.println("Enabling SpeedJaguar"+canId);
 		mController.enable();
-		mEncoder.start();
+		mCounter.start();
 		try {
 			mJaguar.enableControl();
 		} catch (CANTimeoutException e) {
@@ -144,7 +143,7 @@ public class SpeedJaguar implements SpeedController, PIDSource, PIDOutput,
 	public void run() {
 		while (true) {
 			if (enabled) {
-				int curCount = mEncoder.get();
+				int curCount = mCounter.get();
 				double revms = (60000 * Math.abs(curCount - lastCount) / REVOLUTION)
 						/ DELTA_T;
 				mRPM = revms; // 60000*rev/ms = rev/min

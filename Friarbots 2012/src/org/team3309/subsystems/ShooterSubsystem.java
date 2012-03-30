@@ -16,9 +16,9 @@ public class ShooterSubsystem extends Subsystem{
 	private ElevatorSubsystem elevator 			= null;
 
 	public static final int SHOOTER_SPEED 		= 500; 	//In RPM
-	
+
 	protected void initDefaultCommand(){}
-	
+
 	public static ShooterSubsystem getInstance(){
 		if(instance == null)
 			instance = new ShooterSubsystem();
@@ -28,25 +28,25 @@ public class ShooterSubsystem extends Subsystem{
 	private ShooterSubsystem(){	
 		shooterMotor = new ShooterMotor();
 		//shooterMotor.setPid(100000, 100, 0);
-		elevator = ElevatorSubsystem.getInstance();
-		
+		//elevator = ElevatorSubsystem.getInstance();
+
 		try {
 			rotator = new CANJaguar(RobotMap.JAG_TURRET);
 			rotator.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
 			rotator.configEncoderCodesPerRev(16);
 			rotator.changeControlMode(CANJaguar.ControlMode.kPosition);
-			rotator.setPID(70, 0, 0);
+			rotator.setPID(10,0, 0); //original = 70 -didn't work with vision
 			rotator.configMaxOutputVoltage(4.2);
 			rotator.enableControl(0);
 		} catch (CANTimeoutException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void setPid(double p, double i, double d){
 		shooterMotor.setPid(p, i, d);
 	}
-	
+
 	public void manualRotate(double x){
 		try {
 			rotator.setX(x);
@@ -55,7 +55,7 @@ public class ShooterSubsystem extends Subsystem{
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void shootBall(){
 		if(elevator.ballAtTop()){
 			elevator.shoot();
@@ -65,7 +65,7 @@ public class ShooterSubsystem extends Subsystem{
 	public double getVoltage(){
 		return shooterMotor.getVoltage();
 	}
-	
+
 	public void setPercentVbus(double x){
 		shooterMotor.setPercentVbus(x);
 	}
@@ -74,27 +74,22 @@ public class ShooterSubsystem extends Subsystem{
 	//Prevents going over max range: 270 degrees turning angle
 	public void rotateTurret(double delta){
 		try{
-			
-			if((rotator.getForwardLimitOK() && delta < 0) || (!rotator.getForwardLimitOK() || delta < 0))
-				setTurretAngle(rotator.getPosition() + delta);
-			else if((rotator.getReverseLimitOK() && delta > 0) || (!rotator.getReverseLimitOK() || delta > 0))
-				setTurretAngle(rotator.getPosition() + delta);
-			
+			setTurretAngle(rotator.getPosition() + delta);
 		}catch(CANTimeoutException e){
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void setTurretAngle(double angle){
-		System.out.println("Setting turret to "+angle);
 		try {
+			System.out.println("Setting turret to "+angle+"\tCurrently at "+rotator.getPosition());
 			rotator.setX(angle);
 		} catch (CANTimeoutException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
+
 	//gets the angle of the turret
 	public double getTurretAngle(){
 		try {
@@ -108,5 +103,15 @@ public class ShooterSubsystem extends Subsystem{
 
 	public void setVoltage(double d) {
 		shooterMotor.setVoltage(d);
+	}
+
+	public void setTurretPID(double p, double i, double d){
+		try{
+			rotator.setPID(p, i, d);
+			rotator.configMaxOutputVoltage(4.2);
+			rotator.enableControl(0);
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
 	}
 }

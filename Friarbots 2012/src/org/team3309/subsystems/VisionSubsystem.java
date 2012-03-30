@@ -14,17 +14,20 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 public class VisionSubsystem extends Subsystem {
 
-	private static VisionSubsystem instance 	= null;
-	private SocketConnection socket 			= null;
-	private BufferedReader in 					= null;
-	JSONObject data								= null;
-	boolean connected 							= false;
+	private static VisionSubsystem instance = null;
+	private SocketConnection socket = null;
+	private BufferedReader in = null;
+	private JSONObject data = null;
+	private boolean connected = false;
+	
+	private Handler mHandler;
 
 	private VisionSubsystem() {
 		try {
-			socket 	= (SocketConnection) Connector.open(VisionKeys.BRAIN_SOCKET);
-			in 		= new BufferedReader(new InputStreamReader(socket.openDataInputStream()));
-			getInfo.start();
+			socket = (SocketConnection) Connector.open(VisionKeys.BRAIN_SOCKET);
+			System.out.println("Opened socket");
+			in = new BufferedReader(new InputStreamReader(socket.openDataInputStream()));
+			mHandler = new Handler(in);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -39,33 +42,42 @@ public class VisionSubsystem extends Subsystem {
 	protected void initDefaultCommand() {
 	}
 
-	Thread getInfo = new Thread() {
-		public void run() {
-			String tempIn = "";
-			while(true){
-				try {
-					if(!tempIn.equals(in.readLine())){
-						tempIn = in.readLine();
-						data = new JSONObject(tempIn);
-					}	
-					Thread.sleep(100);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}	
-			}
-		}
-	};
-
-	public double getRPM(){
+	public double getRPM() {
 		return data.optDouble(VisionKeys.RPM);
 	}
 
-	public double getOffAngle(){
-		return data.optInt(VisionKeys.OFF_ANGLE);
+	public double getOffAngle() {
+		int ret = data.optInt(VisionKeys.OFF_ANGLE);
+		if(Math.abs(ret) < 3)
+			ret = 0;
+		return ret;
 	}
 
-	public boolean canShoot(){
+	public boolean canShoot() {
 		return data.optBoolean(VisionKeys.CAN_SHOOT);
 	}
-	
+
+	private class Handler implements Runnable {
+
+		private BufferedReader in;
+
+		protected Handler(BufferedReader reader) {
+			in = reader;
+			new Thread(this).start();
+			System.out.println("Started Handler for vision");
+		}
+
+		public void run() {
+			try {
+				while (true) {
+					String line = in.readLine();
+					data = new JSONObject(line);
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+		}
+
+	}
+
 }
