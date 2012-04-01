@@ -3,21 +3,25 @@ package org.team3309.pid;
 import org.team3309.RobotMap;
 
 import edu.wpi.first.wpilibj.CANJaguar;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
+import edu.wpi.first.wpilibj.smartdashboard.SendablePIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ShooterMotor{
 	
-	//private SpeedJaguar jag1;
 	private CANJaguar jag1, jag2;
 	
+	private static final double MAX_SPEED = 500;
+	
 	public ShooterMotor(){
-		//jag1 = new SpeedJaguar(RobotMap.JAG_SHOOTER_1, RobotMap.ENCODER_SHOOTER_A, RobotMap.ENCODER_SHOOTER_B);
 		try {
 			jag1 = new CANJaguar(RobotMap.JAG_SHOOTER_1);
 			jag2 = new CANJaguar(RobotMap.JAG_SHOOTER_2);
 			
-			jag1.changeControlMode(CANJaguar.ControlMode.kVoltage);
-			jag2.changeControlMode(CANJaguar.ControlMode.kVoltage);
+			jag1.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
+			jag2.changeControlMode(CANJaguar.ControlMode.kPercentVbus);
 			jag1.setPID(10, 0, 0);
 			jag2.setPID(10, 0, 0);
 			jag1.enableControl();

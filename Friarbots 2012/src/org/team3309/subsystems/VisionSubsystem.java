@@ -18,19 +18,11 @@ public class VisionSubsystem extends Subsystem {
 	private SocketConnection socket = null;
 	private BufferedReader in = null;
 	private JSONObject data = null;
-	private boolean connected = false;
 	
 	private Handler mHandler;
 
 	private VisionSubsystem() {
-		try {
-			socket = (SocketConnection) Connector.open(VisionKeys.BRAIN_SOCKET);
-			System.out.println("Opened socket");
-			in = new BufferedReader(new InputStreamReader(socket.openDataInputStream()));
-			mHandler = new Handler(in);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		connect();
 	}
 
 	public static VisionSubsystem getInstance() {
@@ -56,6 +48,21 @@ public class VisionSubsystem extends Subsystem {
 	public boolean canShoot() {
 		return data.optBoolean(VisionKeys.CAN_SHOOT);
 	}
+	
+	public boolean isConnected(){
+		return in != null;
+	}
+	
+	public void connect(){
+		try {
+			socket = (SocketConnection) Connector.open(VisionKeys.BRAIN_SOCKET);
+			System.out.println("Opened socket");
+			in = new BufferedReader(new InputStreamReader(socket.openDataInputStream()));
+			mHandler = new Handler(in);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	private class Handler implements Runnable {
 
@@ -70,6 +77,8 @@ public class VisionSubsystem extends Subsystem {
 		public void run() {
 			try {
 				while (true) {
+					if(!isConnected())
+						connect();
 					String line = in.readLine();
 					data = new JSONObject(line);
 				}

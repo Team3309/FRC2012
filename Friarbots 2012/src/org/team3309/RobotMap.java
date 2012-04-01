@@ -48,4 +48,6 @@ public class RobotMap {
 	public static final int ANALOGINPUT_JUMPER_MIDDLE = 6;
 	public static final int ANALOGINPUT_JUMPER_HIGH		= 7;
 	public static final int ANALOGINPUT_JUMPER_DISABLE_AUTO	= 5;
+	
+	public static final int SHOOTER_LIGHT_SENSOR = 11;
 }

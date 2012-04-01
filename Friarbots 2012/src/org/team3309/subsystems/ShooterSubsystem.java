@@ -35,7 +35,7 @@ public class ShooterSubsystem extends Subsystem{
 			rotator.setPositionReference(CANJaguar.PositionReference.kQuadEncoder);
 			rotator.configEncoderCodesPerRev(16);
 			rotator.changeControlMode(CANJaguar.ControlMode.kPosition);
-			rotator.setPID(10,0, 0); //original = 70 -didn't work with vision
+			rotator.setPID(70,0, 0); //original = 70 -didn't work with vision
 			rotator.configMaxOutputVoltage(4.2);
 			rotator.enableControl(0);
 		} catch (CANTimeoutException e) {
@@ -112,6 +112,15 @@ public class ShooterSubsystem extends Subsystem{
 			rotator.enableControl(0);
 		}catch(Exception ex){
 			ex.printStackTrace();
+		}
+	}
+
+	public void stopTurret() {
+		try {
+			rotator.setX(rotator.getPosition());
+		} catch (CANTimeoutException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

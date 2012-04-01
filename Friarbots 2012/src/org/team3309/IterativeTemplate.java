@@ -140,31 +140,57 @@ public class IterativeTemplate extends IterativeRobot {
 		retractUbarButton.whenPressed(ButtonCommands.retractUbar);	
 		System.out.println("Started Ubar");
 
-		//ButtonCommands.manualTurret.start();
+		ButtonCommands.manualTurret.start();
 		System.out.println("Started Manual Turret");
 
 		//ButtonCommands.autoElevate.start();
 		//ButtonCommands.manualElevate.start();
 		//System.out.println("Started Automatic Elevation");
+		
 	}
+	
+	double voltage = 6;
 
 	/**
 	 * This function is called periodically during operator control
 	 */
 	public void teleopPeriodic(){
 		Scheduler.getInstance().run();
+		
 		//System.out.println("teleopPeriodic");
-
-		double p = SmartDashboard.getDouble("P", 70);
-		double i = SmartDashboard.getDouble("I", 0);
-		double d = SmartDashboard.getDouble("D", 0);
-		ShooterSubsystem.getInstance().setPid(p, i, d);
 
 		//ShooterSubsystem.getInstance().setRPM(SmartDashboard.getDouble("RPM",0));
 		//System.out.println(ShooterSubsystem.getInstance().getRPM());
 
-		ShooterSubsystem.getInstance().rotateTurret(VisionSubsystem.getInstance().getOffAngle());
-		System.out.println("Vision returned "+VisionSubsystem.getInstance().getOffAngle()+" for angle");
+		/*
+		double offAngle = VisionSubsystem.getInstance().getOffAngle();
+		if((int) offAngle != -999)
+			ShooterSubsystem.getInstance().rotateTurret(offAngle);
+		else
+			ShooterSubsystem.getInstance().stopTurret();
+		System.out.println("Vision returned "+offAngle+" for angle");
+		
+		if(shooterStick.getRawButton(9))
+			p += .5;
+		if(shooterStick.getRawButton(8))
+			p -= .5;
+		if(shooterStick.getRawButton(11))
+			i += .5;
+		if(shooterStick.getRawButton(10))
+			i -= .5;
+		
+		System.out.println("P:"+p+"I:"+i);
+		
+		ShooterSubsystem.getInstance().setTurretPID(p, i, d);
+		*/
+		
+		if(shooterStick.getRawButton(11))
+			voltage += .2;
+		if(shooterStick.getRawButton(10))
+			voltage -= .2;
+		ShooterSubsystem.getInstance().setVoltage(voltage);
+		System.out.println(voltage);
+		
 		
 		
 		/*double voltage = SHOOT_VOLTAGE_TOP;
