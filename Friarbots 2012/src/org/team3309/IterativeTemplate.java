@@ -55,7 +55,7 @@ public class IterativeTemplate extends IterativeRobot {
 	// Declare Commands
 	Command autonomousCommand;
 
-	XboxDrive driveCommand;
+	JoystickDrive driveCommand;
 
 	// Declare Buttons
 	JoystickButton deployUbarButton;
@@ -76,7 +76,7 @@ public class IterativeTemplate extends IterativeRobot {
 		OI.getInstance();
 		Properties.getInstance();
 		PneumaticsSubsystem.getInstance();
-		VisionSubsystem.getInstance();
+		//VisionSubsystem.getInstance();
 
 
 		// initialize all subsystems here.
@@ -86,7 +86,7 @@ public class IterativeTemplate extends IterativeRobot {
 		shooterStick = OI.getInstance().getJoystick(2);
 
 		// initialize commands
-		driveCommand = new XboxDrive(1);
+		driveCommand = new JoystickDrive(1);
 
 		//Buttons for joystick
 		//deployUbarButton = new JoystickButton(stick, 6);
@@ -144,7 +144,7 @@ public class IterativeTemplate extends IterativeRobot {
 		System.out.println("Started Manual Turret");
 
 		//ButtonCommands.autoElevate.start();
-		//ButtonCommands.manualElevate.start();
+		ButtonCommands.manualElevate.start();
 		//System.out.println("Started Automatic Elevation");
 		
 	}
@@ -184,12 +184,15 @@ public class IterativeTemplate extends IterativeRobot {
 		ShooterSubsystem.getInstance().setTurretPID(p, i, d);
 		*/
 		
-		if(shooterStick.getRawButton(11))
+		/*if(shooterStick.getRawButton(11))
 			voltage += .2;
 		if(shooterStick.getRawButton(10))
 			voltage -= .2;
 		ShooterSubsystem.getInstance().setVoltage(voltage);
-		System.out.println(voltage);
+		System.out.println(voltage);*/
+		
+		double vbus = -shooterStick.getY();
+		ShooterSubsystem.getInstance().setPercentVbus(vbus);
 		
 		
 		

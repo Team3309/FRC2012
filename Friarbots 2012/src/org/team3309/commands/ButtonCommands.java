@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ButtonCommands {
 	//public static Command autoTurret	= new AutoTurretCommand();
 	public static Command manualTurret 	= new ManualTurretCommand();
-	//public static Command manualElevate = new ManualElevateCommand();
+	public static Command manualElevate = new ManualElevateCommand();
 	public static Command deployUbar	= new DeployUbarCommand();
 	public static Command retractUbar	= new RetractUbarCommand();
 	//public static Command autoShooter	= new AutoShooterCommand();*/
@@ -52,7 +52,7 @@ class ManualTurretCommand extends Command{
 	protected void end(){}
 	protected void execute() {
 		if(shootStick.getRawButton(4)){
-			shooter.rotateTurret(1);
+			shooter.rotateTurret(5);
 			System.out.println("Button 4");
 		}
 		if(shootStick.getRawButton(3)){
@@ -60,7 +60,7 @@ class ManualTurretCommand extends Command{
 			System.out.println("Button 3");
 		}
 		if(shootStick.getRawButton(5)){
-			shooter.rotateTurret(-1);
+			shooter.rotateTurret(-5);
 			System.out.println("Button 5");
 		}
 	}
